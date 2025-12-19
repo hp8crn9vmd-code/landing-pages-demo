@@ -4,71 +4,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LOGICDRIVEN | NFT</title>
+    <title>LOGICDRIVEN</title>
     <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
 
-    <div class="nft-glow"></div>
+    <div class="ambient-glow"></div>
+    <div class="grid-lines"></div>
 
     <nav>
         <a href="#" class="brand-link">
             <div class="logo-container">
                 <svg class="hex-svg" viewBox="0 0 100 100">
-                    <defs>
-                        <linearGradient id="holo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
-                            <stop offset="50%" style="stop-color:#d946ef;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
-                        </linearGradient>
-                        
-                        <radialGradient id="core-glow" cx="50%" cy="50%" r="50%">
-                            <stop offset="0%" style="stop-color:#fff;stop-opacity:0.8" />
-                            <stop offset="100%" style="stop-color:#6366f1;stop-opacity:0" />
-                        </radialGradient>
-                    </defs>
-
-                    <path d="M50 5 L95 27.5 L95 72.5 L50 95 L5 72.5 L5 27.5 Z" 
-                          fill="none" stroke="url(#holo-grad)" stroke-width="3" />
+                    <polygon class="hex-shell" points="50 5, 95 27.5, 95 72.5, 50 95, 5 72.5, 5 27.5" />
                     
-                    <path d="M50 20 L80 35 L80 65 L50 80 L20 65 L20 35 Z" 
-                          fill="rgba(99, 102, 241, 0.1)" stroke="rgba(255,255,255,0.3)" stroke-width="1" />
+                    <polygon class="hex-pulse" points="50 20, 80 35, 80 65, 50 80, 20 65, 20 35" />
                     
-                    <circle cx="50" cy="50" r="8" fill="url(#holo-grad)" />
-                    
-                    <circle class="sparkle" cx="50" cy="20" r="2" fill="#fff" style="animation-delay: 0s" />
-                    <circle class="sparkle" cx="80" cy="70" r="1.5" fill="#fff" style="animation-delay: 1s" />
-                    <circle class="sparkle" cx="20" cy="70" r="1.5" fill="#fff" style="animation-delay: 0.5s" />
+                    <g id="hex-particles"></g>
                 </svg>
             </div>
             
             <div class="brand-text">
-                LogicDriven<span class="exe-nft">.EXE</span>
+                LogicDriven<span class="exe-tag">.EXE</span>
             </div>
         </a>
 
-        <div class="menu-lines">
-            <div class="line"></div>
-            <div class="line"></div>
+        <div class="menu-grid">
+            <div class="menu-dot"></div><div class="menu-dot"></div>
+            <div class="menu-dot"></div><div class="menu-dot"></div>
         </div>
     </nav>
 
     <main>
-        <div style="font-family: 'Space Mono'; font-size: 0.8rem; color: #d946ef; margin-bottom: 20px; border: 1px solid rgba(217, 70, 239, 0.3); padding: 5px 12px; border-radius: 100px;">
-            ● MINTING LIVE
+        <div class="status-indicator">
+            <div class="dot"></div>
+            All Systems Operational
         </div>
 
         <h1>
-            The Next Logic<br>
-            Dimension.
+            Engineered for<br>
+            Hyperscale.
         </h1>
         
         <p>
-            Secure, scalable, and built for the decentralized web. 
-            Experience the future of logic-driven architecture.
+            The underlying logic layer for the world's most ambitious platforms. 
+            Reliable, precise, and infinitely scalable.
         </p>
 
-        <a href="#" class="mint-btn">Initialize App</a>
+        <div class="cta-group">
+            <a href="#" class="btn btn-primary">Start Building</a>
+            <a href="#" class="btn btn-secondary">Read The Docs</a>
+        </div>
     </main>
 
     <script src="assets/js/app.js"></script>
