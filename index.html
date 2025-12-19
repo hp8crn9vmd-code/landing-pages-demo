@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LOGIC DRIVEN | Nebular Identity</title>
+    <title>LOGIC DRIVEN | Nebular Core</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -12,47 +12,43 @@
             theme: {
                 extend: {
                     colors: {
-                        bg: '#000000', /* True Black for OLED contrast */
-                        accent: '#0ea5e9', /* Sky 500 */
+                        bg: '#000000',
+                        accent: '#0ea5e9',
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
+                        mono: ['Courier New', 'monospace'],
                     },
-                    letterSpacing: {
-                        widest: '0.3em',
-                    }
                 }
             }
         }
     </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-
     <style>
         body, html { background-color: #000; margin: 0; overflow: hidden; height: 100%; }
         #canvas-container { position: fixed; inset: 0; z-index: 1; }
         
-        /* UI Layer with Glassmorphism */
         #ui-layer { 
             position: relative; z-index: 10; height: 100vh; pointer-events: none;
-            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%);
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.6) 100%);
         }
         
-        /* Cinematic Loader */
+        /* Loader */
         #loader {
             position: fixed; inset: 0; background: #000; z-index: 50;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 1s ease-in-out;
+            transition: opacity 0.8s ease-in-out;
         }
-        .loader-bar { width: 100px; height: 2px; background: #333; margin-top: 20px; position: relative; overflow: hidden; }
-        .loader-progress { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: #0ea5e9; transition: width 0.2s; }
+        .spinner {
+            width: 40px; height: 40px; border: 2px solid #333; 
+            border-top: 2px solid #0ea5e9; border-radius: 50%; 
+            animation: spin 1s linear infinite; margin-bottom: 20px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        /* Noise Grain */
         .grain {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 20; opacity: 0.03;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 20; opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
     </style>
 
@@ -70,29 +66,25 @@
     <div class="grain"></div>
 
     <div id="loader">
-        <div class="font-mono text-xs text-accent tracking-widest">INITIALIZING NEBULA</div>
-        <div class="loader-bar"><div class="loader-progress" id="progress"></div></div>
+        <div class="spinner"></div>
+        <div class="font-mono text-xs text-white tracking-widest">INITIALIZING NEBULA SYSTEM...</div>
     </div>
 
     <div id="ui-layer" class="p-8 md:p-12 flex flex-col justify-between">
         <nav class="flex justify-between items-start opacity-0 animate-[fadeIn_1s_ease-out_forwards]">
              <div class="flex flex-col">
-                 <h1 class="text-white font-bold tracking-tight text-lg">LogicDriven</h1>
-                 <span class="text-[10px] text-gray-500 font-mono">DIGITAL ARCHITECTURE</span>
+                 <h1 class="text-white font-bold tracking-tight text-xl">LogicDriven</h1>
              </div>
-             <div class="hidden md:block text-[10px] font-mono text-gray-600">
-                 CPU: OPTIMAL<br>GPU: ONLINE
+             <div class="hidden md:block text-[10px] font-mono text-gray-500">
+                 LIVE RENDER
              </div>
         </nav>
         
-        <div class="flex justify-between items-end opacity-0 animate-[fadeIn_1s_ease-out_1s_forwards]">
-            <p class="text-gray-400 text-xs md:text-sm max-w-xs leading-relaxed">
-                A particle-based identity system. <br>
-                <span class="text-accent">Rendered in real-time.</span>
+        <div class="opacity-0 animate-[fadeIn_1s_ease-out_1s_forwards]">
+            <p class="text-gray-500 text-xs font-mono">
+                > ESTABLISHING CONNECTION<br>
+                > QUANTUM CORE: ACTIVE
             </p>
-            <div class="w-16 h-16 border border-white/10 rounded-full flex items-center justify-center">
-                <div class="text-[10px] text-gray-500">SCROLL</div>
-            </div>
         </div>
     </div>
 
@@ -111,9 +103,8 @@
         scene.fog = new THREE.FogExp2(0x000000, 0.02);
 
         const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-        // Mobile optimization: move camera further back on small screens
         const isMobile = window.innerWidth < 768;
-        camera.position.set(0, 0, isMobile ? 60 : 40);
+        camera.position.set(0, 0, isMobile ? 80 : 50);
 
         const renderer = new THREE.WebGLRenderer({ 
             antialias: false, 
@@ -124,92 +115,86 @@
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-        // --- 2. Post Processing (Cinematic Bloom) ---
+        // --- 2. Post Processing (Bloom) ---
         const renderPass = new RenderPass(scene, camera);
-        // Precise bloom settings for "Neon" look without washing out
         const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
         bloomPass.threshold = 0;
-        bloomPass.strength = 1.4; 
-        bloomPass.radius = 0.4;
+        bloomPass.strength = 1.5; 
+        bloomPass.radius = 0.5;
 
         const composer = new EffectComposer(renderer);
         composer.addPass(renderPass);
         composer.addPass(bloomPass);
 
-        // --- 3. Dynamic Texture Generator (The Secret Sauce) ---
-        // Creates a soft glow texture in memory instead of loading an image
+        // --- 3. Glow Texture (Soft Dots) ---
         function getGlowSprite() {
             const canvas = document.createElement('canvas');
             canvas.width = 32; canvas.height = 32;
             const context = canvas.getContext('2d');
-            
-            // Draw a radial gradient (white center -> blue mid -> transparent edge)
             const gradient = context.createRadialGradient(16, 16, 0, 16, 16, 16);
             gradient.addColorStop(0, 'rgba(255,255,255,1)');
-            gradient.addColorStop(0.2, 'rgba(56,189,248,1)'); // Cyan
-            gradient.addColorStop(0.5, 'rgba(14,165,233,0.2)'); // Darker Blue
+            gradient.addColorStop(0.4, 'rgba(14,165,233,0.5)');
             gradient.addColorStop(1, 'rgba(0,0,0,0)');
-            
             context.fillStyle = gradient;
             context.fillRect(0,0,32,32);
-            
-            const texture = new THREE.CanvasTexture(canvas);
-            return texture;
+            return new THREE.CanvasTexture(canvas);
         }
-        
         const glowTexture = getGlowSprite();
 
-        // --- 4. Particle System Logic ---
+        // --- 4. Background Stars (Render Immediately) ---
+        // We create this FIRST so the user sees something even if the font fails
+        const starGeo = new THREE.BufferGeometry();
+        const starPos = [];
+        for(let i=0; i<2000; i++) {
+            starPos.push((Math.random() - 0.5) * 300);
+            starPos.push((Math.random() - 0.5) * 300);
+            starPos.push((Math.random() - 0.5) * 300);
+        }
+        starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
+        const starMat = new THREE.PointsMaterial({
+            color: 0x0ea5e9, size: 0.6, map: glowTexture, 
+            transparent: true, opacity: 0.4, blending: THREE.AdditiveBlending, depthWrite: false
+        });
+        const stars = new THREE.Points(starGeo, starMat);
+        scene.add(stars);
+
+        // --- 5. Logo Logic ---
         const logoGroup = new THREE.Group();
         scene.add(logoGroup);
 
-        // Create particles with Volume (3D depth)
-        function createVolumetricParticles(text, font, size, count, color) {
+        function createParticles(text, font, size, count, color) {
             const geometry = new TextGeometry(text, {
-                font: font, size: size, height: 0, curveSegments: 4, bevelEnabled: false
+                font: font, size: size, height: 0, curveSegments: 2, bevelEnabled: false
             });
-            
-            geometry.computeBoundingBox();
-            const centerOffset = - 0.5 * ( geometry.boundingBox.max.x - geometry.boundingBox.min.x );
-            geometry.translate( centerOffset, 0, 0 );
+            geometry.center();
 
             const posAttribute = geometry.attributes.position;
             const particlePositions = [];
-            const particleSizes = [];
             
-            // Interpolate vertices to fill gaps
+            // Simplified sampling logic (Faster & Safer)
             for(let i=0; i<posAttribute.count; i+=3) {
                  const x = posAttribute.getX(i);
                  const y = posAttribute.getY(i);
                  const z = posAttribute.getZ(i);
                  
-                 // Create density around each vertex
-                 const density = 4; // particles per vertex
-                 for(let j=0; j<density; j++) {
-                     // Add randomness to create volume (Thickness)
-                     const spread = 0.3; 
+                 // Density multiplier
+                 for(let j=0; j<3; j++) {
                      particlePositions.push(
-                         x + (Math.random() - 0.5) * spread,
-                         y + (Math.random() - 0.5) * spread,
-                         z + (Math.random() - 0.5) * 2.0 // Deep Z-axis volume
+                         x + (Math.random() - 0.5) * 0.2,
+                         y + (Math.random() - 0.5) * 0.2,
+                         z + (Math.random() - 0.5) * 1.5 // Volumetric depth
                      );
-                     
-                     // Random sizes for organic feel
-                     particleSizes.push(Math.random());
                  }
             }
 
             const particlesGeo = new THREE.BufferGeometry();
             particlesGeo.setAttribute('position', new THREE.Float32BufferAttribute(particlePositions, 3));
-            particlesGeo.setAttribute('size', new THREE.Float32BufferAttribute(particleSizes, 1));
-            
             particlesGeo.userData.initialPositions = particlesGeo.attributes.position.clone();
 
-            // Shader-like Material using Standard PointsMaterial
             const particlesMat = new THREE.PointsMaterial({
                 color: color,
-                size: 0.6, // Larger because of texture
-                map: glowTexture, // Use the generated glow
+                size: 0.8, // Big soft dots
+                map: glowTexture,
                 transparent: true,
                 opacity: 0.9,
                 depthWrite: false,
@@ -219,48 +204,51 @@
             return new THREE.Points(particlesGeo, particlesMat);
         }
 
-        // --- 5. Asset Loading ---
+        // --- 6. Font Loader with Fail-Safe ---
         const loader = new FontLoader();
+        
+        // Timeout to remove loader if font takes too long
+        const loadTimeout = setTimeout(() => {
+            const loaderEl = document.getElementById('loader');
+            if(loaderEl) {
+                loaderEl.style.opacity = '0';
+                setTimeout(() => loaderEl.remove(), 1000);
+                console.log("Font timed out - Showing background");
+            }
+        }, 4000); // 4 seconds max wait
+
         loader.load('https://unpkg.com/three@0.160.0/examples/fonts/droid/droid_sans_bold.typeface.json', 
             function (font) {
-                // LOGIC DRIVEN (Deep Cyan)
-                const p1 = createVolumetricParticles('LOGIC
-DRIVEN', font, 5, 10000, 0x0ea5e9);
+                clearTimeout(loadTimeout); // Cancel timeout if loaded
+
+                // LOGIC DRIVEN
+                const p1 = createParticles('LOGIC
+DRIVEN', font, 5, 8000, 0x0ea5e9);
                 p1.position.set(-8, 2, 0);
                 logoGroup.add(p1);
 
-                // .EXE (Bright White/Cyan)
-                const p2 = createVolumetricParticles('.EXE', font, 2.5, 2000, 0xffffff);
+                // .EXE
+                const p2 = createParticles('.EXE', font, 2.5, 2000, 0xffffff);
                 p2.position.set(10, -2, 0);
                 logoGroup.add(p2);
 
-                // Center group
+                // Center logic
                 new THREE.Box3().setFromObject(logoGroup).getCenter(logoGroup.position).multiplyScalar(-1);
 
-                // Update Loader
-                document.getElementById('progress').style.width = '100%';
-                setTimeout(() => {
-                    document.getElementById('loader').style.opacity = '0';
-                    setTimeout(() => document.getElementById('loader').remove(), 1000);
-                }, 500);
+                // Hide loader
+                const loaderEl = document.getElementById('loader');
+                loaderEl.style.opacity = '0';
+                setTimeout(() => loaderEl.remove(), 1000);
+            },
+            undefined, // onProgress
+            function (err) {
+                console.error("Font error:", err);
+                // Even on error, hide loader so user sees stars
+                const loaderEl = document.getElementById('loader');
+                loaderEl.style.opacity = '0';
+                setTimeout(() => loaderEl.remove(), 1000);
             }
         );
-
-        // --- 6. Ambient Galaxy Dust ---
-        const starGeo = new THREE.BufferGeometry();
-        const starPos = [];
-        for(let i=0; i<1500; i++) {
-            starPos.push((Math.random() - 0.5) * 200);
-            starPos.push((Math.random() - 0.5) * 200);
-            starPos.push((Math.random() - 0.5) * 200);
-        }
-        starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
-        const starMat = new THREE.PointsMaterial({
-            color: 0x0ea5e9, size: 0.4, map: glowTexture, 
-            transparent: true, opacity: 0.3, blending: THREE.AdditiveBlending, depthWrite: false
-        });
-        const stars = new THREE.Points(starGeo, starMat);
-        scene.add(stars);
 
         // --- 7. Animation ---
         const clock = new THREE.Clock();
@@ -275,29 +263,26 @@ DRIVEN', font, 5, 10000, 0x0ea5e9);
             requestAnimationFrame(animate);
             const t = clock.getElapsedTime();
 
-            // Parallax
-            camera.position.x += (mouseX * 20 - camera.position.x) * 0.05;
-            camera.position.y += (-mouseY * 20 - camera.position.y) * 0.05;
+            // Camera movement
+            camera.position.x += (mouseX * 15 - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY * 15 - camera.position.y) * 0.05;
             camera.lookAt(scene.position);
 
-            // Rotate Universe
-            stars.rotation.y = t * 0.02;
+            // Rotate background
+            stars.rotation.y = t * 0.03;
+            stars.rotation.z = t * 0.01;
 
-            // Animate Logo Particles (The "Nebula" Flow)
+            // Animate Logo
             if (logoGroup.children.length > 0) {
-                logoGroup.children.forEach((points, index) => {
+                logoGroup.children.forEach((points) => {
                     const pos = points.geometry.attributes.position;
                     const initPos = points.geometry.userData.initialPositions;
                     
                     for(let i=0; i < pos.count; i++) {
                         const ix = i*3; const iy = i*3+1; const iz = i*3+2;
-                        
-                        // Wave passing through X axis
-                        const wave = Math.sin(initPos.array[ix] * 0.3 + t * 1.5) * 0.2;
-                        
-                        // Apply movement
+                        // Flowing wave effect
+                        const wave = Math.sin(initPos.array[ix] * 0.4 + t * 2) * 0.2;
                         pos.array[iy] = initPos.array[iy] + wave; 
-                        pos.array[iz] = initPos.array[iz] + Math.cos(initPos.array[iy] * 0.5 + t) * 0.2;
                     }
                     pos.needsUpdate = true;
                 });
@@ -318,10 +303,10 @@ DRIVEN', font, 5, 10000, 0x0ea5e9);
             composer.setSize(width, height);
             
             if(width < 768) {
-                camera.position.z = 60;
-                logoGroup.scale.set(0.7, 0.7, 0.7);
+                camera.position.z = 80;
+                logoGroup.scale.set(0.6, 0.6, 0.6);
             } else {
-                camera.position.z = 40;
+                camera.position.z = 50;
                 logoGroup.scale.set(1, 1, 1);
             }
         });
