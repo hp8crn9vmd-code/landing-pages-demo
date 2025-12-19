@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LOGIC DRIVEN | Elite Native</title>
+    <title>LOGIC DRIVEN | Ethereal</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -12,35 +12,40 @@
             theme: {
                 extend: {
                     colors: {
-                        bg: '#030305',
-                        accent: '#38bdf8',
-                        glass: 'rgba(255, 255, 255, 0.03)',
+                        bg: '#050505',
+                        accent: '#0ea5e9', /* Sky 500 */
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    animation: {
+                        'slow-spin': 'spin 20s linear infinite',
                     }
                 }
             }
         }
     </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600;900&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 
     <style>
-        body { background-color: #030305; margin: 0; overflow: hidden; }
-        #canvas-container { position: fixed; inset: 0; z-index: 0; }
-        #ui-layer { position: relative; z-index: 10; pointer-events: none; }
-        .pointer-events-auto { pointer-events: auto; }
+        body { background-color: #050505; margin: 0; overflow: hidden; color: white; }
+        #canvas-container { position: fixed; inset: 0; z-index: 1; }
         
-        /* Loading Overlay */
-        #loader {
-            position: fixed; inset: 0; background: #030305; z-index: 50;
-            display: flex; justify-content: center; align-items: center;
-            transition: opacity 0.8s ease-out;
+        /* تأثير "Film Grain" السينمائي باستخدام CSS (أخف من WebGL) */
+        .noise-overlay {
+            position: fixed; inset: 0; pointer-events: none; z-index: 20;
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
-        .spinner { width: 40px; height: 40px; border: 2px solid #333; border-top-color: #38bdf8; border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+
+        #ui-layer { position: relative; z-index: 10; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none; }
+        .interactive { pointer-events: auto; }
+        
+        /* تباعد الأحرف السينمائي */
+        .cinematic-text { letter-spacing: -0.04em; }
+        .spaced-text { letter-spacing: 0.2em; }
     </style>
 
     <script type="importmap">
@@ -54,31 +59,37 @@
 </head>
 <body>
 
-    <div id="loader"><div class="spinner"></div></div>
+    <div class="noise-overlay"></div>
 
-    <div id="ui-layer" class="w-full h-screen flex flex-col justify-between p-6 md:p-12">
-        <nav class="flex justify-between items-center opacity-0 animate-fade-in" style="animation-delay: 0.5s; animation-fill-mode: forwards;">
-            <div class="flex items-center gap-3">
-                <div class="w-2 h-2 rounded-full bg-accent shadow-[0_0_10px_#38bdf8]"></div>
-                <span class="font-mono text-xs text-slate-400 tracking-widest">SYSTEM ONLINE</span>
+    <div id="ui-layer" class="p-8 md:p-12">
+        
+        <nav class="flex justify-between items-start opacity-0 animate-[fadeIn_1s_ease-out_forwards]">
+            <div class="flex flex-col">
+                <div class="font-bold text-xl tracking-tighter">LogicDriven<span class="text-accent">.</span></div>
+                <div class="font-mono text-[10px] text-gray-500 mt-1">EST. 2025 // SYSTEM V2.4</div>
             </div>
-            <button class="pointer-events-auto px-4 py-1.5 text-xs font-medium text-white/80 border border-white/10 rounded-full hover:bg-white/5 transition-colors backdrop-blur-md">
-                MENU
+            <button class="interactive group relative px-5 py-2 overflow-hidden rounded-full bg-white/5 border border-white/10 transition-all hover:bg-white/10">
+                <span class="relative text-xs font-mono z-10">MENU</span>
             </button>
         </nav>
 
-        <footer class="opacity-0 animate-fade-in" style="animation-delay: 0.8s; animation-fill-mode: forwards;">
-            <h1 class="text-4xl md:text-7xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40 mb-4">
-                Logic<br>Driven.
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center mix-blend-overlay opacity-50 pointer-events-none">
+            <h1 class="text-[12vw] font-black leading-none tracking-tighter text-white">
+                NEXUS
             </h1>
-            <div class="flex flex-col md:flex-row gap-6 md:items-end justify-between">
-                <p class="text-slate-400 text-sm max-w-sm leading-relaxed">
-                    High-performance native WebGL rendering. 
-                    Zero dependencies. Maximum frame rate.
+        </div>
+
+        <footer class="flex justify-between items-end opacity-0 animate-[fadeIn_1s_ease-out_0.5s_forwards]">
+            <div class="max-w-xs">
+                <div class="h-px w-12 bg-accent mb-4"></div>
+                <p class="text-sm text-gray-400 font-light leading-relaxed">
+                    Visualizing the architecture of digital logic. 
+                    <br><span class="text-white font-medium">Native WebGL Rendering.</span>
                 </p>
-                <button class="pointer-events-auto w-fit px-8 py-3 bg-white text-black font-semibold rounded hover:scale-105 transition-transform">
-                    Initialize Project
-                </button>
+            </div>
+            <div class="font-mono text-xs text-right text-gray-600">
+                SCROLL TO EXPLORE<br>
+                ▼
             </div>
         </footer>
     </div>
@@ -90,148 +101,185 @@
         import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
         import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
         import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-        import { FontLoader } from 'three/addons/loaders/FontLoader.js';
-        import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
-        // --- 1. Scene Setup ---
-        const container = document.getElementById('canvas-container');
+        // --- Configuration ---
+        const config = {
+            coreColor: 0x0ea5e9,
+            glassColor: 0xffffff,
+            bgDark: 0x050505,
+            particles: 800
+        };
+
+        // --- Scene Setup ---
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x030305, 0.02);
+        scene.fog = new THREE.FogExp2(config.bgDark, 0.03); // ضباب للعمق
 
         const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
-        
-        // Responsive Camera Position
-        const isMobile = window.innerWidth < 768;
-        camera.position.set(0, 0, isMobile ? 18 : 12);
+        camera.position.z = 15;
 
-        const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance" });
+        const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance", alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.toneMapping = THREE.ReinhardToneMapping;
-        container.appendChild(renderer.domElement);
+        renderer.toneMapping = THREE.ACESFilmicToneMapping; // ألوان سينمائية
+        renderer.toneMappingExposure = 1.2;
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-        // --- 2. Post Processing (The "Pro" Glow) ---
-        const renderScene = new RenderPass(scene, camera);
-        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-        bloomPass.threshold = 0.2;
-        bloomPass.strength = 1.2; // Intense Glow
-        bloomPass.radius = 0.5;
-
+        // --- Post Processing (Bloom) ---
         const composer = new EffectComposer(renderer);
-        composer.addPass(renderScene);
+        const renderPass = new RenderPass(scene, camera);
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+        bloomPass.threshold = 0.1;
+        bloomPass.strength = 0.8; // توهج ناعم وأنيق
+        bloomPass.radius = 0.8;
+        
+        composer.addPass(renderPass);
         composer.addPass(bloomPass);
 
-        // --- 3. Objects (Glass Core) ---
-        
-        // A. The Glass Octahedron
-        const geometry = new THREE.OctahedronGeometry(1.5, 0);
-        const material = new THREE.MeshPhysicalMaterial({
-            color: 0xffffff,
+        // --- Objects ---
+
+        // 1. Starfield (النجوم الخلفية)
+        const starGeo = new THREE.BufferGeometry();
+        const starPos = [];
+        for(let i=0; i<config.particles; i++) {
+            const x = (Math.random() - 0.5) * 60;
+            const y = (Math.random() - 0.5) * 60;
+            const z = (Math.random() - 0.5) * 60;
+            starPos.push(x, y, z);
+        }
+        starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
+        const starMat = new THREE.PointsMaterial({ color: 0x444444, size: 0.05, transparent: true });
+        const stars = new THREE.Points(starGeo, starMat);
+        scene.add(stars);
+
+        // 2. The Artifact (Complex Geometry)
+        const artifactGroup = new THREE.Group();
+        scene.add(artifactGroup);
+
+        // A. Inner Core (Energy)
+        const coreGeo = new THREE.IcosahedronGeometry(1.2, 0);
+        const coreMat = new THREE.MeshBasicMaterial({ 
+            color: config.coreColor,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.3
+        });
+        const core = new THREE.Mesh(coreGeo, coreMat);
+        artifactGroup.add(core);
+
+        const solidCoreGeo = new THREE.IcosahedronGeometry(0.5, 1);
+        const solidCoreMat = new THREE.MeshBasicMaterial({ color: 0xffffff }); // Bright white center
+        const solidCore = new THREE.Mesh(solidCoreGeo, solidCoreMat);
+        artifactGroup.add(solidCore);
+
+        // B. Outer Glass Shells (Multiple layers for complexity)
+        const shellGeo = new THREE.IcosahedronGeometry(1.8, 0);
+        const shellMat = new THREE.MeshPhysicalMaterial({
+            color: config.glassColor,
             metalness: 0.1,
             roughness: 0.05,
-            transmission: 1,  // Glass effect
-            thickness: 2,
-            envMapIntensity: 1.5,
+            transmission: 0.95, // Glass
+            thickness: 1.5,
             clearcoat: 1,
-            clearcoatRoughness: 0.1
+            clearcoatRoughness: 0.1,
+            side: THREE.DoubleSide
         });
-        const glassCore = new THREE.Mesh(geometry, material);
-        scene.add(glassCore);
+        const shell = new THREE.Mesh(shellGeo, shellMat);
+        artifactGroup.add(shell);
 
-        // B. The Inner Energy (.EXE)
-        const innerGeo = new THREE.IcosahedronGeometry(0.7, 0);
-        const innerMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 }); // Pure Cyan
-        const energyCore = new THREE.Mesh(innerGeo, innerMat);
-        scene.add(energyCore);
+        // C. Orbiting Rings (Logic Data)
+        const ringGeo = new THREE.TorusGeometry(3, 0.02, 16, 100);
+        const ringMat = new THREE.MeshBasicMaterial({ color: 0x333333, transparent: true, opacity: 0.5 });
+        
+        const ring1 = new THREE.Mesh(ringGeo, ringMat);
+        ring1.rotation.x = Math.PI / 2;
+        artifactGroup.add(ring1);
 
-        // C. Badge Text (.EXE)
-        const loader = new FontLoader();
-        loader.load('https://unpkg.com/three@0.160.0/examples/fonts/droid/droid_sans_bold.typeface.json', function (font) {
-            const textGeo = new TextGeometry('.EXE', {
-                font: font, size: 0.25, height: 0.05,
-            });
-            const textMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
-            const textMesh = new THREE.Mesh(textGeo, textMat);
-            
-            // Calculate position relative to core
-            textMesh.position.set(1.8, 0.5, 0);
-            scene.add(textMesh);
+        const ring2 = new THREE.Mesh(ringGeo, ringMat);
+        ring2.rotation.x = Math.PI / 3;
+        ring2.scale.set(0.8, 0.8, 0.8);
+        artifactGroup.add(ring2);
 
-            // Hide Loader
-            document.getElementById('loader').style.opacity = 0;
-            setTimeout(() => document.getElementById('loader').remove(), 800);
-        });
-
-        // --- 4. Lighting & Environment ---
+        // --- Lights ---
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
         scene.add(ambientLight);
 
-        const spotLight = new THREE.SpotLight(0x38bdf8, 50);
-        spotLight.position.set(5, 10, 5);
+        const spotLight = new THREE.SpotLight(config.coreColor, 50);
+        spotLight.position.set(10, 10, 10);
         scene.add(spotLight);
 
-        const pointLight = new THREE.PointLight(0xffffff, 10);
-        pointLight.position.set(-5, -5, 5);
-        scene.add(pointLight);
+        const rimLight = new THREE.PointLight(0xffffff, 10);
+        rimLight.position.set(-10, -5, -5);
+        scene.add(rimLight);
 
-        // --- 5. Animation Loop ---
+        // --- Animation Loop ---
         const clock = new THREE.Clock();
         
-        // Mouse Interaction
-        let mouseX = 0; 
+        // Smooth Mouse Interaction
+        let mouseX = 0;
         let mouseY = 0;
-        document.addEventListener('mousemove', (e) => {
-            mouseX = (e.clientX - window.innerWidth / 2) * 0.001;
-            mouseY = (e.clientY - window.innerHeight / 2) * 0.001;
+        let targetX = 0;
+        let targetY = 0;
+
+        const windowHalfX = window.innerWidth / 2;
+        const windowHalfY = window.innerHeight / 2;
+
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX - windowHalfX) * 0.0005;
+            mouseY = (event.clientY - windowHalfY) * 0.0005;
         });
 
         function animate() {
             requestAnimationFrame(animate);
             const t = clock.getElapsedTime();
 
-            // Floating Animation
-            glassCore.position.y = Math.sin(t) * 0.1;
-            energyCore.position.y = Math.sin(t) * 0.1;
+            // Smooth Interpolation (Lerp) for mouse follow
+            targetX += (mouseX - targetX) * 0.05;
+            targetY += (mouseY - targetY) * 0.05;
 
-            // Rotation
-            glassCore.rotation.x = Math.sin(t * 0.5) * 0.2;
-            glassCore.rotation.y += 0.005;
+            // 1. Floating Animation
+            artifactGroup.position.y = Math.sin(t * 0.5) * 0.5;
+            artifactGroup.rotation.y = t * 0.1;
+            artifactGroup.rotation.z = t * 0.05;
+
+            // 2. Interactive Tilt
+            artifactGroup.rotation.x += targetY;
+            artifactGroup.rotation.y += targetX;
+
+            // 3. Elements Animation
+            core.rotation.x = -t * 0.5;
+            shell.rotation.z = t * 0.2;
             
-            energyCore.rotation.x -= 0.01;
-            energyCore.rotation.y -= 0.01;
+            // Rings complex rotation
+            ring1.rotation.x = Math.PI / 2 + Math.sin(t * 0.5) * 0.1;
+            ring1.rotation.y = Math.cos(t * 0.3) * 0.1;
 
-            // Mouse Parallax
-            camera.position.x += (mouseX * 5 - camera.position.x) * 0.05;
-            camera.position.y += (-mouseY * 5 - camera.position.y) * 0.05;
-            camera.lookAt(scene.position);
+            // 4. Parallax Stars
+            stars.rotation.y = t * 0.02 + targetX * 0.5;
 
             composer.render();
         }
 
         animate();
 
-        // --- 6. Resize Handler ---
+        // --- Resize Handler ---
         window.addEventListener('resize', () => {
             const width = window.innerWidth;
             const height = window.innerHeight;
-            
             camera.aspect = width / height;
             camera.updateProjectionMatrix();
-            
-            // Update camera dist for mobile
-            camera.position.z = width < 768 ? 18 : 12;
-
             renderer.setSize(width, height);
             composer.setSize(width, height);
+            
+            // Mobile Adjustment
+            if(width < 768) {
+                camera.position.z = 20;
+                artifactGroup.scale.set(0.8, 0.8, 0.8);
+            } else {
+                camera.position.z = 15;
+                artifactGroup.scale.set(1, 1, 1);
+            }
         });
 
-        // Add fade-in CSS
-        const style = document.createElement('style');
-        style.innerHTML = `
-            @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-            .animate-fade-in { animation: fade-in 1s ease-out forwards; }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 </html>
