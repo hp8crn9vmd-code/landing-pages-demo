@@ -1,79 +1,38 @@
 
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>LOGICDRIVEN | Living Logo</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link rel="stylesheet" href="assets/css/main.css">
-        <script src="https://unpkg.com/feather-icons"></script>
-    </head>
-    <body class="unselectable">
-        <div id="preloader">
-            <div class="text-center">
-                <div class="text-2xl font-bold mb-4">INITIALIZING SYSTEM...</div>
-                <div class="loader-bar"><div class="loader-progress"></div></div>
-            </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOGICDRIVEN | Fast Logo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+    <div id="preloader">LOADING SYSTEM...</div>
+    <div class="architect-grid"></div>
+
+    <nav>
+        <div class="nav-content">
+            <a href="#" id="living-logo-wrapper" class="text-3xl font-black tracking-tighter">
+                <div class="w-10 h-10 bg-black text-white flex items-center justify-center rounded">
+                    <i data-feather="hexagon"></i>
+                </div>
+                <div>LOGIC_DRIVEN<span class="text-indigo-600">.EXE</span></div>
+            </a>
+            
+            <div class="hidden md:block font-bold font-mono">STATUS: <span class="text-green-600">ALIVE</span></div>
         </div>
-        
-        <div class="architect-grid"></div>
+    </nav>
 
-        <nav class="fixed w-full top-0 z-50 bg-white/90 backdrop-blur border-b border-black">
-            <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-                
-                <a href="#" id="living-logo-wrapper" class="text-2xl font-bold tracking-tight group flex items-center gap-2">
-                    <div class="w-8 h-8 bg-black text-white flex items-center justify-center">
-                        <i data-feather="hexagon" class="w-4 h-4"></i>
-                    </div>
-                    LOGIC_DRIVEN<span class="text-indigo-600">.EXE</span>
-                </a>
-                
-                <div class="hidden md:flex items-center gap-8 font-mono text-sm font-bold">
-                    <a href="#contact" class="pro-btn text-xs py-3 px-6">START PROJECT</a>
-                </div>
-            </div>
-        </nav>
+    <main class="pt-32 px-6 text-center">
+        <h1 class="text-7xl md:text-9xl font-black dazzling-text mb-4">PURE LOGIC</h1>
+        <p class="text-xl max-w-2xl mx-auto border-l-4 border-black pl-4 text-left">
+            Watch the logo in the top-left. It generates a new unique movement every 3 seconds.
+        </p>
+    </main>
 
-        <main class="pt-20">
-            <header class="py-32 px-6">
-                <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12">
-                    <div class="lg:col-span-8 relative z-10">
-                        <div class="mb-8 inline-block">
-                            <span class="mono-badge pulsing bg-black text-white">
-                                v4.2.0 // GENERATIVE_LOGO
-                            </span>
-                        </div>
-                        <h1 class="text-7xl md:text-9xl font-bold leading-[0.9] mb-2 dazzling-text" data-glitch data-value="PURE LOGIC">
-                            PURE LOGIC
-                        </h1>
-                        <h1 class="text-7xl md:text-9xl font-bold leading-[0.9] mb-12 dazzling-text" data-glitch data-value="NO FLUFF">
-                            NO FLUFF
-                        </h1>
-                        <div class="flex flex-wrap gap-6">
-                            <a href="#contact" class="pro-btn">INITIATE SEQUENCE</a>
-                        </div>
-                    </div>
-                    <div class="lg:col-span-4 flex items-center justify-center">
-                         <div class="relative w-full aspect-square border-2 border-black p-4 pulsing">
-                            <div class="w-full h-full bg-indigo-600 relative overflow-hidden">
-                                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-20"></div>
-                                <div class="absolute bottom-4 right-4 text-white font-mono text-xs font-bold text-right">
-                                    LOGO_ENGINE: ACTIVE<br>CYCLES: 200<br>STATUS: GENERATING
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
-        </main>
-
-        <footer class="bg-black text-white py-12 px-6 border-t-4 border-indigo-600 relative z-10">
-            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm font-mono">
-                <div class="mb-4 md:mb-0 opacity-50">&copy; 2025 LOGICDRIVEN SYSTEMS.</div>
-            </div>
-        </footer>
-        <script src="assets/js/app.js"></script>
-    </body>
-    </html>
-    
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
