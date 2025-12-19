@@ -4,70 +4,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LOGIC DRIVEN | Instant Core</title>
+    <title>LOGIC DRIVEN | Particle Sentience</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        bg: '#000000',
-                        accent: '#0ea5e9',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['Courier New', 'monospace'],
-                    },
-                }
-            }
-        }
-    </script>
-
     <style>
-        /* ضمان عدم ظهور شاشة بيضاء */
         body, html { background-color: #000; margin: 0; overflow: hidden; height: 100%; }
-        #canvas-container { position: fixed; inset: 0; z-index: 1; }
+        #canvas-container { position: fixed; inset: 0; z-index: 1; touch-action: none; }
         
         #ui-layer { 
             position: relative; z-index: 10; height: 100vh; pointer-events: none;
-            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.7) 100%);
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.5) 100%);
         }
-        
-        .grain {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 20; opacity: 0.05;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+
+        /* Loader */
+        #loader {
+            position: fixed; inset: 0; background: #020205; z-index: 50;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 1s ease-out, visibility 1s;
         }
+        .loader-text { font-family: monospace; color: #0ea5e9; letter-spacing: 0.2em; font-size: 10px; margin-top: 15px; }
+        .spinner { width: 40px; height: 40px; border: 2px solid #111; border-top: 2px solid #0ea5e9; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 
     <script type="importmap">
         {
             "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
             }
         }
     </script>
 </head>
 <body>
 
-    <div class="grain"></div>
+    <div id="loader">
+        <div class="spinner"></div>
+        <div class="loader-text">GENERATING DENSE PARTICLE FIELD...</div>
+    </div>
 
-    <div id="ui-layer" class="p-8 md:p-12 flex flex-col justify-between">
-        <nav class="flex justify-between items-start opacity-0 animate-[fadeIn_1s_ease-out_forwards]">
-             <div class="flex flex-col">
-                 <h1 class="text-white font-bold tracking-tight text-xl">LogicDriven</h1>
-                 <span class="text-[10px] text-accent font-mono tracking-widest">INSTANT RENDER ENGINE</span>
-             </div>
+    <div id="ui-layer" class="p-8 flex flex-col justify-between opacity-0 animate-[fadeIn_2s_ease-out_1s_forwards]">
+        <nav class="flex items-center gap-2">
+             <div class="w-1.5 h-1.5 bg-sky-500 rounded-full shadow-[0_0_10px_#0ea5e9]"></div>
+             <h1 class="text-white font-bold tracking-wider text-xs uppercase font-mono">Interactive System</h1>
         </nav>
-        
-        <div class="opacity-0 animate-[fadeIn_1s_ease-out_1s_forwards]">
-            <p class="text-gray-500 text-xs font-mono">
-                > SYSTEM: ONLINE<br>
-                > LATENCY: 0ms
-            </p>
-        </div>
+        <div class="text-white/50 text-[10px] font-mono text-right">move cursor to interact</div>
     </div>
 
     <div id="canvas-container"></div>
@@ -77,204 +58,186 @@
         import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
         import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
         import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+        import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+        import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
-        // --- 1. Scene & Camera ---
+        // --- SETUP ---
         const scene = new THREE.Scene();
         scene.fog = new THREE.FogExp2(0x000000, 0.02);
 
         const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-        // التعديل للموبايل
-        const isMobile = window.innerWidth < 768;
-        camera.position.set(0, 0, isMobile ? 120 : 80);
+        camera.position.z = window.innerWidth < 768 ? 80 : 50;
 
-        const renderer = new THREE.WebGLRenderer({ 
-            antialias: false, 
-            powerPreference: "high-performance",
-            alpha: true 
-        });
+        const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance" });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // Cap pixel ratio for performance
         document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-        // --- 2. Post Processing (Bloom) ---
+        // --- BLOOM ---
         const renderPass = new RenderPass(scene, camera);
         const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-        bloomPass.threshold = 0;
-        bloomPass.strength = 1.3; 
-        bloomPass.radius = 0.5;
-
+        bloomPass.threshold = 0; bloomPass.strength = 2.0; bloomPass.radius = 0.5;
         const composer = new EffectComposer(renderer);
         composer.addPass(renderPass);
         composer.addPass(bloomPass);
 
-        // --- 3. Glow Texture (Generated in Memory) ---
-        function getGlowSprite() {
-            const canvas = document.createElement('canvas');
-            canvas.width = 32; canvas.height = 32;
-            const context = canvas.getContext('2d');
-            const gradient = context.createRadialGradient(16, 16, 0, 16, 16, 16);
-            gradient.addColorStop(0, 'rgba(255,255,255,1)');
-            gradient.addColorStop(0.4, 'rgba(14,165,233,0.5)');
-            gradient.addColorStop(1, 'rgba(0,0,0,0)');
-            context.fillStyle = gradient;
-            context.fillRect(0,0,32,32);
+        // --- TEXTURE (Soft Particle) ---
+        function createGlowTexture() {
+            const canvas = document.createElement('canvas'); canvas.width = 64; canvas.height = 64;
+            const ctx = canvas.getContext('2d');
+            const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+            grad.addColorStop(0, 'rgba(255,255,255,1)'); grad.addColorStop(0.3, 'rgba(14,165,233,0.8)'); grad.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.fillStyle = grad; ctx.fillRect(0,0,64,64);
             return new THREE.CanvasTexture(canvas);
         }
-        const glowTexture = getGlowSprite();
+        const particleTexture = createGlowTexture();
 
-        // --- 4. The Magic: Canvas to 3D Particles (No external font needed) ---
-        function createTextParticlesFromCanvas(text, size, color, density = 4) {
-            // 1. Create a hidden canvas
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            const fontSize = 100; // High res for scanning
-            
-            // Measure text
-            ctx.font = `900 ${fontSize}px Arial`; // Using system font (Arial/Sans) - Always available
-            const textWidth = ctx.measureText(text).width;
-            
-            canvas.width = textWidth;
-            canvas.height = fontSize * 1.5;
-            
-            // Draw text
-            ctx.font = `900 ${fontSize}px Arial`;
-            ctx.fillStyle = "white";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+        // --- INTERACTION RAYCASTER ---
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2(9999, 9999); // Start far away
+        const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0); // Plane for intersection
 
-            // 2. Scan pixels
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const data = imageData.data;
+        // --- PARTICLE SYSTEM GENERATOR ---
+        function createDenseInteractiveParticles(text, font, size, color, densityMultiplier = 1) {
+            const geometry = new TextGeometry(text, {
+                font: font, size: size, height: 0, curveSegments: 2, bevelEnabled: false
+            });
+            geometry.center();
+
+            const posAttr = geometry.attributes.position;
             const positions = [];
+            const initialPositions = [];
             
-            for (let y = 0; y < canvas.height; y += density) {
-                for (let x = 0; x < canvas.width; x += density) {
-                    const index = (y * canvas.width + x) * 4;
-                    const alpha = data[index + 3];
-                    
-                    if (alpha > 128) { // If pixel is visible
-                        // Convert 2D (x,y) to 3D position
-                        const posX = (x - canvas.width / 2) * (size / 200);
-                        const posY = -(y - canvas.height / 2) * (size / 200); // Invert Y
-                        
-                        // Add depth layers
-                        for(let k=0; k<2; k++) {
-                            positions.push(
-                                posX + (Math.random()-0.5) * 0.5,
-                                posY + (Math.random()-0.5) * 0.5,
-                                (Math.random()-0.5) * 3 // Depth
-                            );
-                        }
-                    }
+            // Super-dense sampling
+            for(let i=0; i<posAttr.count; i+=3) {
+                const x = posAttr.getX(i); const y = posAttr.getY(i); const z = posAttr.getZ(i);
+                // Create a cloud around each vertex
+                const density = 8 * densityMultiplier; 
+                for(let j=0; j<density; j++) {
+                    const px = x + (Math.random()-0.5)*0.4;
+                    const py = y + (Math.random()-0.5)*0.4;
+                    const pz = z + (Math.random()-0.5)*1.5; // Depth volume
+                    positions.push(px, py, pz);
+                    initialPositions.push(px, py, pz);
                 }
             }
-            
-            // 3. Create Geometry
-            const geometry = new THREE.BufferGeometry();
-            geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-            geometry.userData.initialPositions = geometry.attributes.position.clone();
 
-            const material = new THREE.PointsMaterial({
-                color: color,
-                size: 0.6,
-                map: glowTexture,
-                transparent: true,
-                opacity: 0.9,
-                depthWrite: false,
-                blending: THREE.AdditiveBlending,
+            const geo = new THREE.BufferGeometry();
+            geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+            geo.userData.initialPositions = new Float32Array(initialPositions); // Store for resetting
+
+            const mat = new THREE.PointsMaterial({
+                color: color, size: 0.4, map: particleTexture,
+                transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false
             });
 
-            return new THREE.Points(geometry, material);
+            return new THREE.Points(geo, mat);
         }
 
-        // --- 5. Build The Scene Immediately ---
+        // --- LOAD & BUILD ---
         const logoGroup = new THREE.Group();
         scene.add(logoGroup);
+        
+        const loader = new FontLoader();
+        // Using a robust, blocky font suitable for particle formation
+        loader.load('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/fonts/helvetiker_bold.typeface.json', function (font) {
+            
+            // LOGIC (Top)
+            const p1 = createDenseInteractiveParticles('LOGIC', font, 5, 0x0ea5e9);
+            p1.position.set(0, 3.5, 0);
+            logoGroup.add(p1);
 
-        // LOGIC DRIVEN
-        const p1 = createTextParticlesFromCanvas("LOGIC DRIVEN", 20, 0x0ea5e9, 2);
-        p1.position.y = 5;
-        logoGroup.add(p1);
+            // DRIVEN (Bottom)
+            const p2 = createDenseInteractiveParticles('DRIVEN', font, 5, 0x0ea5e9);
+            p2.position.set(0, -3.5, 0);
+            logoGroup.add(p2);
 
-        // .EXE
-        const p2 = createTextParticlesFromCanvas(".EXE", 12, 0xffffff, 2);
-        p2.position.y = -8;
-        logoGroup.add(p2);
+            // .EXE (Side Accent)
+            const p3 = createDenseInteractiveParticles('.EXE', font, 2.5, 0xffffff, 1.5); // Higher density
+            // Calculate positioning roughly
+            p3.position.set(11, -3.5, 0);
+            logoGroup.add(p3);
+            
+            // Hide Loader
+            const loaderEl = document.getElementById('loader');
+            loaderEl.style.opacity = 0;
+            setTimeout(() => loaderEl.style.visibility = 'hidden', 1000);
+        });
 
-        // --- 6. Background Stars ---
-        const starGeo = new THREE.BufferGeometry();
-        const starPos = [];
-        for(let i=0; i<1500; i++) {
-            starPos.push((Math.random() - 0.5) * 400);
-            starPos.push((Math.random() - 0.5) * 400);
-            starPos.push((Math.random() - 0.5) * 400);
+        // --- EVENTS ---
+        function updateMouse(e) {
+            let clientX, clientY;
+            if (e.touches) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; } 
+            else { clientX = e.clientX; clientY = e.clientY; }
+            mouse.x = (clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(clientY / window.innerHeight) * 2 + 1;
         }
-        starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
-        const starMat = new THREE.PointsMaterial({
-            color: 0x0ea5e9, size: 0.8, map: glowTexture, 
-            transparent: true, opacity: 0.3, blending: THREE.AdditiveBlending, depthWrite: false
+        document.addEventListener('mousemove', updateMouse);
+        document.addEventListener('touchmove', updateMouse, { passive: false });
+        window.addEventListener('resize', () => {
+            const w = window.innerWidth; const h = window.innerHeight;
+            camera.aspect = w/h; camera.updateProjectionMatrix();
+            renderer.setSize(w, h); composer.setSize(w, h);
+            camera.position.z = w < 768 ? 80 : 50;
         });
-        const stars = new THREE.Points(starGeo, starMat);
-        scene.add(stars);
 
-        // --- 7. Animation ---
+        // --- ANIMATION LOOP ---
         const clock = new THREE.Clock();
-        let mouseX = 0; let mouseY = 0;
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = (e.clientX - window.innerWidth / 2) * 0.0003;
-            mouseY = (e.clientY - window.innerHeight / 2) * 0.0003;
-        });
+        const pointVector = new THREE.Vector3();
+        const mouseVector = new THREE.Vector3();
 
         function animate() {
             requestAnimationFrame(animate);
             const t = clock.getElapsedTime();
 
-            // Parallax
-            camera.position.x += (mouseX * 20 - camera.position.x) * 0.05;
-            camera.position.y += (-mouseY * 20 - camera.position.y) * 0.05;
-            camera.lookAt(scene.position);
+            // 1. Find mouse position in 3D space
+            raycaster.setFromCamera(mouse, camera);
+            raycaster.ray.intersectPlane(plane, mouseVector);
 
-            // Rotate Universe
-            stars.rotation.y = t * 0.02;
-
-            // Animate Logo Particles (Wave)
-            logoGroup.children.forEach((points) => {
-                const pos = points.geometry.attributes.position;
-                const initPos = points.geometry.userData.initialPositions;
-                
-                for(let i=0; i < pos.count; i++) {
-                    const ix = i*3; const iy = i*3+1;
+            // 2. Update particles
+            if(logoGroup.children.length > 0) {
+                logoGroup.children.forEach(points => {
+                    const pos = points.geometry.attributes.position;
+                    const init = points.geometry.userData.initialPositions;
                     
-                    // Wave effect
-                    const wave = Math.sin(initPos.array[ix] * 0.1 + t * 1.5) * 0.3;
-                    pos.array[iy] = initPos.array[iy] + wave; 
-                }
-                pos.needsUpdate = true;
-            });
+                    for(let i=0; i<pos.count; i++) {
+                        const ix = i*3; const iy = i*3+1; const iz = i*3+2;
+                        
+                        // Get current and initial positions
+                        pointVector.set(pos.array[ix], pos.array[iy], pos.array[iz]);
+                        const initX = init[ix]; const initY = init[iy]; const initZ = init[iz];
+
+                        // Calculate distance to mouse
+                        const dist = pointVector.distanceTo(mouseVector);
+                        const repelRadius = 6;
+                        
+                        // Interaction Logic
+                        if (dist < repelRadius) {
+                            // Repel force
+                            const force = (repelRadius - dist) / repelRadius;
+                            const angle = Math.atan2(pointVector.y - mouseVector.y, pointVector.x - mouseVector.x);
+                            pos.array[ix] += Math.cos(angle) * force * 0.5;
+                            pos.array[iy] += Math.sin(angle) * force * 0.5;
+                        } else {
+                            // Return force (Spring back to original position)
+                            pos.array[ix] += (initX - pos.array[ix]) * 0.05;
+                            pos.array[iy] += (initY - pos.array[iy]) * 0.05;
+                            pos.array[iz] += (initZ - pos.array[iz]) * 0.05;
+                        }
+
+                        // Ambient gentle wave
+                        pos.array[iz] += Math.sin(t*2 + initX*0.5) * 0.02;
+                    }
+                    pos.needsUpdate = true;
+                });
+            }
+
+            // Subtle group rotation
+            logoGroup.rotation.y = Math.sin(t*0.1)*0.05;
 
             composer.render();
         }
-
         animate();
-
-        // --- 8. Resize ---
-        window.addEventListener('resize', () => {
-            const width = window.innerWidth;
-            const height = window.innerHeight;
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
-            renderer.setSize(width, height);
-            composer.setSize(width, height);
-            
-            const isMob = width < 768;
-            camera.position.z = isMob ? 120 : 80;
-            logoGroup.scale.set(isMob ? 0.7 : 1, isMob ? 0.7 : 1, 1);
-        });
-        
-        // Trigger initial resize
-        window.dispatchEvent(new Event('resize'));
 
     </script>
 </body>
