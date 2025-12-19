@@ -3,16 +3,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOGIC DRIVEN | Cinematic Monolith</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LOGIC DRIVEN | 3D Core</title>
     <style>
-        body { margin: 0; overflow: hidden; background-color: #000; }
-        #loading {
+        body { margin: 0; overflow: hidden; background-color: #050505; }
+        
+        #loader {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            color: #22d3ee; font-family: monospace; font-size: 1.2rem; letter-spacing: 0.2em;
-            z-index: 100; transition: opacity 1s;
+            font-family: monospace; color: #06b6d4; letter-spacing: 2px;
+            transition: opacity 0.5s; pointer-events: none;
+        }
+
+        /* واجهة مستخدم بسيطة فوق الـ 3D */
+        #ui {
+            position: absolute; bottom: 40px; left: 0; width: 100%;
+            text-align: center; pointer-events: none;
+        }
+        .tag {
+            font-family: monospace; color: rgba(255,255,255,0.4); 
+            font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.1);
+            padding: 8px 12px; border-radius: 20px;
+            background: rgba(0,0,0,0.5);
         }
     </style>
+    
     <script type="importmap">
         {
             "imports": {
@@ -24,170 +38,151 @@
 </head>
 <body>
 
-    <div id="loading">INITIALIZING CINEMATIC ENGINE...</div>
+    <div id="loader">LOADING SYSTEM...</div>
+    
+    <div id="ui">
+        <span class="tag">INTERACTIVE 3D RENDER</span>
+    </div>
 
     <script type="module">
         import * as THREE from 'three';
-        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
         import { FontLoader } from 'three/addons/loaders/FontLoader.js';
         import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
-        // --- إعداد المشهد الأساسي ---
+        // 1. إعداد المشهد (خفيف وسريع)
         const scene = new THREE.Scene();
-        // ضباب كثيف أزرق داكن جداً للجو السينمائي
-        scene.fog = new THREE.FogExp2(0x040408, 0.015);
+        scene.background = new THREE.Color(0x050505);
+        scene.fog = new THREE.Fog(0x050505, 10, 50); // ضباب خفيف للعمق
 
-        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 2000);
-        // موقع الكاميرا المبدئي (زاوية منخفضة للنظر للأعلى)
-        camera.position.set(0, 2, 35);
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        
+        // ضبط الكاميرا حسب الجهاز (مهم جداً للموبايل)
+        const isMobile = window.innerWidth < 768;
+        camera.position.z = isMobile ? 35 : 20; // إبعاد الكاميرا في الموبايل
+        camera.position.y = 0;
 
-        const renderer = new THREE.WebGLRenderer({ antialias: false }); // الـ Bloom سيقوم بالتنعيم
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        // استخدام Tone Mapping سينمائي
-        renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.2;
-        renderer.shadowMap.enabled = true; // تفعيل الظلال
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         document.body.appendChild(renderer.domElement);
 
-        // --- المعالجة اللاحقة (Cinematic Bloom) ---
-        const renderScene = new RenderPass(scene, camera);
-        // إعدادات توهج قوية جداً ومركزة
-        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 2.5, 0.5, 0.1);
-        const composer = new EffectComposer(renderer);
-        composer.addPass(renderScene);
-        composer.addPass(bloomPass);
-
-        // --- الإضاءة الدرامية ---
-        const ambientLight = new THREE.AmbientLight(0x111122, 0.5); // ضوء محيطي خافت
+        // 2. الإضاءة (بسيطة وفعالة)
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
         scene.add(ambientLight);
 
-        // 1. الضوء الرئيسي (يأتي من الـ .EXE)
-        const exeLight = new THREE.PointLight(0x22d3ee, 150, 100);
-        exeLight.position.set(12, 5, 2);
-        exeLight.castShadow = true;
-        scene.add(exeLight);
+        // ضوء أزرق قوي من اليمين
+        const dirLight = new THREE.DirectionalLight(0x06b6d4, 2);
+        dirLight.position.set(10, 10, 10);
+        scene.add(dirLight);
 
-        // 2. ضوء خلفي (Rim Light) لتحديد الحواف
-        const rimLight = new THREE.SpotLight(0xffffff, 50);
-        rimLight.position.set(-20, 30, -20);
-        rimLight.angle = 0.3;
-        rimLight.penumbra = 1;
-        rimLight.castShadow = true;
-        scene.add(rimLight);
+        // ضوء ملء من اليسار
+        const fillLight = new THREE.PointLight(0xffffff, 0.5);
+        fillLight.position.set(-10, -5, 5);
+        scene.add(fillLight);
 
-        // --- البيئة (الأرضية العاكسة) ---
-        const planeGeo = new THREE.PlaneGeometry(500, 500);
-        // خامة أرضية عاكسة "مبللة"
-        const planeMat = new THREE.MeshStandardMaterial({
-            color: 0x050505,
-            metalness: 0.9,
-            roughness: 0.1, // ناعم جداً ليعكس الأضواء
-        });
-        const plane = new THREE.Mesh(planeGeo, planeMat);
-        plane.rotation.x = -Math.PI / 2;
-        plane.receiveShadow = true;
-        scene.add(plane);
+        // 3. بناء الشعار الـ 3D
+        const group = new THREE.Group();
+        scene.add(group);
 
-
-        // --- تحميل الخطوط وبناء الهيكل ---
         const loader = new FontLoader();
-        // استخدام خطdroid sans bold من أمثلة three.js
         loader.load('https://unpkg.com/three@0.160.0/examples/fonts/droid/droid_sans_bold.typeface.json', function (font) {
             
-            // 1. خامة الهيكل الرئيسي (معدن داكن ثقيل)
-            const metalMaterial = new THREE.MeshStandardMaterial({
-                color: 0x222222,
-                metalness: 1.0,
-                roughness: 0.4,
-                flatShading: false
+            // خامة احترافية: معدن داكن + توهج ذاتي للحواف
+            const textMat = new THREE.MeshStandardMaterial({
+                color: 0x111111,
+                roughness: 0.2,
+                metalness: 0.8,
+                emissive: 0x06b6d4, // توهج أزرق خفيف
+                emissiveIntensity: 0.2
             });
 
-            // بناء "LOGIC"
-            const logicGeo = new TextGeometry('LOGIC', {
-                font: font, size: 5, height: 2, curveSegments: 12,
-                bevelEnabled: true, bevelThickness: 0.2, bevelSize: 0.1, bevelOffset: 0, bevelSegments: 5
-            });
-            const logicMesh = new THREE.Mesh(logicGeo, metalMaterial);
-            logicMesh.position.set(-16, 5, 0);
-            logicMesh.castShadow = true;
-            scene.add(logicMesh);
-
-            // بناء "DRIVEN"
-            const drivenGeo = new TextGeometry('DRIVEN', {
-                font: font, size: 5, height: 2, curveSegments: 12,
-                bevelEnabled: true, bevelThickness: 0.2, bevelSize: 0.1, bevelOffset: 0, bevelSegments: 5
-            });
-            const drivenMesh = new THREE.Mesh(drivenGeo, metalMaterial);
-            drivenMesh.position.set(-16, -2, 0);
-            drivenMesh.castShadow = true;
-            scene.add(drivenMesh);
-
-            // 2. بناء خلية الطاقة ".EXE" (المصدر المضيء)
-            const exeMaterial = new THREE.MeshStandardMaterial({
-                color: 0x22d3ee,
-                emissive: 0x22d3ee, // يضيء ذاتياً
-                emissiveIntensity: 5, // شدة إضاءة عالية جداً
-                metalness: 0.5,
-                roughness: 0.1
+            // خامة الـ .EXE (مضيئة جداً)
+            const exeMat = new THREE.MeshStandardMaterial({
+                color: 0x000000,
+                emissive: 0x22d3ee, // أزرق سماوي مشع
+                emissiveIntensity: 2
             });
 
+            // إنشاء كلمة LOGIC
+            const textGeo1 = new TextGeometry('LOGIC', {
+                font: font, size: 3, height: 0.5, curveSegments: 6,
+                bevelEnabled: true, bevelThickness: 0.1, bevelSize: 0.05, bevelSegments: 3
+            });
+            textGeo1.center(); // توسيط
+            const mesh1 = new THREE.Mesh(textGeo1, textMat);
+            mesh1.position.y = 2; // للأعلى
+            group.add(mesh1);
+
+            // إنشاء كلمة DRIVEN
+            const textGeo2 = new TextGeometry('DRIVEN', {
+                font: font, size: 3, height: 0.5, curveSegments: 6,
+                bevelEnabled: true, bevelThickness: 0.1, bevelSize: 0.05, bevelSegments: 3
+            });
+            textGeo2.center();
+            const mesh2 = new THREE.Mesh(textGeo2, textMat);
+            mesh2.position.y = -2; // للأسفل
+            group.add(mesh2);
+
+            // إنشاء .EXE (صغير بجانب DRIVEN)
             const exeGeo = new TextGeometry('.EXE', {
-                font: font, size: 2.5, height: 1, curveSegments: 12,
-                bevelEnabled: true, bevelThickness: 0.1, bevelSize: 0.05,
-                bevelOffset: 0, bevelSegments: 5
+                font: font, size: 1, height: 0.2, curveSegments: 4,
+                bevelEnabled: false
             });
-            const exeMesh = new THREE.Mesh(exeGeo, exeMaterial);
-            // وضعه بجانب DRIVEN كأنه متصل به
-            exeMesh.position.set(10, -1.5, 0.5);
-            scene.add(exeMesh);
+            const mesh3 = new THREE.Mesh(exeGeo, exeMat);
             
-            // إخفاء شاشة التحميل
-            document.getElementById('loading').style.opacity = 0;
+            // حساب موضع .EXE بناء على عرض DRIVEN
+            textGeo2.computeBoundingBox();
+            const widthDriven = textGeo2.boundingBox.max.x;
+            mesh3.position.set(widthDriven - 1.5, -2, 0.5); // تموضع دقيق
+            group.add(mesh3);
+
+            // إخفاء التحميل
+            document.getElementById('loader').style.opacity = 0;
         });
 
-        // --- التحريك والتفاعل ---
+        // 4. الحركة والتفاعل
         let mouseX = 0;
         let mouseY = 0;
-        const windowHalfX = window.innerWidth / 2;
-        const windowHalfY = window.innerHeight / 2;
+        
+        // دعم اللمس للموبايل
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('touchmove', onTouch, { passive: false });
 
-        document.addEventListener('mousemove', (event) => {
-            mouseX = (event.clientX - windowHalfX) * 0.05;
-            mouseY = (event.clientY - windowHalfY) * 0.05;
-        });
+        function onMove(e) {
+            mouseX = (e.clientX - window.innerWidth / 2) * 0.001;
+            mouseY = (e.clientY - window.innerHeight / 2) * 0.001;
+        }
 
-        const clock = new THREE.Clock();
+        function onTouch(e) {
+            mouseX = (e.touches[0].clientX - window.innerWidth / 2) * 0.002;
+            mouseY = (e.touches[0].clientY - window.innerHeight / 2) * 0.002;
+        }
 
         function animate() {
-            const time = clock.getElapsedTime();
+            requestAnimationFrame(animate);
 
-            // تحريك الكاميرا ببطء (Cinematic Dolly)
-            camera.position.x += (mouseX - camera.position.x) * 0.02;
-            camera.position.y += (-mouseY + 5 - camera.position.y) * 0.02; // +5 لرفع زاوية النظر قليلاً
-            
-            // نبض ضوء الـ EXE
-            exeLight.intensity = 150 + Math.sin(time * 3) * 30;
-
+            // دوران ناعم للكاميرا بدلاً من النص
+            camera.position.x += (mouseX * 10 - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY * 10 - camera.position.y) * 0.05;
             camera.lookAt(scene.position);
 
-            composer.render();
-            requestAnimationFrame(animate);
+            // دوران بسيط جداً للشعار نفسه ليظهر الجوانب
+            group.rotation.y = Math.sin(Date.now() * 0.001) * 0.1;
+
+            renderer.render(scene, camera);
         }
 
         animate();
 
-        // تجاوب الشاشة
+        // تجاوب عند تغيير حجم الشاشة
         window.addEventListener('resize', () => {
             const width = window.innerWidth;
             const height = window.innerHeight;
             camera.aspect = width / height;
             camera.updateProjectionMatrix();
+            // تحديث بعد الكاميرا عند تغيير الحجم
+            camera.position.z = width < 768 ? 35 : 20;
             renderer.setSize(width, height);
-            composer.setSize(width, height);
         });
     </script>
 </body>
