@@ -4,15 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LogicDriven | Pivot Point</title>
+    <title>LOGIC DRIVEN | Executable Logic</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600;700&family=JetBrains+Mono:wght@700&display=swap');
+        /* Typography: Inter for UI, JetBrains Mono for Code/.EXE */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;800&family=JetBrains+Mono:wght@700&display=swap');
 
         :root {
-            --bg: #09090b; /* Zinc 950 - Premium Dark */
-            --nav-bg: rgba(9, 9, 11, 0.9);
-            --text-main: #ffffff;
-            --accent: #38bdf8; /* Sky 400 - Vivid but professional */
+            /* Palette: Charcoal Black & Pure White */
+            --bg: #050505;        /* Deepest Charcoal */
+            --surface: #0f0f11;   /* Surface Grey */
+            --text-main: #ffffff; /* Pure White */
+            --text-muted: #888888;
+            
+            /* Accent: Electric Blue (Cyber) */
+            --accent: #22d3ee;    /* Cyan-400 equivalent */
+            --accent-glow: rgba(34, 211, 238, 0.15);
+            
             --border: rgba(255, 255, 255, 0.08);
         }
 
@@ -24,116 +31,161 @@
             height: 100%; overflow-x: hidden;
         }
 
-        /* خلفية بسيطة جداً للتركيز على الشعار */
-        .clean-bg {
+        /* Background: Minimal Tech Texture */
+        .tech-grid {
             position: fixed; inset: 0; z-index: -1;
-            background: radial-gradient(circle at top center, #1a1a1e 0%, #09090b 70%);
+            background-image: 
+                linear-gradient(var(--surface) 1px, transparent 1px),
+                linear-gradient(90deg, var(--surface) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.5;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
         }
 
-        /* شريط التنقل */
+        /* --- Navbar: The System Header --- */
         nav {
-            position: fixed; top: 0; left: 0; width: 100%; height: 64px;
-            display: flex; align-items: center; padding: 0 32px;
-            background: var(--nav-bg);
-            backdrop-filter: blur(8px);
+            position: fixed; top: 0; left: 0; width: 100%; height: 72px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 32px;
+            background: rgba(5, 5, 5, 0.9);
+            backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border);
             z-index: 1000;
         }
 
-        /* حاوية الشعار */
-        .brand-link {
-            display: flex;
-            align-items: baseline; /* محاذاة على السطر */
+        /* Brand Block */
+        .brand-block {
+            display: flex; align-items: center; gap: 16px;
             text-decoration: none;
-            gap: 4px; /* مسافة صغيرة جداً */
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-        .brand-link:hover { opacity: 0.9; }
-
-        /* الجزء الأول: LogicDriven */
-        .brand-text {
-            font-family: 'Inter', sans-serif;
-            font-size: 1.25rem; /* 20px */
-            font-weight: 700;
-            color: var(--text-main);
-            letter-spacing: -0.02em;
+            group: hover;
         }
 
-        /* الجزء الثاني: السداسي (نقطة الارتكاز) */
-        .pivot-hex {
-            width: 8px; height: 8px; /* حجم صغير جداً كنقطة */
+        /* 1. Icon: Hexagon Node (Architecture) */
+        .icon-box {
+            width: 32px; height: 32px;
             display: flex; align-items: center; justify-content: center;
             position: relative;
-            top: -1px; /* رفع بسيط لضبط المحاذاة البصرية مع النص */
         }
-        .hex-svg { width: 100%; height: 100%; overflow: visible; }
+        .icon-svg { width: 100%; height: 100%; overflow: visible; }
+        
+        /* The Hexagon */
         .hex-shape {
-            fill: var(--accent); /* لون موحد مع EXE */
-            animation: breathe 3s ease-in-out infinite; /* حركة تنفس هادئة */
+            fill: none; 
+            stroke: var(--text-main); 
+            stroke-width: 2;
+            transition: all 0.3s ease;
         }
         
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(0.85); opacity: 0.7; }
+        /* The Logic Node (Center) */
+        .hex-node {
+            fill: var(--text-main);
+            transition: all 0.3s ease;
         }
 
-        /* الجزء الثالث: EXE */
-        .extension-text {
-            font-family: 'JetBrains Mono', monospace; /* خط تقني */
-            font-size: 1.25rem; /* نفس حجم الاسم للتوازن */
+        /* Hover Effect: Logic Activation */
+        .brand-block:hover .hex-shape { stroke: var(--accent); filter: drop-shadow(0 0 5px var(--accent)); }
+        .brand-block:hover .hex-node { fill: var(--accent); }
+
+        /* 2. Logotype: Strong & Clean */
+        .logotype {
+            display: flex; align-items: baseline; gap: 2px;
+        }
+
+        .word-logic {
+            font-size: 1.25rem; font-weight: 600; color: var(--text-main); letter-spacing: -0.02em;
+        }
+        
+        .word-driven {
+            font-size: 1.25rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.02em;
+        }
+
+        /* 3. The .EXE Element (System Tag) */
+        .exe-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
             font-weight: 700;
-            color: var(--accent); /* أزرق */
-            letter-spacing: -0.02em;
+            color: var(--bg); /* Contrast text */
+            background: var(--accent); /* Electric Blue Background */
+            padding: 2px 6px;
+            border-radius: 2px; /* Tech/Sharp corners */
+            margin-left: 8px;
+            transform: translateY(-1px);
+            box-shadow: 0 0 10px var(--accent-glow);
         }
 
-        /* المحتوى */
+        /* Main Stage */
         main {
             height: 100vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
-            padding: 0 20px;
+            padding: 0 24px;
         }
-        h1 { 
-            font-size: 3rem; font-weight: 700; margin-bottom: 24px; letter-spacing: -0.03em;
-            background: linear-gradient(180deg, #fff, #999); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+
+        /* Tagline Display */
+        .hero-tagline {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+            font-size: 0.9rem; margin-bottom: 24px;
+            display: flex; align-items: center; gap: 8px;
         }
-        p { color: #888; max-w: 500px; line-height: 1.6; font-size: 1.1rem; }
-        
-        .code-snippet {
+        .hero-tagline::before { content: '>'; color: var(--text-muted); }
+
+        h1 {
+            font-size: clamp(3rem, 5vw, 5rem);
+            font-weight: 800; letter-spacing: -0.03em;
+            line-height: 1.1; margin-bottom: 24px;
+            background: linear-gradient(180deg, #fff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            color: var(--text-muted); font-size: 1.125rem; max-width: 540px; line-height: 1.6;
+        }
+
+        /* Button: Minimal High-Tech */
+        .btn {
             margin-top: 40px;
-            font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;
-            background: #111; padding: 15px 25px; border-radius: 8px;
-            border: 1px solid #222; color: #888;
+            background: transparent; color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 14px 28px; font-weight: 600; text-decoration: none;
+            transition: all 0.2s;
         }
-        .cmd { color: var(--accent); }
+        .btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(34, 211, 238, 0.05); }
 
     </style>
 </head>
 <body>
 
-    <div class="clean-bg"></div>
+    <div class="tech-grid"></div>
 
     <nav>
-        <a href="#" class="brand-link">
-            <span class="brand-text">LogicDriven</span>
-            
-            <div class="pivot-hex">
-                <svg class="hex-svg" viewBox="0 0 100 100">
-                    <polygon class="hex-shape" points="50 0, 95 25, 95 75, 50 100, 5 75, 5 25" />
+        <a href="#" class="brand-block">
+            <div class="icon-box">
+                <svg class="icon-svg" viewBox="0 0 24 24">
+                    <path class="hex-shape" d="M12 2l9 4.9V17L12 22l-9-4.9V6.9L12 2z" />
+                    <circle class="hex-node" cx="12" cy="12" r="2.5" />
                 </svg>
             </div>
             
-            <span class="extension-text">EXE</span>
+            <div class="logotype">
+                <span class="word-logic">LOGIC</span>
+                <span class="word-driven">DRIVEN</span>
+                
+                <span class="exe-tag">.EXE</span>
+            </div>
         </a>
     </nav>
 
     <main>
-        <h1>The Pivot Point.</h1>
-        <p>Replacing the punctuation with geometry. A solid hexagonal core acts as the bridge between logic and execution.</p>
-        
-        <div class="code-snippet">
-            <span class="cmd">></span> system_status: <span style="color:white">connected</span>
-        </div>
+        <div class="hero-tagline">Executable Logic</div>
+        <h1>
+            Built to<br>
+            Execute.
+        </h1>
+        <p>
+            Transforming abstract logic into high-performance digital systems. 
+            Precision architecture for the modern web.
+        </p>
+        <a href="#" class="btn">Initialize Project</a>
     </main>
 
 </body>
