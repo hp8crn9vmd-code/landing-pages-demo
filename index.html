@@ -1,106 +1,214 @@
 
     <!DOCTYPE html>
-    <html lang="ar" dir="rtl">
+    <html lang="en" dir="ltr">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>الرئيسية | LOGICDRIVEN</title>
+        <title>Home | LOGICDRIVEN</title>
+        <meta name="description" content="Professional software engineering and digital transformation services.">
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="assets/css/main.css">
         <script src="https://unpkg.com/feather-icons"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
-    <body class="bg-slate-50 text-slate-900">
-        <nav class="fixed w-full z-50 nav-glass">
-            <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
-                <a href="index.html" class="text-2xl font-extrabold tracking-tighter">LOGIC<span class="text-gold">DRIVEN</span></a>
-                <div class="hidden md:flex gap-8"><a href="web.html" class="text-sm font-medium hover:text-yellow-600 transition">تطوير الويب</a><a href="ai.html" class="text-sm font-medium hover:text-yellow-600 transition">الذكاء الاصطناعي</a><a href="security.html" class="text-sm font-medium hover:text-yellow-600 transition">الأمن السيبراني</a><a href="cloud.html" class="text-sm font-medium hover:text-yellow-600 transition">الحوسبة السحابية</a></div>
-                <button id="mobile-menu-btn" class="md:hidden"><i data-feather="menu"></i></button>
+    <body class="flex flex-col min-h-screen">
+        <nav class="fixed w-full z-50 glass-nav">
+            <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+                <a href="index.html" class="flex items-center gap-2 group">
+                    <div class="w-8 h-8 bg-slate-900 rounded flex items-center justify-center text-amber-400 group-hover:rotate-12 transition">
+                        <i data-feather="hexagon" class="w-5 h-5 fill-current"></i>
+                    </div>
+                    <span class="text-xl font-extrabold tracking-tight text-slate-900">LOGIC<span class="text-amber-500">DRIVEN</span></span>
+                </a>
+                
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="index.html" class="text-sm font-medium text-slate-600 hover:text-slate-900">Home</a>
+                    <a href="web-dev.html" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition">Web Engineering</a><a href="data-ai.html" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition">Data & AI</a><a href="cyber-sec.html" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition">Cybersecurity</a><a href="cloud-ops.html" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition">Cloud DevOps</a>
+                    <a href="#contact" class="bg-slate-900 text-white px-5 py-2.5 rounded-lg text-sm font-bold hover:bg-slate-800 transition shadow-md">Get Started</a>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden text-slate-900"><i data-feather="menu"></i></button>
             </div>
-            <div id="mobile-menu" class="hidden md:hidden bg-white p-4 space-y-4 border-t"><a href="web.html" class="text-sm font-medium hover:text-yellow-600 transition">تطوير الويب</a><a href="ai.html" class="text-sm font-medium hover:text-yellow-600 transition">الذكاء الاصطناعي</a><a href="security.html" class="text-sm font-medium hover:text-yellow-600 transition">الأمن السيبراني</a><a href="cloud.html" class="text-sm font-medium hover:text-yellow-600 transition">الحوسبة السحابية</a></div>
+            <div id="mobile-menu" class="hidden md:hidden bg-white border-t p-6 space-y-4 shadow-lg absolute w-full">
+                <a href="web-dev.html" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition">Web Engineering</a><a href="data-ai.html" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition">Data & AI</a><a href="cyber-sec.html" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition">Cybersecurity</a><a href="cloud-ops.html" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition">Cloud DevOps</a>
+                <a href="#contact" class="block text-center bg-slate-900 text-white px-5 py-3 rounded-lg font-bold">Get Started</a>
+            </div>
         </nav>
-        <main>
+
+        <main class="flex-grow">
             
         <header class="hero-gradient text-white pt-32 pb-24 relative overflow-hidden">
-            <div class="max-w-7xl mx-auto px-4 text-center relative z-10 fade-up">
-                <div class="inline-block px-4 py-1 mb-6 rounded-full bg-white/10 border border-white/20 text-yellow-400 text-xs font-bold tracking-widest uppercase">
-                    Powered by TypeScript Logic
+            <div class="absolute top-0 right-0 w-1/3 h-full bg-white opacity-5 transform skew-x-12 translate-x-20"></div>
+            
+            <div class="max-w-7xl mx-auto px-6 relative z-10 fade-up text-center lg:text-left grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 mb-8 rounded-full bg-slate-800 border border-slate-700 text-amber-400 text-xs font-bold tracking-widest uppercase">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        Available for New Projects
+                    </div>
+                    <h1 class="text-5xl lg:text-7xl font-extrabold mb-6 leading-tight tracking-tight">
+                        Logic is the Engine.<br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-amber-500">Innovation is the Result.</span>
+                    </h1>
+                    <p class="text-lg text-slate-400 max-w-xl mb-10 leading-relaxed">
+                        We don't just write code; we engineer digital solutions. 
+                        Partner with LogicDriven to transform complex challenges into elegant, scalable software.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <a href="#services" class="bg-amber-500 text-slate-900 px-8 py-4 rounded-xl font-bold hover:bg-amber-400 transition flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20">
+                            Explore Services <i data-feather="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                        <a href="#contact" class="px-8 py-4 rounded-xl font-bold border border-slate-600 hover:border-white hover:bg-white/5 transition">
+                            Talk to an Expert
+                        </a>
+                    </div>
                 </div>
-                <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
-                    ذكاء المنطق.<br><span class="text-yellow-400">دقة الأداء.</span>
-                </h1>
-                <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-10">
-                    نقدم حلولاً برمجية من الطراز الرفيع، مبنية على كود نظيف وهيكلية آمنة.
-                </p>
-                <div class="flex justify-center gap-4">
-                    <a href="#contact" class="bg-yellow-500 text-slate-900 px-8 py-4 rounded-xl font-bold hover:bg-yellow-400 transition">ابدأ مشروعك</a>
+                <div class="hidden lg:block relative">
+                    <div class="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 shadow-2xl transform rotate-3 hover:rotate-0 transition duration-500">
+                        <div class="flex gap-2 mb-6">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <div class="space-y-3 font-mono text-sm text-slate-300">
+                            <p><span class="text-purple-400">const</span> <span class="text-amber-400">future</span> = <span class="text-blue-400">new</span> DigitalTransformation();</p>
+                            <p>future.<span class="text-blue-300">optimize</span>({</p>
+                            <p class="pl-4">efficiency: <span class="text-green-400">"100%"</span>,</p>
+                            <p class="pl-4">logic: <span class="text-green-400">"Driven"</span>,</p>
+                            <p class="pl-4">security: <span class="text-green-400">"Enterprise-Grade"</span></p>
+                            <p>});</p>
+                            <p><span class="text-slate-500">// Deploying success...</span></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </header>
         
-            <section class="py-20"><div class="max-w-7xl mx-auto px-4"><div class="grid md:grid-cols-4 gap-6">
-        <div class="bg-white p-8 rounded-2xl border border-gray-100 hover:shadow-xl transition duration-300 fade-up group">
-            <div class="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center mb-6 text-slate-900 group-hover:text-yellow-500 transition">
+            
+        <section id="services" class="py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="mb-16 fade-up">
+                    <h2 class="text-3xl font-bold text-slate-900">Our Expertise</h2>
+                    <div class="w-16 h-1 bg-amber-500 mt-4 rounded-full"></div>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="bg-white p-8 rounded-2xl border border-slate-100 hover:border-amber-200 hover:shadow-xl transition-all duration-300 fade-up group">
+            <div class="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center mb-6 text-slate-900 group-hover:bg-amber-500 group-hover:text-white transition-colors">
                 <i data-feather="code"></i>
             </div>
-            <h3 class="text-xl font-bold mb-2">تطوير الويب</h3>
-            <p class="text-gray-500 text-sm mb-4">بناء أنظمة ويب متكاملة.</p>
-            <a href="web.html" class="text-sm font-bold text-slate-900 flex items-center gap-2">التفاصيل <i data-feather="arrow-left" class="w-4 h-4"></i></a>
+            <h3 class="text-xl font-bold mb-3 text-slate-900">Web Engineering</h3>
+            <p class="text-slate-500 text-sm mb-6 leading-relaxed">Scalable, high-performance web applications built with modern frameworks.</p>
+            <a href="web-dev.html" class="text-sm font-bold text-slate-900 flex items-center gap-2 group-hover:text-amber-600 transition">
+                Learn More <i data-feather="arrow-right" class="w-4 h-4"></i>
+            </a>
         </div>
         
-        <div class="bg-white p-8 rounded-2xl border border-gray-100 hover:shadow-xl transition duration-300 fade-up group">
-            <div class="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center mb-6 text-slate-900 group-hover:text-yellow-500 transition">
-                <i data-feather="cpu"></i>
+        <div class="bg-white p-8 rounded-2xl border border-slate-100 hover:border-amber-200 hover:shadow-xl transition-all duration-300 fade-up group">
+            <div class="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center mb-6 text-slate-900 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                <i data-feather="database"></i>
             </div>
-            <h3 class="text-xl font-bold mb-2">الذكاء الاصطناعي</h3>
-            <p class="text-gray-500 text-sm mb-4">تحليل البيانات وتعلم الآلة.</p>
-            <a href="ai.html" class="text-sm font-bold text-slate-900 flex items-center gap-2">التفاصيل <i data-feather="arrow-left" class="w-4 h-4"></i></a>
+            <h3 class="text-xl font-bold mb-3 text-slate-900">Data & AI</h3>
+            <p class="text-slate-500 text-sm mb-6 leading-relaxed">Turning raw data into actionable insights using advanced machine learning.</p>
+            <a href="data-ai.html" class="text-sm font-bold text-slate-900 flex items-center gap-2 group-hover:text-amber-600 transition">
+                Learn More <i data-feather="arrow-right" class="w-4 h-4"></i>
+            </a>
         </div>
         
-        <div class="bg-white p-8 rounded-2xl border border-gray-100 hover:shadow-xl transition duration-300 fade-up group">
-            <div class="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center mb-6 text-slate-900 group-hover:text-yellow-500 transition">
+        <div class="bg-white p-8 rounded-2xl border border-slate-100 hover:border-amber-200 hover:shadow-xl transition-all duration-300 fade-up group">
+            <div class="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center mb-6 text-slate-900 group-hover:bg-amber-500 group-hover:text-white transition-colors">
                 <i data-feather="shield"></i>
             </div>
-            <h3 class="text-xl font-bold mb-2">الأمن السيبراني</h3>
-            <p class="text-gray-500 text-sm mb-4">حماية الأنظمة والشبكات.</p>
-            <a href="security.html" class="text-sm font-bold text-slate-900 flex items-center gap-2">التفاصيل <i data-feather="arrow-left" class="w-4 h-4"></i></a>
+            <h3 class="text-xl font-bold mb-3 text-slate-900">Cybersecurity</h3>
+            <p class="text-slate-500 text-sm mb-6 leading-relaxed">Enterprise-grade protection for your digital assets and infrastructure.</p>
+            <a href="cyber-sec.html" class="text-sm font-bold text-slate-900 flex items-center gap-2 group-hover:text-amber-600 transition">
+                Learn More <i data-feather="arrow-right" class="w-4 h-4"></i>
+            </a>
         </div>
         
-        <div class="bg-white p-8 rounded-2xl border border-gray-100 hover:shadow-xl transition duration-300 fade-up group">
-            <div class="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center mb-6 text-slate-900 group-hover:text-yellow-500 transition">
+        <div class="bg-white p-8 rounded-2xl border border-slate-100 hover:border-amber-200 hover:shadow-xl transition-all duration-300 fade-up group">
+            <div class="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center mb-6 text-slate-900 group-hover:bg-amber-500 group-hover:text-white transition-colors">
                 <i data-feather="cloud"></i>
             </div>
-            <h3 class="text-xl font-bold mb-2">الحوسبة السحابية</h3>
-            <p class="text-gray-500 text-sm mb-4">إدارة الخوادم والبنية التحتية.</p>
-            <a href="cloud.html" class="text-sm font-bold text-slate-900 flex items-center gap-2">التفاصيل <i data-feather="arrow-left" class="w-4 h-4"></i></a>
+            <h3 class="text-xl font-bold mb-3 text-slate-900">Cloud DevOps</h3>
+            <p class="text-slate-500 text-sm mb-6 leading-relaxed">Seamless cloud integration, CI/CD pipelines, and server management.</p>
+            <a href="cloud-ops.html" class="text-sm font-bold text-slate-900 flex items-center gap-2 group-hover:text-amber-600 transition">
+                Learn More <i data-feather="arrow-right" class="w-4 h-4"></i>
+            </a>
         </div>
-        </div></div></section>
-            
-    <section id="contact" class="py-20 bg-white border-t border-gray-100">
-        <div class="max-w-3xl mx-auto px-4">
-            <div class="text-center mb-12 fade-up">
-                <h2 class="text-3xl font-bold">تواصل معنا</h2>
-                <p class="text-gray-500 mt-2">نظامنا الذكي جاهز لاستقبال طلبك.</p>
+        </div>
             </div>
-            <form id="contact-form" class="space-y-6 bg-slate-50 p-8 rounded-3xl fade-up">
+        </section>
+        
+            
+    <section id="contact" class="py-24 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="text-center mb-12 fade-up">
+                <h2 class="text-3xl font-bold text-slate-900">Ready to start?</h2>
+                <p class="text-slate-500 mt-2">Tell us about your project. LogicDriven is ready to deploy.</p>
+            </div>
+            <form id="contact-form" class="space-y-6 bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-slate-100 fade-up">
                 <div class="grid md:grid-cols-2 gap-6">
-                    <input id="input-name" type="text" placeholder="الاسم" required class="w-full px-4 py-3 rounded-lg border-gray-200 focus:border-slate-900 focus:ring-0">
-                    <input id="input-email" type="email" placeholder="البريد الإلكتروني" required class="w-full px-4 py-3 rounded-lg border-gray-200 focus:border-slate-900 focus:ring-0">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Full Name</label>
+                        <input id="input-name" type="text" placeholder="John Doe" required class="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-slate-900 focus:ring-0 outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Email Address</label>
+                        <input id="input-email" type="email" placeholder="john@company.com" required class="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-slate-900 focus:ring-0 outline-none transition">
+                    </div>
                 </div>
-                <select id="input-service" class="w-full px-4 py-3 rounded-lg border-gray-200 focus:border-slate-900 focus:ring-0 bg-white">
-                    <option value="General">استشارة عامة</option>
-                    <option value="تطوير الويب">تطوير الويب</option><option value="الذكاء الاصطناعي">الذكاء الاصطناعي</option><option value="الأمن السيبراني">الأمن السيبراني</option><option value="الحوسبة السحابية">الحوسبة السحابية</option>
-                </select>
-                <textarea id="input-message" rows="4" placeholder="الرسالة" class="w-full px-4 py-3 rounded-lg border-gray-200 focus:border-slate-900 focus:ring-0"></textarea>
-                <button type="submit" class="w-full btn-primary py-4 rounded-xl font-bold shadow-lg">إرسال الطلب</button>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Service Interest</label>
+                    <select id="input-service" class="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-slate-900 focus:ring-0 outline-none">
+                        <option value="General Inquiry">General Inquiry</option>
+                        <option value="Web Engineering">Web Engineering</option><option value="Data & AI">Data & AI</option><option value="Cybersecurity">Cybersecurity</option><option value="Cloud DevOps">Cloud DevOps</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Project Details</label>
+                    <textarea id="input-message" rows="4" placeholder="Tell us about your goals..." class="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-slate-900 focus:ring-0 outline-none"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-slate-800 transition shadow-xl transform active:scale-95">
+                    Send Request
+                </button>
             </form>
         </div>
     </section>
     
         </main>
-        <footer class="bg-slate-900 text-slate-400 py-12 text-center text-sm">
-            &copy; 2025 LOGICDRIVEN. Built with TypeScript & Python.
+
+        <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+            <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-2">
+                    <h3 class="text-white text-lg font-bold mb-4 flex items-center gap-2">
+                        LOGIC<span class="text-amber-500">DRIVEN</span>
+                    </h3>
+                    <p class="text-sm leading-relaxed max-w-sm">
+                        Enterprise-grade software solutions engineered for precision, scalability, and performance. 
+                        We build the digital infrastructure of tomorrow.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-wider">Services</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="web-dev.html" class="hover:text-amber-400 transition">Web Engineering</a></li><li><a href="data-ai.html" class="hover:text-amber-400 transition">Data & AI</a></li><li><a href="cyber-sec.html" class="hover:text-amber-400 transition">Cybersecurity</a></li><li><a href="cloud-ops.html" class="hover:text-amber-400 transition">Cloud DevOps</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-wider">Contact</h4>
+                    <p class="text-sm">Amman, Jordan</p>
+                    <p class="text-sm text-amber-400">hello@logicdriven.com</p>
+                    <div class="flex gap-4 mt-4">
+                        <i data-feather="twitter" class="w-5 h-5 hover:text-white cursor-pointer transition"></i>
+                        <i data-feather="linkedin" class="w-5 h-5 hover:text-white cursor-pointer transition"></i>
+                        <i data-feather="github" class="w-5 h-5 hover:text-white cursor-pointer transition"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center pt-8 border-t border-slate-800 text-xs text-slate-600">
+                &copy; 2025 LogicDriven Inc. All Rights Reserved.
+            </div>
         </footer>
+
         <script src="assets/js/app.js"></script>
     </body>
     </html>

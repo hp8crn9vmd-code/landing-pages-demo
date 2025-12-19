@@ -1,10 +1,5 @@
 
-// 1. تعريف واجهات البيانات (Data Interfaces)
-interface IService {
-    id: string;
-    title: string;
-}
-
+// Interface Definitions
 interface IContactForm {
     name: string;
     email: string;
@@ -12,59 +7,41 @@ interface IContactForm {
     message: string;
 }
 
-// 2. فئة إدارة التطبيق (Application Class)
 class LogicDrivenApp {
-    private appName: string;
-    private version: string = "2.0.0-TS";
-
-    constructor(name: string) {
-        this.appName = name;
+    constructor() {
         this.init();
     }
 
     private init(): void {
-        console.log(`🚀 System Initialized: ${this.appName} v${this.version}`);
+        console.log("🚀 LogicDriven System: Online");
         this.setupScrollObserver();
         this.setupMobileMenu();
         this.setupContactForm();
-        
-        // تفعيل أيقونات Feather
         // @ts-ignore
         if (typeof feather !== 'undefined') feather.replace();
     }
 
-    // A. مراقب التمرير (Intersection Observer) مع Type Safety
     private setupScrollObserver(): void {
-        const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+                if (entry.isIntersecting) entry.target.classList.add('visible');
             });
         }, { threshold: 0.1 });
-
-        const elements = document.querySelectorAll('.fade-up');
-        elements.forEach(el => observer.observe(el));
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
     }
 
-    // B. القائمة الجانبية
     private setupMobileMenu(): void {
-        const btn = document.getElementById('mobile-menu-btn') as HTMLButtonElement | null;
-        const menu = document.getElementById('mobile-menu') as HTMLDivElement | null;
-
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
         if (btn && menu) {
-            btn.addEventListener('click', () => {
-                menu.classList.toggle('hidden');
-            });
+            btn.addEventListener('click', () => menu.classList.toggle('hidden'));
         }
     }
 
-    // C. نموذج الاتصال (Typed Form Handling)
     private setupContactForm(): void {
-        const form = document.getElementById('contact-form') as HTMLFormElement | null;
-        
+        const form = document.getElementById('contact-form') as HTMLFormElement;
         if (form) {
-            form.addEventListener('submit', (e: Event) => {
+            form.addEventListener('submit', (e) => {
                 e.preventDefault();
                 this.handleFormSubmit(form);
             });
@@ -74,48 +51,33 @@ class LogicDrivenApp {
     private async handleFormSubmit(form: HTMLFormElement): Promise<void> {
         const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
         const originalText = btn.innerHTML;
+        
+        // Form Data
+        const name = (document.getElementById('input-name') as HTMLInputElement).value;
+        const service = (document.getElementById('input-service') as HTMLSelectElement).value;
 
-        // تجميع البيانات
-        const formData: IContactForm = {
-            name: (document.getElementById('input-name') as HTMLInputElement).value,
-            email: (document.getElementById('input-email') as HTMLInputElement).value,
-            service: (document.getElementById('input-service') as HTMLSelectElement).value,
-            message: (document.getElementById('input-message') as HTMLTextAreaElement).value
-        };
-
-        // التحقق من البيانات (Validation Logic)
-        if (!this.validateEmail(formData.email)) {
-            // @ts-ignore
-            Swal.fire('تنبيه', 'يرجى إدخال بريد إلكتروني صحيح', 'warning');
-            return;
-        }
-
-        // محاكاة الإرسال للسيرفر
-        btn.innerHTML = '<span class="loading-spinner"></span> جاري المعالجة...';
+        // Simulate API Call
+        btn.innerHTML = '<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> Processing...';
         btn.disabled = true;
 
         await new Promise(resolve => setTimeout(resolve, 2000));
 
+        // English Success Alert
         // @ts-ignore
         Swal.fire({
-            title: 'تم بنجاح!',
-            text: `شكراً لك ${formData.name}. تم تسجيل طلبك لخدمة "${formData.service}".`,
+            title: 'Request Received!',
+            text: `Thank you, ${name}. We have received your inquiry regarding "${service}". Our team will contact you shortly.`,
             icon: 'success',
-            confirmButtonColor: '#0f172a'
+            confirmButtonColor: '#0f172a',
+            confirmButtonText: 'Great!'
         });
 
         btn.innerHTML = originalText;
         btn.disabled = false;
         form.reset();
     }
-
-    private validateEmail(email: string): boolean {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-    }
 }
 
-// تشغيل التطبيق عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', () => {
-    new LogicDrivenApp("LOGICDRIVEN Enterprise");
+    new LogicDrivenApp();
 });

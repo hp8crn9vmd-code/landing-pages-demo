@@ -3,7 +3,6 @@
         "target": "ES6",
         "module": "ESNext",
         "strict": true,
-        "esModuleInterop": true,
         "outDir": "../js",
         "rootDir": "./"
     }
