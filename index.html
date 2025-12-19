@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LOGIC DRIVEN | Particle Genesis</title>
+    <title>LOGIC DRIVEN | Particle System</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -12,7 +12,7 @@
             theme: {
                 extend: {
                     colors: {
-                        bg: '#020203',
+                        bg: '#050507',
                         accent: '#38bdf8',
                     },
                     fontFamily: {
@@ -24,26 +24,24 @@
         }
     </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 
     <style>
-        body { background-color: var(--bg); margin: 0; overflow: hidden; color: white; }
-        #canvas-container { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+        /* فرض لون الخلفية فوراً لمنع الشاشة البيضاء */
+        body, html { background-color: #050507; margin: 0; padding: 0; overflow: hidden; height: 100%; }
         
-        /* Noise texture for cinematic feel */
-        .noise {
-            position: fixed; inset: 0; z-index: 20; opacity: 0.04; pointer-events: none;
-            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
-
-        #ui-layer { position: relative; z-index: 10; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; }
+        #canvas-container { position: fixed; inset: 0; z-index: 1; }
+        #ui-layer { position: relative; z-index: 10; height: 100vh; pointer-events: none; }
         
+        /* Loader Style */
         #loader {
-            position: fixed; inset: 0; background: var(--bg); z-index: 50;
-            display: flex; justify-content: center; align-items: center;
-            font-family: 'JetBrains Mono', monospace; color: var(--accent);
-            transition: opacity 0.8s ease-out;
+            position: fixed; inset: 0; background: #050507; z-index: 50;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 0.5s ease-out;
         }
+        .loader-text { font-family: 'JetBrains Mono', monospace; color: #38bdf8; font-size: 0.8rem; letter-spacing: 0.2em; margin-top: 15px; }
+        .spinner { width: 30px; height: 30px; border: 2px solid rgba(56, 189, 248, 0.3); border-top-color: #38bdf8; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 
     <script type="importmap">
@@ -57,28 +55,24 @@
 </head>
 <body>
 
-    <div id="loader">GENERATING PARTICLE SYSTEM...</div>
-    <div class="noise"></div>
+    <div id="loader">
+        <div class="spinner"></div>
+        <div class="loader-text">INITIALIZING CORE...</div>
+    </div>
 
-    <div id="ui-layer" class="p-8 md:p-16">
-        <nav class="flex justify-between items-center opacity-0 animate-[fadeIn_1s_ease-out_forwards]">
-            <div class="flex items-center gap-3">
-                <div class="relative flex h-2 w-2">
-                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
-                  <span class="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
-                </div>
-                <div class="font-bold tracking-tight text-sm">LogicDriven</div>
-            </div>
+    <div id="ui-layer" class="p-6 md:p-12 flex flex-col justify-between">
+        <nav class="flex items-center gap-3 opacity-0 animate-[fadeIn_1s_ease-out_forwards]">
+             <div class="w-2 h-2 rounded-full bg-accent shadow-[0_0_10px_#38bdf8]"></div>
+             <div class="text-white font-bold tracking-tight text-sm">LogicDriven</div>
         </nav>
         
-        <div class="max-w-2xl opacity-0 animate-[fadeIn_1s_ease-out_0.3s_forwards]">
-            <div class="font-mono text-xs text-accent tracking-widest mb-4 uppercase">Quantum Point Cloud v4.1</div>
-            <h1 class="text-5xl md:text-7xl font-bold tracking-tighter leading-none mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-                Particle<br>Genesis.
+        <div class="opacity-0 animate-[fadeIn_1s_ease-out_0.5s_forwards]">
+            <h1 class="text-4xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/50">
+                Particle<br>Identity.
             </h1>
         </div>
         
-        <div></div>
+        <div class="font-mono text-[10px] text-gray-600 text-right">SYSTEM ONLINE</div>
     </div>
 
     <div id="canvas-container"></div>
@@ -91,168 +85,184 @@
         import { FontLoader } from 'three/addons/loaders/FontLoader.js';
         import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
-        // --- Scene Setup ---
+        // --- 1. Scene Setup ---
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x020203, 0.02);
+        scene.fog = new THREE.FogExp2(0x050507, 0.02);
 
-        const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 200);
-        camera.position.set(0, 0, 60); // Further back to see the whole logo
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        
+        // Responsive Camera
+        const isMobile = window.innerWidth < 768;
+        camera.position.set(0, 0, isMobile ? 50 : 35);
 
-        const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance", alpha: true });
+        const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance" });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.toneMapping = THREE.ACESFilmicToneMapping;
         document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-        // --- Post Processing (Intense Bloom) ---
-        const composer = new EffectComposer(renderer);
+        // --- 2. Post Processing (Bloom) ---
         const renderPass = new RenderPass(scene, camera);
         const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-        bloomPass.threshold = 0.1;
-        bloomPass.strength = 1.8; // Stronger bloom for particles
-        bloomPass.radius = 0.8;
-        
+        bloomPass.threshold = 0;
+        bloomPass.strength = 1.2; // Nice glow
+        bloomPass.radius = 0.5;
+
+        const composer = new EffectComposer(renderer);
         composer.addPass(renderPass);
         composer.addPass(bloomPass);
 
-        // --- The Particle Logo ---
+        // --- 3. Particle System Logic ---
         const logoGroup = new THREE.Group();
         scene.add(logoGroup);
 
-        const fontLoader = new FontLoader();
-        fontLoader.load('https://unpkg.com/three@0.160.0/examples/fonts/droid/droid_sans_bold.typeface.json', function (font) {
+        // Custom function to create particles from TextGeometry (Replacing broken Sampler)
+        function createTextParticles(text, font, size, color, particleCount) {
+            const geometry = new TextGeometry(text, {
+                font: font,
+                size: size,
+                height: 0.2,
+                curveSegments: 2, // Low segs for performance
+                bevelEnabled: false
+            });
             
-            // Function to convert geometry to particles
-            function createParticleSystem(geometry, color, size, countMultiplier = 1) {
-                // Create a dense point cloud from the mesh surface
-                const sampler = new THREE.MeshSurfaceSampler(new THREE.Mesh(geometry));
-                const count = Math.floor(15000 * countMultiplier); // High particle count
-                const vertices = [];
-                const tempPosition = new THREE.Vector3();
+            geometry.computeBoundingBox();
+            const centerOffset = - 0.5 * ( geometry.boundingBox.max.x - geometry.boundingBox.min.x );
+            geometry.translate( centerOffset, 0, 0 );
 
-                for (let i = 0; i < count; i++) {
-                    sampler.sample(tempPosition);
-                    vertices.push(tempPosition.x, tempPosition.y, tempPosition.z);
-                }
-
-                const pointsGeo = new THREE.BufferGeometry();
-                pointsGeo.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-
-                const pointsMat = new THREE.PointsMaterial({
-                    color: color,
-                    size: size,
-                    transparent: true,
-                    opacity: 0.8,
-                    blending: THREE.AdditiveBlending, // Glowing effect
-                    sizeAttenuation: true
-                });
-
-                return new THREE.Points(pointsGeo, pointsMat);
+            // Create random points inside the geometry (Simplified Volume Sampling)
+            // Since complex volume sampling is heavy, we cheat by using vertices + random noise
+            
+            const posAttribute = geometry.attributes.position;
+            const particlePositions = [];
+            
+            // Increase density by interpolating between vertices
+            for(let i=0; i<posAttribute.count; i+=3) {
+                 const x = posAttribute.getX(i);
+                 const y = posAttribute.getY(i);
+                 const z = posAttribute.getZ(i);
+                 
+                 // Add the vertex itself
+                 particlePositions.push(x, y, z);
+                 
+                 // Add some random points around it to create "volume"
+                 for(let j=0; j<4; j++) {
+                     particlePositions.push(
+                         x + (Math.random() - 0.5) * 0.5,
+                         y + (Math.random() - 0.5) * 0.5,
+                         z + (Math.random() - 0.5) * 0.5
+                     );
+                 }
             }
 
-            // --- 1. LOGIC DRIVEN (Main Text) ---
-            const textGeo1 = new TextGeometry('LOGIC
-DRIVEN', {
-                font: font, size: 5, height: 1, curveSegments: 12,
-                bevelEnabled: true, bevelThickness: 0.2, bevelSize: 0.1, bevelSegments: 5
-            });
-            textGeo1.center();
+            const particlesGeo = new THREE.BufferGeometry();
+            particlesGeo.setAttribute('position', new THREE.Float32BufferAttribute(particlePositions, 3));
             
-            // Import Surface Sampler helper
-            import('https://unpkg.com/three@0.160.0/examples/jsm/math/MeshSurfaceSampler.js').then(({ MeshSurfaceSampler }) => {
-                THREE.MeshSurfaceSampler = MeshSurfaceSampler;
+            // Store initial positions for animation
+            particlesGeo.userData.initialPositions = particlesGeo.attributes.position.clone();
 
-                // Create particles for LOGIC DRIVEN (Cyan/Blue)
-                const textParticles1 = createParticleSystem(textGeo1, 0x38bdf8, 0.15);
-                textParticles1.position.set(-10, 2, 0);
-                logoGroup.add(textParticles1);
-
-                // --- 2. .EXE (Accent Text) ---
-                const textGeo2 = new TextGeometry('.EXE', {
-                    font: font, size: 2.5, height: 0.5, curveSegments: 12,
-                    bevelEnabled: true, bevelThickness: 0.1, bevelSize: 0.05
-                });
-                textGeo2.center();
-
-                // Create particles for .EXE (Brighter, denser)
-                const textParticles2 = createParticleSystem(textGeo2, 0x22d3ee, 0.15, 1.5);
-                textParticles2.position.set(12, -2, 0);
-                logoGroup.add(textParticles2);
-                
-                // Store initial positions for animation
-                logoGroup.children.forEach(points => {
-                    points.geometry.userData.initialPositions = points.geometry.attributes.position.clone();
-                });
-
-                // Hide loader
-                document.getElementById('loader').style.opacity = 0;
-                setTimeout(() => document.getElementById('loader').remove(), 800);
+            const particlesMat = new THREE.PointsMaterial({
+                color: color,
+                size: 0.12,
+                transparent: true,
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending,
+                sizeAttenuation: true
             });
-        });
 
-        // --- Ambient Particles (Background) ---
-        const ambientGeo = new THREE.BufferGeometry();
-        const ambientPos = [];
-        for(let i=0; i<1000; i++) {
-            ambientPos.push((Math.random() - 0.5) * 200);
-            ambientPos.push((Math.random() - 0.5) * 200);
-            ambientPos.push((Math.random() - 0.5) * 200);
+            return new THREE.Points(particlesGeo, particlesMat);
         }
-        ambientGeo.setAttribute('position', new THREE.Float32BufferAttribute(ambientPos, 3));
-        const ambientMat = new THREE.PointsMaterial({ color: 0x38bdf8, size: 0.1, transparent: true, opacity: 0.4 });
-        const ambientParticles = new THREE.Points(ambientGeo, ambientMat);
-        scene.add(ambientParticles);
 
-        // --- Animation Loop ---
+        // --- 4. Load Font & Build Logo ---
+        const loader = new FontLoader();
+        loader.load('https://unpkg.com/three@0.160.0/examples/fonts/droid/droid_sans_bold.typeface.json', 
+            // On Load
+            function (font) {
+                // Create "LOGIC DRIVEN"
+                const p1 = createTextParticles('LOGIC
+DRIVEN', font, 5, 0x38bdf8, 5000);
+                p1.position.set(-6, 2, 0);
+                logoGroup.add(p1);
+
+                // Create ".EXE"
+                const p2 = createTextParticles('.EXE', font, 2.5, 0xffffff, 1000);
+                p2.position.set(10, -2, 0); // Positioned next to Driven
+                logoGroup.add(p2);
+
+                // Center the whole group
+                new THREE.Box3().setFromObject(logoGroup).getCenter(logoGroup.position).multiplyScalar(-1);
+
+                // Remove loader
+                const loaderEl = document.getElementById('loader');
+                loaderEl.style.opacity = '0';
+                setTimeout(() => loaderEl.remove(), 500);
+            },
+            // On Progress
+            undefined,
+            // On Error
+            function (err) {
+                console.error('Font loading failed');
+                document.querySelector('.loader-text').innerText = "ERROR LOADING ASSETS";
+            }
+        );
+
+        // --- 5. Background Particles ---
+        const bgGeo = new THREE.BufferGeometry();
+        const bgPos = [];
+        for(let i=0; i<800; i++) {
+            bgPos.push((Math.random() - 0.5) * 150);
+            bgPos.push((Math.random() - 0.5) * 150);
+            bgPos.push((Math.random() - 0.5) * 150);
+        }
+        bgGeo.setAttribute('position', new THREE.Float32BufferAttribute(bgPos, 3));
+        const bgMat = new THREE.PointsMaterial({ color: 0x38bdf8, size: 0.15, transparent: true, opacity: 0.3 });
+        const bgParticles = new THREE.Points(bgGeo, bgMat);
+        scene.add(bgParticles);
+
+        // --- 6. Animation ---
         const clock = new THREE.Clock();
-        let mouseX = 0; let mouseY = 0;
+        let mouseX = 0;
+        let mouseY = 0;
+
         document.addEventListener('mousemove', (e) => {
-            mouseX = (e.clientX - window.innerWidth / 2) * 0.0002;
-            mouseY = (e.clientY - window.innerHeight / 2) * 0.0002;
+            mouseX = (e.clientX - window.innerWidth / 2) * 0.0005;
+            mouseY = (e.clientY - window.innerHeight / 2) * 0.0005;
         });
 
         function animate() {
             requestAnimationFrame(animate);
             const t = clock.getElapsedTime();
 
-            // Subtle camera movement
+            // Rotate entire group slowly
+            logoGroup.rotation.y = Math.sin(t * 0.2) * 0.1;
+            
+            // Camera Parallax
             camera.position.x += (mouseX * 10 - camera.position.x) * 0.05;
             camera.position.y += (-mouseY * 10 - camera.position.y) * 0.05;
             camera.lookAt(scene.position);
 
-            // Background particles slow rotation
-            ambientParticles.rotation.y = t * 0.02;
-
-            // --- Particle Breathing Animation ---
-            if (logoGroup.children.length > 0) {
-                logoGroup.children.forEach(points => {
-                    const positions = points.geometry.attributes.position;
-                    const initialPositions = points.geometry.userData.initialPositions;
-                    
-                    for (let i = 0; i < positions.count; i++) {
-                        const ix = i * 3;
-                        const iy = i * 3 + 1;
-                        const iz = i * 3 + 2;
-
-                        // Add noise/wave movement to each particle based on its initial position and time
-                        const noiseX = Math.sin(initialPositions.array[ix] * 0.1 + t * 2) * 0.1;
-                        const noiseY = Math.cos(initialPositions.array[iy] * 0.1 + t * 2) * 0.1;
-                        const noiseZ = Math.sin(initialPositions.array[iz] * 0.1 + t * 2) * 0.1;
-
-                        positions.array[ix] = initialPositions.array[ix] + noiseX;
-                        positions.array[iy] = initialPositions.array[iy] + noiseY;
-                        positions.array[iz] = initialPositions.array[iz] + noiseZ;
-                    }
-                    positions.needsUpdate = true;
-                });
-            }
+            // Animate Particles (Breathing)
+            logoGroup.children.forEach(points => {
+                const pos = points.geometry.attributes.position;
+                const initPos = points.geometry.userData.initialPositions;
+                
+                for(let i=0; i < pos.count; i++) {
+                    const ix = i*3; const iy = i*3+1; const iz = i*3+2;
+                    // Gentle wave motion
+                    pos.array[ix] = initPos.array[ix] + Math.sin(t * 2 + initPos.array[iy]) * 0.05;
+                    pos.array[iy] = initPos.array[iy] + Math.cos(t * 1.5 + initPos.array[ix]) * 0.05;
+                }
+                pos.needsUpdate = true;
+            });
+            
+            // Rotate Background
+            bgParticles.rotation.y = t * 0.05;
 
             composer.render();
         }
 
         animate();
 
-        // --- Resize Handler ---
+        // --- 7. Resize ---
         window.addEventListener('resize', () => {
             const width = window.innerWidth;
             const height = window.innerHeight;
@@ -261,13 +271,9 @@ DRIVEN', {
             renderer.setSize(width, height);
             composer.setSize(width, height);
             
-            if(width < 768) {
-                logoGroup.scale.set(0.6, 0.6, 0.6);
-                camera.position.z = 80;
-            } else {
-                logoGroup.scale.set(1, 1, 1);
-                camera.position.z = 60;
-            }
+            // Adjust zoom for mobile
+            if(width < 768) camera.position.z = 50;
+            else camera.position.z = 35;
         });
 
     </script>
