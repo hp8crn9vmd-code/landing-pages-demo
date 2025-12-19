@@ -1,119 +1,132 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=JetBrains+Mono:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap');
 
 :root {
-    --bg: #030305;
-    --panel: #0a0a0f;
-    --text: #ffffff;
-    --cyan: #00f3ff;  /* Quantum Cyan */
-    --blue: #0066ff;
-    --glow: rgba(0, 243, 255, 0.5);
+    --bg: #050505;
+    --surface: #0f0f0f;
+    --border: #262626;
+    --text-main: #ffffff;
+    --text-muted: #888888;
+    --accent: #3b82f6; /* Precision Blue */
+    --accent-glow: rgba(59, 130, 246, 0.4);
 }
 
 * { box-sizing: border-box; }
 
 body {
     margin: 0; padding: 0;
-    font-family: 'Rajdhani', sans-serif; /* خط تقني حديث */
+    font-family: 'Inter', sans-serif;
     background-color: var(--bg);
-    color: var(--text);
+    color: var(--text-main);
+    -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
     height: 100vh;
     display: flex; flex-direction: column;
 }
 
-/* Background Grid - Perspective Floor */
-.cyber-grid {
+/* Subtle Grid Background (Architectural) */
+.eng-grid {
     position: fixed; inset: 0; z-index: -1;
-    background: 
-        linear-gradient(transparent 95%, rgba(0, 243, 255, 0.1) 95%),
-        linear-gradient(90deg, transparent 95%, rgba(0, 243, 255, 0.05) 95%);
-    background-size: 40px 40px;
-    transform: perspective(500px) rotateX(60deg) translateY(-100px) scale(2);
-    opacity: 0.3;
-    animation: grid-move 20s linear infinite;
+    background-image: 
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 80px 80px;
+    opacity: 0.15;
+    mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
 }
-
-@keyframes grid-move { 0% { background-position: 0 0; } 100% { background-position: 0 40px; } }
 
 /* Navbar */
 nav {
-    position: fixed; top: 0; left: 0; width: 100%; height: 90px;
+    position: fixed; top: 0; left: 0; width: 100%; height: 72px;
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 40px;
-    background: linear-gradient(180deg, rgba(3,3,5,0.95) 0%, rgba(3,3,5,0) 100%);
-    z-index: 1000;
+    background: rgba(5, 5, 5, 0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
 }
 
-/* --- THE QUANTUM LOGO --- */
+/* --- THE PRECISION LOGO --- */
 .brand-link {
-    display: flex; align-items: center; gap: 18px;
+    display: flex; align-items: center; gap: 14px;
     text-decoration: none;
-    cursor: pointer;
+    cursor: default;
+    group: hover;
 }
 
-/* The Reactor Container */
-.reactor-box {
-    width: 48px; height: 48px;
+/* SVG Container - Fixed Size */
+.hex-icon {
+    width: 32px; height: 32px;
     position: relative;
     display: flex; align-items: center; justify-content: center;
 }
 
-/* Layer 1: Outer Ring (Static Stability) */
-.ring-outer {
-    position: absolute; inset: 0;
-    border: 2px solid rgba(255,255,255,0.2);
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+/* SVG Animation Logic */
+svg { width: 100%; height: 100%; overflow: visible; }
+
+/* The Static Frame */
+.hex-track {
+    fill: none;
+    stroke: #333;
+    stroke-width: 1.5;
 }
 
-/* Layer 2: Middle Ring (Slow Spin) */
-.ring-mid {
-    position: absolute; inset: 4px;
-    border: 2px solid var(--cyan);
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-    animation: spin 8s linear infinite;
-    box-shadow: 0 0 10px var(--glow);
+/* The Data Stream (Moving Line) */
+.hex-stream {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.5;
+    stroke-dasharray: 40 240; /* Length of the stream vs gap */
+    stroke-dashoffset: 0;
+    stroke-linecap: round;
+    animation: data-flow 3s linear infinite;
+    filter: drop-shadow(0 0 4px var(--accent));
 }
 
-/* Layer 3: Inner Core (Fast Counter-Spin) */
-.ring-inner {
-    position: absolute; inset: 14px;
-    background: var(--text);
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-    animation: spin 3s linear infinite reverse;
+@keyframes data-flow {
+    to { stroke-dashoffset: -280; } /* Circumference of movement */
 }
 
-/* Layer 4: Energy Pulse (The Life) */
-.core-energy {
-    position: absolute; width: 6px; height: 6px;
-    background: var(--cyan);
-    border-radius: 50%;
-    box-shadow: 0 0 15px var(--cyan);
-    animation: pulse 2s ease-in-out infinite;
+/* Center Dot */
+.hex-core {
+    fill: var(--bg);
+    stroke: var(--text-muted);
+    stroke-width: 1.5;
+    r: 3;
+    transition: all 0.3s ease;
 }
 
-/* Animations */
-@keyframes spin { 100% { transform: rotate(360deg); } }
-@keyframes pulse { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.5); } }
+/* Hover Effect: Core lights up */
+.brand-link:hover .hex-core {
+    fill: var(--accent);
+    stroke: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+}
 
-/* Typography */
+/* Text Styles */
 .brand-text {
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
     color: white;
-    letter-spacing: 0.1em;
-    text-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
 .exe-badge {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
-    color: #000;
-    background: var(--cyan);
-    padding: 2px 6px;
-    font-weight: 700;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    padding: 3px 6px;
+    border-radius: 4px;
     margin-left: 8px;
-    box-shadow: 0 0 10px var(--glow);
+    transition: all 0.3s ease;
+}
+
+.brand-link:hover .exe-badge {
+    color: var(--text-main);
+    border-color: #555;
+    background: rgba(255,255,255,0.1);
 }
 
 /* Main Content */
@@ -121,50 +134,24 @@ main {
     flex-grow: 1;
     display: flex; flex-direction: column; justify-content: center; align-items: center;
     text-align: center;
-    z-index: 10;
-}
-
-.hud-line {
-    width: 2px; height: 100px;
-    background: linear-gradient(to bottom, transparent, var(--cyan), transparent);
-    margin-bottom: 20px;
+    padding: 20px;
 }
 
 h1 {
-    font-size: 4rem; line-height: 1; margin-bottom: 1rem;
-    text-transform: uppercase;
-}
-
-.h1-sub {
-    font-size: 4rem; color: transparent;
-    -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+    font-size: 3.5rem; font-weight: 600; letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(180deg, #fff 0%, #aaa 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
 }
 
 p {
-    font-family: 'JetBrains Mono', monospace;
-    color: var(--cyan);
-    font-size: 1rem;
-    letter-spacing: 0.05em;
-    margin-bottom: 3rem;
+    color: var(--text-muted); font-size: 1.1rem; max-w: 500px; line-height: 1.6; margin-bottom: 3rem;
 }
 
-.activate-btn {
-    background: transparent;
-    color: var(--cyan);
-    border: 1px solid var(--cyan);
-    padding: 15px 40px;
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 700;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
+.pro-button {
+    background: #fff; color: #000;
+    padding: 12px 24px; font-size: 0.9rem; font-weight: 500;
+    border-radius: 6px; text-decoration: none;
+    transition: transform 0.2s;
 }
-
-.activate-btn:hover {
-    background: var(--cyan);
-    color: #000;
-    box-shadow: 0 0 30px var(--glow);
-}
-
+.pro-button:hover { transform: translateY(-1px); }
