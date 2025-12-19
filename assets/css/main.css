@@ -1,143 +1,111 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@500;700&display=swap');
 
 :root {
     --bg: #050505;
-    --surface: rgba(255, 255, 255, 0.03);
+    --text: #ffffff;
+    --accent: #3b82f6; /* لون أزرق احترافي */
     --border: rgba(255, 255, 255, 0.1);
-    --text-primary: #ffffff;
-    --text-secondary: #a1a1aa;
-    --accent: #3b82f6; /* Intel/Tech Blue */
 }
+
+* { box-sizing: border-box; }
 
 body {
     margin: 0; padding: 0;
     font-family: 'Inter', sans-serif;
     background-color: var(--bg);
-    color: var(--text-primary);
-    overflow: hidden; /* App-like feel */
-    height: 100vh;
-    display: flex; flex-direction: column;
+    color: var(--text);
+    overflow-x: hidden;
 }
 
-/* 1. Background: TS Particles Container */
-#tsparticles {
-    position: fixed; inset: 0; z-index: -1;
-}
-
-/* 2. Navigation bar with Glassmorphism */
+/* 1. Navbar - Fixed Height & Border */
 nav {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 1.5rem 3rem;
-    border-bottom: 1px solid var(--border);
-    background: rgba(5, 5, 5, 0.7);
+    position: fixed; top: 0; left: 0; width: 100%;
+    height: 80px; /* ارتفاع ثابت لمنع التضخم */
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px;
+    background: rgba(5, 5, 5, 0.8);
     backdrop-filter: blur(10px);
-    z-index: 100;
+    border-bottom: 1px solid var(--border);
+    z-index: 1000;
 }
 
-/* 3. THE PROFESSIONAL LOGO STYLE */
-.logo-container {
-    display: flex; align-items: center; gap: 12px;
-    cursor: default; /* Stability */
+/* 2. LOGO CONTAINER - Strict Sizing */
+.brand-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
 }
 
-.hex-icon {
-    width: 36px; height: 36px;
+/* The Icon - Fixed Size 40x40px */
+.logo-icon {
+    width: 40px; 
+    height: 40px;
     display: flex; align-items: center; justify-content: center;
-    background: linear-gradient(135deg, #1e1e1e, #000);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-    position: relative;
-    overflow: hidden;
+    border: 1px solid white;
+    background: black;
+    /* حركة تنفس بسيطة جداً */
+    animation: breathe 4s infinite ease-in-out;
 }
 
-/* The "Alive" Light passing through the icon */
-.hex-icon::after {
-    content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-    transform: skewX(-25deg);
-    animation: shimmer 6s infinite; /* Slow, calculated pulse */
+@keyframes breathe {
+    0%, 100% { box-shadow: 0 0 0px rgba(255,255,255,0); border-color: rgba(255,255,255,0.5); }
+    50% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); border-color: #fff; }
 }
 
-.brand-text {
-    font-size: 1.25rem;
+/* The Text - Responsive Font Size */
+.brand-name {
+    font-family: 'Inter', sans-serif;
     font-weight: 800;
-    letter-spacing: -0.03em;
-    color: #fff;
-    position: relative;
-    /* Masking for text shimmer */
-    background: linear-gradient(
-        110deg, 
-        #888 0%, 
-        #fff 20%, 
-        #888 40%
-    );
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: text-shine 5s linear infinite;
+    font-size: 1.25rem; /* 20px */
+    letter-spacing: -0.02em;
+    color: white;
+    text-transform: uppercase;
 }
 
-.extension {
+/* The .EXE Tag */
+.exe-tag {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8em;
+    font-weight: 700;
     color: var(--accent);
-    opacity: 0.8;
-    margin-left: 2px;
-    -webkit-text-fill-color: var(--accent); /* Override gradient */
+    font-size: 1.25rem;
 }
 
-/* Animations */
-@keyframes shimmer {
-    0% { left: -100%; }
-    20% { left: 200%; } /* Fast pass */
-    100% { left: 200%; } /* Wait */
-}
-
-@keyframes text-shine {
-    to { background-position: -200% center; }
-}
-
-/* Main Content */
+/* 3. Hero Section */
 main {
-    flex-grow: 1;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    text-align: center;
-    z-index: 10;
+    padding-top: 120px; /* مساحة للنافبار */
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    padding-left: 20px; padding-right: 20px;
+    background-image: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
 }
-
-.hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 6px 12px;
-    border-radius: 100px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    margin-bottom: 2rem;
-    font-family: 'JetBrains Mono', monospace;
-}
-
-.dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; }
 
 h1 {
-    font-size: 5rem; font-weight: 800; line-height: 1.1; letter-spacing: -0.04em;
+    font-size: clamp(2.5rem, 5vw, 5rem); /* خط يتجاوب مع حجم الشاشة */
+    font-weight: 800;
+    line-height: 1.1;
     margin-bottom: 1.5rem;
-    background: linear-gradient(180deg, #fff, #666);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    max-width: 900px;
 }
 
 p {
-    font-size: 1.25rem; color: var(--text-secondary); max-w: 600px; line-height: 1.6;
+    color: #888;
+    font-size: 1.1rem;
+    max-width: 600px;
+    line-height: 1.6;
     margin-bottom: 3rem;
 }
 
-.cta-btn {
-    padding: 1rem 2.5rem;
-    background: #fff; color: #000;
-    font-weight: 600; border-radius: 6px;
-    transition: all 0.2s;
-    cursor: pointer;
+.primary-btn {
+    background: white; color: black;
+    padding: 16px 32px;
+    font-weight: 700;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: transform 0.2s;
 }
-.cta-btn:hover { background: #e5e5e5; transform: translateY(-1px); }
+.primary-btn:hover { transform: translateY(-2px); }
+
+/* SVG Icon Style */
+.hex-svg { width: 24px; height: 24px; stroke: white; stroke-width: 2; fill: none; }
