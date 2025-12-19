@@ -4,65 +4,171 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>LOGICDRIVEN | ALIVE Brutalism</title>
+        <title>LOGICDRIVEN | Pro</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="assets/css/main.css">
         <script src="https://unpkg.com/feather-icons"></script>
     </head>
-    <body class="cursor-none">
-        
-        <nav class="border-b-4 border-black bg-white sticky top-0 z-50">
+    <body class="unselectable"> <div id="preloader">
+            <div class="text-center">
+                <div class="text-2xl font-bold mb-4">INITIALIZING LOGIC...</div>
+                <div class="loader-bar"><div class="loader-progress"></div></div>
+            </div>
+        </div>
+
+        <div class="architect-grid"></div>
+
+        <nav class="fixed w-full top-0 z-50 bg-white/90 backdrop-blur border-b border-black">
             <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-                <a href="#" class="text-3xl font-black tracking-tighter hover:text-indigo-600 transition unselectable pulsing-element">
-                    LOGIC_DRIVEN<span class="text-orange-500">.EXE</span>
+                <a href="#" class="text-2xl font-bold tracking-tight pulsing group flex items-center gap-2">
+                    <div class="w-8 h-8 bg-black text-white flex items-center justify-center">
+                        <i data-feather="hexagon" class="w-4 h-4"></i>
+                    </div>
+                    LOGIC_DRIVEN<span class="text-indigo-600">.EXE</span>
                 </a>
-                <div class="hidden md:flex gap-4">
-                    <a href="#contact" class="brutal-btn text-sm py-2 px-6">INITIALIZE</a>
+                
+                <div class="hidden md:flex items-center gap-8 font-mono text-sm font-bold">
+                    <a href="#" class="hover:text-indigo-600 transition">/ WORK</a>
+                    <a href="#" class="hover:text-indigo-600 transition">/ STUDIO</a>
+                    <a href="#contact" class="pro-btn text-xs py-3 px-6">START PROJECT</a>
                 </div>
             </div>
         </nav>
 
-        <main>
-            <header class="py-24 px-6 relative overflow-hidden">
-                <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
-                    <div class="relative z-10">
-                        <div class="mono-tag mb-6 unselectable pulsing-element dazzling-text" style="font-size: 1.2rem; border: 2px solid black;">
-                            v4.0.0 // PRODUCTION_READY
-                        </div>
+        <main class="pt-20">
+            <header class="py-32 px-6">
+                <div class="max-w-7xl mx-auto">
+                    <div class="grid lg:grid-cols-12 gap-12">
                         
-                        <h1 class="text-7xl md:text-9xl font-black mb-4 leading-[0.85] unselectable dazzling-text" data-value="PURE LOGIC">
-                            PURE LOGIC
-                        </h1>
-                        <h1 class="text-7xl md:text-9xl font-black mb-8 leading-[0.85] unselectable dazzling-text" style="animation-direction: reverse; animation-duration: 4s;" data-value="NO_FLUFF">
-                            NO_FLUFF
-                        </h1>
-                        
-                        <p class="text-xl font-bold max-w-lg mb-10 border-l-4 border-black pl-6 unselectable">
-                            We build software with raw power and zero excuses. 
-                            Results only.
-                        </p>
-                        <div class="flex gap-6">
-                            <a href="#contact" class="brutal-btn">START_PROCESS()</a>
+                        <div class="lg:col-span-8 relative z-10">
+                            <div class="mb-8 inline-block">
+                                <span class="mono-badge pulsing bg-black text-white">
+                                    v4.0.0 // PRODUCTION_READY
+                                </span>
+                            </div>
+                            
+                            <h1 class="text-7xl md:text-9xl font-bold leading-[0.9] mb-2 dazzling-text" data-glitch data-value="PURE LOGIC">
+                                PURE LOGIC
+                            </h1>
+                            <h1 class="text-7xl md:text-9xl font-bold leading-[0.9] mb-12 dazzling-text" data-glitch data-value="NO FLUFF">
+                                NO FLUFF
+                            </h1>
+                            
+                            <p class="text-xl md:text-2xl max-w-2xl leading-relaxed mb-12 border-l-2 border-indigo-600 pl-6 text-gray-800">
+                                Engineering digital ecosystems with surgical precision. 
+                                We don't just write code; we architect performance.
+                            </p>
+                            
+                            <div class="flex flex-wrap gap-6">
+                                <a href="#contact" class="pro-btn">INITIATE SEQUENCE</a>
+                                <a href="#work" class="px-8 py-4 border-2 border-black font-bold hover:bg-black hover:text-white transition uppercase tracking-wide">
+                                    View Architecture
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="hidden lg:block relative unselectable">
-                        <div class="brutal-box p-12 bg-indigo-500 rotate-3 hover:rotate-0 transition duration-300 pulsing-element">
-                            <div class="brutal-box p-8 bg-orange-500 -rotate-6 hover:rotate-0 transition duration-300">
-                                <div class="bg-white border-4 border-black p-6 font-mono text-sm font-bold">
-                                    > SYSTEM STATUS:<br>
-                                    > [ALIVE] Core Logic<br>
-                                    > [FLOWING] Data Streams<br>
-                                    > [LOCKED] User Selection<br>
-                                    > READY FOR DEPLOYMENT.
+
+                        <div class="lg:col-span-4 flex items-center justify-center">
+                            <div class="relative w-full aspect-square border-2 border-black p-4 pulsing">
+                                <div class="w-full h-full bg-indigo-600 relative overflow-hidden">
+                                    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-20"></div>
+                                    <div class="absolute bottom-4 right-4 text-white font-mono text-xs font-bold text-right">
+                                        SYSTEM: ONLINE<br>
+                                        LATENCY: 0ms<br>
+                                        ERRORS: 0
+                                    </div>
                                 </div>
+                                <div class="absolute -top-6 -right-6 w-12 h-12 bg-amber-400 border-2 border-black z-10"></div>
+                                <div class="absolute -bottom-6 -left-6 w-12 h-12 bg-black z-10"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </header>
+
+            <div class="border-y border-black bg-white py-12 overflow-hidden">
+                <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center font-mono">
+                    <div class="pulsing">
+                        <div class="text-4xl font-bold mb-1">100%</div>
+                        <div class="text-xs text-gray-500">UPTIME</div>
+                    </div>
+                    <div class="pulsing" style="animation-delay: 0.2s;">
+                        <div class="text-4xl font-bold mb-1">0.05s</div>
+                        <div class="text-xs text-gray-500">LATENCY</div>
+                    </div>
+                    <div class="pulsing" style="animation-delay: 0.4s;">
+                        <div class="text-4xl font-bold mb-1">Secure</div>
+                        <div class="text-xs text-gray-500">ENCRYPTION</div>
+                    </div>
+                    <div class="pulsing" style="animation-delay: 0.6s;">
+                        <div class="text-4xl font-bold mb-1">Global</div>
+                        <div class="text-xs text-gray-500">DEPLOYMENT</div>
+                    </div>
+                </div>
+            </div>
+
+            <section id="work" class="py-32 px-6 bg-gray-50">
+                <div class="max-w-7xl mx-auto">
+                    <div class="flex justify-between items-end mb-16">
+                        <h2 class="text-5xl font-bold uppercase">System Modules</h2>
+                        <span class="mono-badge">SELECT_MODULE</span>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="pro-card group cursor-pointer">
+                            <div class="flex justify-between mb-8">
+                                <span class="mono-badge">01</span>
+                                <i data-feather="cpu" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4 group-hover:text-indigo-600 transition">BACKEND_OPS</h3>
+                            <p class="text-gray-600 mb-8">High-performance server architecture capable of handling millions of concurrent requests.</p>
+                            <div class="w-full h-1 bg-gray-200 group-hover:bg-indigo-600 transition"></div>
+                        </div>
+
+                        <div class="pro-card group cursor-pointer md:col-span-2 bg-black text-white">
+                            <div class="flex justify-between mb-8">
+                                <span class="mono-badge bg-white text-black border-none">02 // CORE</span>
+                                <i data-feather="layout" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4 text-amber-400">FRONTEND_V4</h3>
+                            <p class="text-gray-400 mb-8 max-w-lg">Pixel-perfect, responsive interfaces powered by React and WebGL. Smooth interactions meeting rigid structural integrity.</p>
+                            <div class="w-full h-1 bg-gray-800 group-hover:bg-amber-400 transition"></div>
+                        </div>
+
+                        <div class="pro-card group cursor-pointer">
+                            <div class="flex justify-between mb-8">
+                                <span class="mono-badge">03</span>
+                                <i data-feather="shield" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4 group-hover:text-indigo-600 transition">SEC_LAYER</h3>
+                            <p class="text-gray-600 mb-8">Military-grade encryption protocols ensuring data sovereignty.</p>
+                            <div class="w-full h-1 bg-gray-200 group-hover:bg-indigo-600 transition"></div>
+                        </div>
+                         <div class="pro-card group cursor-pointer">
+                            <div class="flex justify-between mb-8">
+                                <span class="mono-badge">04</span>
+                                <i data-feather="database" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4 group-hover:text-indigo-600 transition">DATA_ENG</h3>
+                            <p class="text-gray-600 mb-8">Real-time analytics and data pipelines.</p>
+                            <div class="w-full h-1 bg-gray-200 group-hover:bg-indigo-600 transition"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
         </main>
-        
+
+        <footer class="bg-black text-white py-12 px-6 border-t-4 border-indigo-600">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm font-mono">
+                <div class="mb-4 md:mb-0 opacity-50">&copy; 2025 LOGICDRIVEN SYSTEMS.</div>
+                <div class="flex gap-8">
+                    <a href="#" class="hover:text-amber-400 transition">GITHUB</a>
+                    <a href="#" class="hover:text-amber-400 transition">LINKEDIN</a>
+                    <a href="#" class="hover:text-amber-400 transition">LEGAL</a>
+                </div>
+            </div>
+        </footer>
+
         <script src="assets/js/app.js"></script>
     </body>
     </html>
