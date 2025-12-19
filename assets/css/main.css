@@ -1,14 +1,14 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap');
 
 :root {
-    --bg: #050505;
-    --surface: #0f0f0f;
-    --border: #262626;
+    --bg: #030304;        /* Rich Black */
+    --surface: #0a0a0c;   /* Slightly lighter */
+    --border: #1f1f23;    /* Subtle borders */
     --text-main: #ffffff;
     --text-muted: #888888;
-    --accent: #3b82f6; /* Precision Blue */
-    --accent-glow: rgba(59, 130, 246, 0.4);
+    --accent: #3b82f6;    /* Premium Blue */
+    --accent-glow: rgba(59, 130, 246, 0.15);
 }
 
 * { box-sizing: border-box; }
@@ -24,134 +24,157 @@ body {
     display: flex; flex-direction: column;
 }
 
-/* Subtle Grid Background (Architectural) */
-.eng-grid {
-    position: fixed; inset: 0; z-index: -1;
-    background-image: 
-        linear-gradient(var(--border) 1px, transparent 1px),
-        linear-gradient(90deg, var(--border) 1px, transparent 1px);
-    background-size: 80px 80px;
-    opacity: 0.15;
-    mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+/* Background: Very subtle mesh gradient */
+.ambient-glow {
+    position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle at center, var(--accent-glow) 0%, transparent 40%);
+    opacity: 0.6;
+    z-index: -1;
+    pointer-events: none;
 }
 
-/* Navbar */
+/* 1. Navbar - Clean & Precise */
 nav {
-    position: fixed; top: 0; left: 0; width: 100%; height: 72px;
+    position: fixed; top: 0; left: 0; width: 100%; height: 64px;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 0 40px;
-    background: rgba(5, 5, 5, 0.85);
+    padding: 0 24px;
+    background: rgba(3, 3, 4, 0.8);
     backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
     z-index: 100;
 }
 
-/* --- THE PRECISION LOGO --- */
+/* 2. THE LOGO - Precision Instrument */
 .brand-link {
-    display: flex; align-items: center; gap: 14px;
+    display: flex; align-items: center; gap: 10px;
     text-decoration: none;
-    cursor: default;
-    group: hover;
+    padding: 4px 0;
 }
 
-/* SVG Container - Fixed Size */
-.hex-icon {
-    width: 32px; height: 32px;
+/* Icon Container */
+.logo-icon {
+    width: 28px; height: 28px;
     position: relative;
     display: flex; align-items: center; justify-content: center;
 }
 
-/* SVG Animation Logic */
-svg { width: 100%; height: 100%; overflow: visible; }
+/* SVG Styling */
+.hex-svg {
+    width: 100%; height: 100%;
+    overflow: visible;
+}
 
-/* The Static Frame */
-.hex-track {
+/* Outer Hex (Static Frame) */
+.hex-outer {
     fill: none;
-    stroke: #333;
+    stroke: #444;
     stroke-width: 1.5;
 }
 
-/* The Data Stream (Moving Line) */
-.hex-stream {
+/* Inner Hex (Rotating Element) */
+.hex-inner {
     fill: none;
     stroke: var(--accent);
     stroke-width: 1.5;
-    stroke-dasharray: 40 240; /* Length of the stream vs gap */
-    stroke-dashoffset: 0;
-    stroke-linecap: round;
-    animation: data-flow 3s linear infinite;
-    filter: drop-shadow(0 0 4px var(--accent));
+    transform-origin: center;
+    animation: precision-spin 12s linear infinite; /* Slow, smooth rotation */
 }
 
-@keyframes data-flow {
-    to { stroke-dashoffset: -280; } /* Circumference of movement */
-}
-
-/* Center Dot */
+/* Core Dot (Pulsing) */
 .hex-core {
-    fill: var(--bg);
-    stroke: var(--text-muted);
-    stroke-width: 1.5;
-    r: 3;
-    transition: all 0.3s ease;
+    fill: var(--text-main);
+    transform-origin: center;
+    animation: core-pulse 3s ease-in-out infinite;
 }
 
-/* Hover Effect: Core lights up */
-.brand-link:hover .hex-core {
-    fill: var(--accent);
-    stroke: var(--accent);
-    box-shadow: 0 0 10px var(--accent);
+@keyframes precision-spin { 100% { transform: rotate(360deg); } }
+@keyframes core-pulse { 
+    0%, 100% { opacity: 0.5; transform: scale(0.8); } 
+    50% { opacity: 1; transform: scale(1.2); } 
 }
 
-/* Text Styles */
+/* Text Styling */
 .brand-text {
-    font-size: 0.95rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem; /* 15px */
     font-weight: 600;
-    letter-spacing: -0.01em;
     color: white;
+    letter-spacing: -0.01em;
 }
 
+/* Glassmorphism Badge for .EXE */
 .exe-badge {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--border);
-    padding: 3px 6px;
+    font-size: 0.7rem; /* Small & Elegant */
+    color: #a5b4fc; /* Light Indigo */
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    padding: 2px 6px;
     border-radius: 4px;
-    margin-left: 8px;
-    transition: all 0.3s ease;
+    margin-left: 6px;
+    display: inline-block;
+    vertical-align: middle;
 }
 
-.brand-link:hover .exe-badge {
-    color: var(--text-main);
-    border-color: #555;
-    background: rgba(255,255,255,0.1);
-}
-
-/* Main Content */
+/* 3. Hero Section */
 main {
     flex-grow: 1;
     display: flex; flex-direction: column; justify-content: center; align-items: center;
     text-align: center;
-    padding: 20px;
+    padding: 24px;
+    padding-top: 80px; /* Offset for navbar */
 }
 
+/* Status Pill */
+.status-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    font-family: 'Inter', sans-serif;
+}
+.status-dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 5px rgba(16, 185, 129, 0.4); }
+
 h1 {
-    font-size: 3.5rem; font-weight: 600; letter-spacing: -0.03em;
+    font-size: clamp(2.5rem, 5vw, 4.5rem); /* Responsive Text */
+    font-weight: 700;
+    line-height: 1.1;
     margin-bottom: 1.5rem;
-    background: linear-gradient(180deg, #fff 0%, #aaa 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background: linear-gradient(180deg, #fff 0%, #a1a1aa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    max-width: 800px;
 }
 
 p {
-    color: var(--text-muted); font-size: 1.1rem; max-w: 500px; line-height: 1.6; margin-bottom: 3rem;
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 500px;
+    margin-bottom: 32px;
 }
 
-.pro-button {
+/* Premium Buttons */
+.btn-group { display: flex; gap: 12px; }
+
+.btn-primary {
     background: #fff; color: #000;
-    padding: 12px 24px; font-size: 0.9rem; font-weight: 500;
+    padding: 12px 24px; font-weight: 500; font-size: 0.95rem;
     border-radius: 6px; text-decoration: none;
     transition: transform 0.2s;
 }
-.pro-button:hover { transform: translateY(-1px); }
+.btn-primary:hover { transform: translateY(-1px); background: #f0f0f0; }
+
+.btn-secondary {
+    background: rgba(255,255,255,0.05); color: #fff;
+    padding: 12px 24px; font-weight: 500; font-size: 0.95rem;
+    border-radius: 6px; text-decoration: none;
+    border: 1px solid var(--border);
+    transition: background 0.2s;
+}
+.btn-secondary:hover { background: rgba(255,255,255,0.1); }
+

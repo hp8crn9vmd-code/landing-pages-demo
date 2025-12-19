@@ -3,23 +3,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOGICDRIVEN</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>LOGICDRIVEN</title>
     <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
 
-    <div class="eng-grid"></div>
+    <div class="ambient-glow"></div>
 
     <nav>
         <a href="#" class="brand-link">
-            <div class="hex-icon">
-                <svg viewBox="0 0 100 100">
-                    <path class="hex-track" d="M50 10 L90 30 L90 70 L50 90 L10 70 L10 30 Z" />
+            <div class="logo-icon">
+                <svg class="hex-svg" viewBox="0 0 100 100">
+                    <polygon class="hex-outer" points="50 5, 95 27.5, 95 72.5, 50 95, 5 72.5, 5 27.5" />
                     
-                    <path class="hex-stream" d="M50 10 L90 30 L90 70 L50 90 L10 70 L10 30 Z" />
+                    <polygon class="hex-inner" points="50 20, 80 35, 80 65, 50 80, 20 65, 20 35" />
                     
-                    <circle class="hex-core" cx="50" cy="50" r="8" />
+                    <circle class="hex-core" cx="50" cy="50" r="6" />
                 </svg>
             </div>
             
@@ -27,24 +26,34 @@
                 LogicDriven<span class="exe-badge">.EXE</span>
             </div>
         </a>
+
+        <div style="display: flex; gap: 6px;">
+            <div style="width: 4px; height: 4px; background: #333; border-radius: 50%;"></div>
+            <div style="width: 4px; height: 4px; background: #666; border-radius: 50%;"></div>
+            <div style="width: 4px; height: 4px; background: #fff; border-radius: 50%;"></div>
+        </div>
     </nav>
 
     <main>
-        <div style="font-family: 'JetBrains Mono'; font-size: 12px; color: #3b82f6; margin-bottom: 20px; border: 1px solid #333; padding: 4px 10px; border-radius: 100px;">
-            SYSTEM v5.0 STABLE
+        <div class="status-pill">
+            <div class="status-dot"></div>
+            System v5.0 Stable
         </div>
         
         <h1>
             Engineered for<br>
-            Performance.
+            Absolute Precision.
         </h1>
         
         <p>
-            The foundation for modern digital infrastructure. 
-            Precision logic, zero overhead.
+            We architect the logic layer for the world's most demanding applications. 
+            Clean code, zero overhead, maximum performance.
         </p>
 
-        <a href="#" class="pro-button">Initialize</a>
+        <div class="btn-group">
+            <a href="#" class="btn-primary">Initialize</a>
+            <a href="#" class="btn-secondary">Read Docs</a>
+        </div>
     </main>
 
     <script src="assets/js/app.js"></script>
