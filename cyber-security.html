@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الأمن السيبراني | LOGICDRIVEN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#0f172a',
+                        gold: '#b88a44',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="flex flex-col min-h-screen">
+    
+    <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <div class="transition transform group-hover:rotate-12">
+                        
+<svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M25 25 L50 10 L50 30 L35 40 L50 50 L25 50 L10 40 L10 35 Z" stroke="#0f172a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M25 75 L50 90 L50 70 L35 60 L50 50 L25 50 L10 60 L10 65 Z" stroke="#0f172a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <path d="M75 25 L50 10 L50 30 L65 40 L50 50 L75 50 L90 40 L90 35 Z" stroke="#b88a44" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M75 75 L50 90 L50 70 L65 60 L50 50 L75 50 L90 60 L90 65 Z" stroke="#b88a44" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <path d="M40 35 L30 50 L40 65" stroke="#0f172a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M60 35 L70 50 L60 65" stroke="#b88a44" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-brand font-bold text-navy tracking-wide leading-none">LOGIC<span class="text-gold">DRIVEN</span></span>
+                    </div>
+                </a>
+                
+                <div class="hidden lg:flex items-center">
+                    <a href="index.html" class="block mt-4 lg:inline-block lg:mt-0 ml-8 text-sm font-bold transition hover:text-[#b88a44] text-[#0f172a]">الرئيسية</a><a href="web-dev.html" class="block mt-4 lg:inline-block lg:mt-0 ml-8 text-sm font-bold hover:text-[#b88a44] transition text-[#0f172a]">تطوير الويب</a><a href="data-science.html" class="block mt-4 lg:inline-block lg:mt-0 ml-8 text-sm font-bold hover:text-[#b88a44] transition text-[#0f172a]">علم البيانات</a><a href="automation.html" class="block mt-4 lg:inline-block lg:mt-0 ml-8 text-sm font-bold hover:text-[#b88a44] transition text-[#0f172a]">أتمتة الأعمال</a><a href="cloud-solutions.html" class="block mt-4 lg:inline-block lg:mt-0 ml-8 text-sm font-bold hover:text-[#b88a44] transition text-[#0f172a]">الحلول السحابية</a>
+                    <a href="#contact" class="bg-navy text-white px-6 py-2.5 rounded-lg text-sm font-bold hover:bg-opacity-90 transition shadow-lg shadow-blue-900/20 mr-6">تواصل معنا</a>
+                </div>
+                
+                <button onclick="toggleMenu()" class="lg:hidden text-navy focus:outline-none">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+            <div id="mobile-menu" class="hidden lg:hidden bg-white border-t py-4">
+                <a href="index.html" class="block mt-4 lg:inline-block lg:mt-0 ml-8 text-sm font-bold transition hover:text-[#b88a44] text-[#0f172a]">الرئيسية</a><a href="web-dev.html" class="block mt-4 lg:inline-block lg:mt-0 ml-8 text-sm font-bold hover:text-[#b88a44] transition text-[#0f172a]">تطوير الويب</a><a href="data-science.html" class="block mt-4 lg:inline-block lg:mt-0 ml-8 text-sm font-bold hover:text-[#b88a44] transition text-[#0f172a]">علم البيانات</a><a href="automation.html" class="block mt-4 lg:inline-block lg:mt-0 ml-8 text-sm font-bold hover:text-[#b88a44] transition text-[#0f172a]">أتمتة الأعمال</a><a href="cloud-solutions.html" class="block mt-4 lg:inline-block lg:mt-0 ml-8 text-sm font-bold hover:text-[#b88a44] transition text-[#0f172a]">الحلول السحابية</a>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="flex-grow">
+        
+    <div class="bg-navy py-20 text-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 relative z-10 flex items-center gap-6">
+            <div class="bg-white/10 p-4 rounded-2xl text-5xl backdrop-blur-sm border border-white/20 text-gold">🛡️</div>
+            <div>
+                <h1 class="text-4xl font-bold mb-2">الأمن السيبراني</h1>
+                <p class="text-gray-300">حلول الأمن السيبراني الاحترافية من LOGICDRIVEN</p>
+            </div>
+        </div>
+    </div>
+    <div class="max-w-4xl mx-auto px-4 py-16">
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+            <h2 class="text-2xl font-bold text-navy mb-6">تفاصيل الخدمة</h2>
+            <p class="text-gray-600 leading-loose mb-8">
+                نقدم لك في خدمة <strong>الأمن السيبراني</strong> نهجاً شاملاً يبدأ من التخطيط الدقيق وينتهي بالتنفيذ المثالي. 
+                فريقنا يستخدم أحدث أدوات الأمن السيبراني لضمان أنك تسبق منافسيك بخطوات.
+            </p>
+            <a href="index.html#contact" class="inline-block bg-gold text-white px-8 py-3 rounded-lg font-bold hover:bg-yellow-600 transition shadow-lg shadow-yellow-500/30">اطلب عرض سعر الآن</a>
+        </div>
+    </div>
+    
+    </main>
+    
+    <footer class="bg-navy text-white pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-4 gap-8 mb-12">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center gap-2 mb-6">
+                    <div class="bg-white/10 p-2 rounded-lg">
+<svg width="30" height="30" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M25 25 L50 10 L50 30 L35 40 L50 50 L25 50 L10 40 L10 35 Z" stroke="#0f172a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M25 75 L50 90 L50 70 L35 60 L50 50 L25 50 L10 60 L10 65 Z" stroke="#0f172a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <path d="M75 25 L50 10 L50 30 L65 40 L50 50 L75 50 L90 40 L90 35 Z" stroke="#b88a44" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M75 75 L50 90 L50 70 L65 60 L50 50 L75 50 L90 60 L90 65 Z" stroke="#b88a44" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <path d="M40 35 L30 50 L40 65" stroke="#0f172a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M60 35 L70 50 L60 65" stroke="#b88a44" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+</div>
+                    <span class="text-2xl font-brand font-bold">LOGIC<span class="text-gold">DRIVEN</span></span>
+                </div>
+                <p class="text-gray-400 leading-relaxed max-w-sm">
+                    نحن نمزج بين المنطق البرمجي الصارم والدافع للابتكار لتقديم حلول تقنية لا تقبل الخطأ.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-gold font-bold mb-4 uppercase text-sm tracking-wider">الخدمات</h4>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li><a href="#" class="hover:text-white transition">تطوير الويب</a></li>
+                    <li><a href="#" class="hover:text-white transition">تحليل البيانات</a></li>
+                    <li><a href="#" class="hover:text-white transition">الأمن السيبراني</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-gold font-bold mb-4 uppercase text-sm tracking-wider">تواصل</h4>
+                <p class="text-gray-400 text-sm mb-2">contact@logicdriven.com</p>
+                <p class="text-gray-400 text-sm">Amman, Jordan</p>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
+            &copy; 2025 LOGICDRIVEN. Built with Precision.
+        </div>
+    </footer>
+    
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

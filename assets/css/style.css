@@ -1,0 +1,32 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;800&family=Montserrat:wght@700&display=swap');
+
+:root {
+    --brand-navy: #0f172a;
+    --brand-gold: #b88a44;
+}
+
+body { font-family: 'Tajawal', sans-serif; background-color: #f8fafc; }
+.font-brand { font-family: 'Montserrat', sans-serif; letter-spacing: 1px; }
+
+.text-navy { color: var(--brand-navy); }
+.text-gold { color: var(--brand-gold); }
+.bg-navy { background-color: var(--brand-navy); }
+.bg-gold { background-color: var(--brand-gold); }
+
+.btn-primary {
+    background-color: var(--brand-navy);
+    color: white;
+    transition: all 0.3s ease;
+}
+.btn-primary:hover {
+    background-color: #1e293b;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.3);
+}
+
+.service-card:hover .icon-box {
+    background-color: var(--brand-gold);
+    color: white;
+    transform: scale(1.1);
+}
