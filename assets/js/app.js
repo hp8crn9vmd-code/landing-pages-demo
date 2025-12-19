@@ -1,1 +1,2 @@
-console.log("Vector Graphics Loaded.");
+
+console.log("System Initialized.");
