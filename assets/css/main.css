@@ -4,8 +4,7 @@
 :root {
     --bg: #000000;
     --text: #ffffff;
-    --border: #333333;
-    --beam: #3b82f6; /* Laser Blue */
+    --beam: #3b82f6;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -14,15 +13,18 @@ body {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg);
     color: var(--text);
-    height: 100vh; /* ملء الشاشة */
+    height: 100vh;
+    width: 100vw;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* توسيط عمودي */
-    align-items: center;     /* توسيط أفقي */
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
+    /* منع التمرير الزائد على الموبايل */
+    overscroll-behavior: none; 
 }
 
-/* Subtle Grid Background */
+/* خلفية الشبكة */
 .micro-grid {
     position: fixed; inset: 0; z-index: -1;
     background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
@@ -31,71 +33,74 @@ body {
     mask-image: radial-gradient(circle at center, black 30%, transparent 100%);
 }
 
-/* Logo Container */
+/* الحاوية الرئيسية - تستخدم clamp لتغيير المسافات بذكاء */
 .center-stage {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 24px; /* مسافة بين الأيقونة والنص */
+    /* المسافة تتغير ديناميكياً بين 20 بكسل و 40 بكسل حسب الشاشة */
+    gap: clamp(20px, 4vw, 40px); 
+    width: 100%;
+    padding: 0 20px;
     animation: fade-in 1.5s ease-out;
 }
 
 @keyframes fade-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-/* 1. The Icon (Larger for Center Stage) */
+/* 1. الشعار المتجاوب */
 .logo-icon {
-    width: 64px; height: 64px; /* حجم واضح */
+    /* العرض يتغير بذكاء: أصغر شيء 48px وأكبر شيء 80px */
+    width: clamp(48px, 12vw, 80px); 
+    height: clamp(48px, 12vw, 80px);
     position: relative;
 }
 
 .hex-svg { width: 100%; height: 100%; overflow: visible; }
 
 .hex-track {
-    fill: none;
-    stroke: #222;
-    stroke-width: 1.5;
+    fill: none; stroke: #222; stroke-width: 1.5;
 }
 
 .hex-beam {
-    fill: none;
-    stroke: var(--beam);
-    stroke-width: 1.5;
-    stroke-linecap: round;
-    stroke-dasharray: 40 160; /* شعاع قصير */
+    fill: none; stroke: var(--beam); stroke-width: 1.5;
+    stroke-linecap: round; stroke-dasharray: 40 160;
     animation: trace 4s linear infinite;
     filter: drop-shadow(0 0 5px var(--beam));
 }
 
 @keyframes trace { to { stroke-dashoffset: -200; } }
 
-/* 2. The Text */
+/* 2. النص المتجاوب */
 .brand-text {
-    font-size: 1.5rem; /* 24px */
+    /* الخط يتغير حجمه تلقائياً */
+    font-size: clamp(1.25rem, 5vw, 2.5rem); 
     font-weight: 600;
     letter-spacing: -0.02em;
     color: white;
     display: flex;
     align-items: center;
+    justify-content: center;
+    flex-wrap: wrap; /* يسمح للنص بالالتفاف على الشاشات الصغيرة جداً */
     gap: 10px;
+    text-align: center;
 }
 
-/* 3. The .EXE Badge */
+/* 3. شارة .EXE */
 .exe-badge {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
+    font-size: 0.5em; /* نصف حجم النص الرئيسي دائماً */
     color: #888;
     background: #111;
     border: 1px solid #333;
-    padding: 4px 8px;
+    padding: 0.3em 0.6em;
     border-radius: 4px;
+    vertical-align: middle;
 }
 
-/* Loading Bar (Optional Aesthetic Touch) */
+/* خط التحميل */
 .loader-line {
-    width: 0%;
-    height: 1px;
-    background: #333;
-    margin-top: 40px;
+    width: 0%; height: 1px; background: #333;
+    margin-top: clamp(20px, 5vw, 50px);
     animation: load 2s ease-out forwards;
     position: relative;
 }
@@ -105,5 +110,11 @@ body {
     opacity: 0.5;
 }
 
-@keyframes load { to { width: 120px; } }
+@keyframes load { to { width: clamp(80px, 20vw, 150px); } }
 
+/* تحسينات خاصة للشاشات القصيرة جداً (Landscape Mobile) */
+@media (max-height: 500px) {
+    .center-stage { gap: 15px; }
+    .logo-icon { width: 40px; height: 40px; }
+    .loader-line { margin-top: 15px; }
+}

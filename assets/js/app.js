@@ -1,1 +1,1 @@
-console.log("Center Stage Active");
+console.log("Responsive Core Loaded");
