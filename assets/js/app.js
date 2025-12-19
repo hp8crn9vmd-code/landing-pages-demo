@@ -1,1 +1,1 @@
-console.log("Micro System Loaded");
+console.log("Center Stage Active");
