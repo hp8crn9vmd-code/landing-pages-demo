@@ -1,58 +1,257 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="antialiased">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> <title>LOGICDRIVEN</title>
-    <link rel="stylesheet" href="assets/css/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOGIC DRIVEN | Pro Stack</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#030305',
+                        primary: '#ffffff',
+                        accent: '#38bdf8', /* Sky 400 */
+                        glass: 'rgba(255, 255, 255, 0.05)',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "react": "https://esm.sh/react@18.2.0",
+                "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+                "three": "https://esm.sh/three@0.160.0",
+                "@react-three/fiber": "https://esm.sh/@react-three/fiber@8.15.14?external=react,react-dom,three",
+                "@react-three/drei": "https://esm.sh/@react-three/drei@9.99.0?external=react,react-dom,three,@react-three/fiber",
+                "@react-three/postprocessing": "https://esm.sh/@react-three/postprocessing@2.16.0?external=react,react-dom,three,@react-three/fiber",
+                "uuid": "https://esm.sh/uuid@9.0.1",
+                "gsap": "https://esm.sh/gsap@3.12.5"
+            }
+        }
+    </script>
+    
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        body { background-color: #030305; color: white; overflow-x: hidden; }
+        #canvas-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: 1; }
+        #ui-layer { position: relative; z-index: 10; pointer-events: none; }
+        .pointer-events-auto { pointer-events: auto; }
+        
+        /* Loader Animation */
+        .loader { width: 48px; height: 48px; border: 3px solid #FFF; border-bottom-color: transparent; border-radius: 50%; display: inline-block; box-sizing: border-box; animation: rotation 1s linear infinite; }
+        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
 </head>
 <body>
 
-    <div class="ambient-light"></div>
+    <div id="root"></div>
 
-    <nav>
-        <a href="#" class="brand-link">
-            <div class="logo-icon">
-                <svg class="hex-svg" viewBox="0 0 100 100" fill="none" stroke-width="6" stroke-linecap="round">
-                    <polygon points="50 5, 95 27.5, 95 72.5, 50 95, 5 72.5, 5 27.5" stroke="#333" />
-                    <polygon class="hex-inner" points="50 20, 80 35, 80 65, 50 80, 20 65, 20 35" stroke="#6366f1" />
-                    <circle cx="50" cy="50" r="8" fill="white" stroke="none" />
-                </svg>
-            </div>
+    <script type="text/babel" data-type="module">
+        import React, { useState, useRef, useEffect, Suspense } from 'react';
+        import { createRoot } from 'react-dom/client';
+        import * as THREE from 'three';
+        import { Canvas, useFrame } from '@react-three/fiber';
+        import { Float, Text, MeshTransmissionMaterial, Environment, PerspectiveCamera, OrbitControls } from '@react-three/drei';
+        import { EffectComposer, Bloom } from '@react-three/postprocessing';
+        import gsap from 'gsap';
+
+        // --- 1. The Logic Core Component (Geometry) ---
+        const LogicCore = () => {
+            const meshRef = useRef();
+            const glowRef = useRef();
             
-            <div class="brand-text">
-                LogicDriven<span class="exe-badge">.EXE</span>
-            </div>
-        </a>
+            useFrame((state) => {
+                const t = state.clock.getElapsedTime();
+                // Complex rotation
+                meshRef.current.rotation.x = Math.cos(t / 4) / 2;
+                meshRef.current.rotation.y = Math.sin(t / 4) / 2;
+                meshRef.current.rotation.z = Math.sin(t / 1.5) / 2;
+                meshRef.current.position.y = Math.sin(t / 1.5) / 10;
+                
+                // Pulse effect
+                const scale = 1 + Math.sin(t * 2) * 0.05;
+                glowRef.current.scale.set(scale, scale, scale);
+            });
 
-        <div class="menu-icon">
-            <div class="bar"></div>
-            <div class="bar"></div>
-        </div>
-    </nav>
+            return (
+                <group>
+                    <Float speed={2} rotationIntensity={1} floatIntensity={1}>
+                        {/* The Glass Octahedron (Logic) */}
+                        <mesh ref={meshRef}>
+                            <octahedronGeometry args={[1.5, 0]} />
+                            {/* Pro Material: MeshTransmission (Glassy) */}
+                            <MeshTransmissionMaterial 
+                                backside
+                                samples={16}
+                                thickness={2}
+                                roughness={0.2}
+                                anisotropy={1}
+                                chromaticAberration={0.1} // Premium look
+                                color="#ffffff"
+                                resolution={1024}
+                            />
+                        </mesh>
+                        
+                        {/* The Inner Energy (.EXE) */}
+                        <mesh ref={glowRef}>
+                            <icosahedronGeometry args={[0.8, 0]} />
+                            <meshStandardMaterial 
+                                color="#38bdf8" 
+                                emissive="#38bdf8"
+                                emissiveIntensity={3}
+                                toneMapped={false}
+                            />
+                        </mesh>
+                    </Float>
+                </group>
+            );
+        };
 
-    <main>
-        <div class="hero-badge">
-            <div class="pulse-dot"></div>
-            System v5.0 Operational
-        </div>
+        // --- 2. Typography Component (3D Text) ---
+        const BrandText = () => {
+            return (
+                <group position={[0, -2.5, 0]}>
+                    <Text
+                        position={[0, 0, 0]}
+                        fontSize={1}
+                        font="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hjp-Ek-_EeA.woff"
+                        letterSpacing={-0.05}
+                        color="white"
+                        anchorX="center"
+                        anchorY="middle"
+                    >
+                        LOGIC DRIVEN
+                        <meshStandardMaterial color="white" toneMapped={false} />
+                    </Text>
+                    
+                    <Text
+                        position={[3.8, 0.4, 0]} // Positioned as a badge
+                        fontSize={0.25}
+                        font="https://fonts.gstatic.com/s/jetbrainsmono/v13/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0Pn5qRS8.woff"
+                        color="#38bdf8"
+                        anchorX="left"
+                        anchorY="middle"
+                    >
+                        .EXE
+                        <meshStandardMaterial color="#38bdf8" emissive="#38bdf8" emissiveIntensity={2} toneMapped={false} />
+                    </Text>
+                </group>
+            );
+        };
 
-        <h1>
-            Logic Beyond<br>
-            Limits.
-        </h1>
-        
-        <p>
-            The foundation for modern digital infrastructure. 
-            Precision engineering for those who demand absolute control.
-        </p>
+        // --- 3. The Scene Manager ---
+        const Scene = () => {
+            return (
+                <>
+                    <PerspectiveCamera makeDefault position={[0, 0, 10]} />
+                    <OrbitControls enableZoom={false} enablePan={false} maxPolarAngle={Math.PI / 1.5} minPolarAngle={Math.PI / 3} />
+                    
+                    {/* Lighting */}
+                    <ambientLight intensity={0.5} />
+                    <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} />
+                    <pointLight position={[-10, -10, -10]} intensity={1} color="#38bdf8" />
+                    
+                    {/* Environment Reflection */}
+                    <Environment preset="city" />
 
-        <div class="btn-group">
-            <a href="#" class="btn btn-primary">Initialize</a>
-            <a href="#" class="btn btn-secondary">Documentation</a>
-        </div>
-    </main>
+                    {/* Objects */}
+                    <LogicCore />
+                    <BrandText />
 
-    <script src="assets/js/app.js"></script>
+                    {/* Post Processing (The "Pro" Glow) */}
+                    <EffectComposer disableNormalPass>
+                        <Bloom luminanceThreshold={1} mipmapBlur intensity={1.5} radius={0.6} />
+                    </EffectComposer>
+                </>
+            );
+        };
+
+        // --- 4. UI Overlay (Tailwind + Shadcn Style) ---
+        const UI = () => {
+            return (
+                <div id="ui-layer" className="w-full min-h-screen flex flex-col justify-between p-8">
+                    {/* Header */}
+                    <nav className="flex justify-between items-center">
+                        <div className="font-mono text-xs text-slate-500 tracking-widest border border-white/10 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md">
+                            SYSTEM ONLINE
+                        </div>
+                        <div className="pointer-events-auto">
+                            <button className="text-sm font-medium text-white/70 hover:text-white transition-colors">
+                                MENU
+                            </button>
+                        </div>
+                    </nav>
+
+                    {/* Footer */}
+                    <footer className="flex justify-between items-end">
+                        <div className="text-left">
+                            <h1 className="text-4xl md:text-6xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-white/50">
+                                Architecting<br/>Reality.
+                            </h1>
+                            <p className="mt-4 text-slate-400 max-w-md text-sm md:text-base leading-relaxed">
+                                A programmed visual identity using React Three Fiber, Drei, and high-performance rendering.
+                            </p>
+                            
+                            <div className="mt-8 pointer-events-auto">
+                                <a href="#" className="inline-flex items-center justify-center h-10 px-6 font-medium tracking-wide text-black transition-colors bg-white rounded-md hover:bg-slate-200 focus:outline-none ring-offset-2 focus:ring-2">
+                                    Initialize
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div className="hidden md:block text-right font-mono text-xs text-slate-600">
+                            COORD: 34.0522° N, 118.2437° W<br/>
+                            RENDER: WEBGL 2.0
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        // --- 5. Main App ---
+        const App = () => {
+            // Smooth Scroll Setup (Lenis)
+            useEffect(() => {
+                const lenis = new Lenis();
+                function raf(time) {
+                    lenis.raf(time);
+                    requestAnimationFrame(raf);
+                }
+                requestAnimationFrame(raf);
+            }, []);
+
+            return (
+                <>
+                    <div id="canvas-container">
+                        <Canvas dpr={[1, 2]} gl={{ antialias: false, toneMapping: THREE.ReinhardToneMapping, toneMappingExposure: 1.5 }}>
+                            <Suspense fallback={null}>
+                                <Scene />
+                            </Suspense>
+                        </Canvas>
+                    </div>
+                    <UI />
+                </>
+            );
+        };
+
+        const root = createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
 </body>
 </html>
