@@ -1,11 +1,8 @@
 
-// Interface Definitions
-interface IContactForm {
-    name: string;
-    email: string;
-    service: string;
-    message: string;
-}
+// تعريف مكتبات الطرف الثالث (للتخلص من أخطاء المترجم)
+declare var gsap: any;
+declare var ScrollTrigger: any;
+declare var feather: any;
 
 class LogicDrivenApp {
     constructor() {
@@ -13,68 +10,60 @@ class LogicDrivenApp {
     }
 
     private init(): void {
-        console.log("🚀 LogicDriven System: Online");
-        this.setupScrollObserver();
+        console.log("🚀 LogicDriven: GSAP & Lottie Engine Online");
+        
+        // تسجيل الإضافات
+        gsap.registerPlugin(ScrollTrigger);
+        
+        this.initAnimations();
         this.setupMobileMenu();
-        this.setupContactForm();
-        // @ts-ignore
         if (typeof feather !== 'undefined') feather.replace();
     }
 
-    private setupScrollObserver(): void {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
+    private initAnimations(): void {
+        // 1. Hero Animation (تسلسل زمني عند التحميل)
+        const tl = gsap.timeline();
+        tl.from(".hero-title", { duration: 1, y: 50, opacity: 0, ease: "power4.out" })
+          .from(".hero-text", { duration: 1, y: 30, opacity: 0, ease: "power3.out" }, "-=0.6")
+          .from(".hero-btn", { duration: 0.8, y: 20, opacity: 0, ease: "back.out(1.7)" }, "-=0.6")
+          .from(".hero-visual", { duration: 1.5, scale: 0.9, opacity: 0, ease: "elastic.out(1, 0.75)" }, "-=1.0");
+
+        // 2. ScrollTrigger Cards (ظهور البطاقات عند التمرير)
+        gsap.utils.toArray(".service-card").forEach((card: any, i: number) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 85%", // يبدأ عندما يصل العنصر لـ 85% من الشاشة
+                    toggleActions: "play none none reverse"
+                },
+                y: 50,
+                opacity: 0,
+                duration: 0.6,
+                delay: i * 0.1, // تأخير بسيط بين كل بطاقة
+                ease: "power2.out"
             });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+        });
+
+        // 3. Navbar Blur on Scroll
+        ScrollTrigger.create({
+            start: 'top -80',
+            end: 99999,
+            toggleClass: {className: 'scrolled', targets: 'nav'}
+        });
     }
 
     private setupMobileMenu(): void {
         const btn = document.getElementById('mobile-menu-btn');
         const menu = document.getElementById('mobile-menu');
         if (btn && menu) {
-            btn.addEventListener('click', () => menu.classList.toggle('hidden'));
-        }
-    }
-
-    private setupContactForm(): void {
-        const form = document.getElementById('contact-form') as HTMLFormElement;
-        if (form) {
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                this.handleFormSubmit(form);
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+                // Simple GSAP animation for menu
+                if (!menu.classList.contains('hidden')) {
+                    gsap.from("#mobile-menu a", {y: 20, opacity: 0, stagger: 0.1});
+                }
             });
         }
-    }
-
-    private async handleFormSubmit(form: HTMLFormElement): Promise<void> {
-        const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
-        const originalText = btn.innerHTML;
-        
-        // Form Data
-        const name = (document.getElementById('input-name') as HTMLInputElement).value;
-        const service = (document.getElementById('input-service') as HTMLSelectElement).value;
-
-        // Simulate API Call
-        btn.innerHTML = '<span class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></span> Processing...';
-        btn.disabled = true;
-
-        await new Promise(resolve => setTimeout(resolve, 2000));
-
-        // English Success Alert
-        // @ts-ignore
-        Swal.fire({
-            title: 'Request Received!',
-            text: `Thank you, ${name}. We have received your inquiry regarding "${service}". Our team will contact you shortly.`,
-            icon: 'success',
-            confirmButtonColor: '#0f172a',
-            confirmButtonText: 'Great!'
-        });
-
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        form.reset();
     }
 }
 

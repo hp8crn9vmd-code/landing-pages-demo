@@ -2,52 +2,45 @@
 class LogicDrivenApp {
     constructor() { this.init(); }
     init() {
-        console.log("🚀 LogicDriven System: Online");
-        this.setupScrollObserver();
-        this.setupMobileMenu();
-        this.setupContactForm();
+        console.log("🚀 LogicDriven: GSAP Mode");
+        gsap.registerPlugin(ScrollTrigger);
+        this.runAnimations();
+        this.setupMenu();
         if (typeof feather !== 'undefined') feather.replace();
     }
-    setupScrollObserver() {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
-            });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    
+    runAnimations() {
+        // Hero Sequence
+        const tl = gsap.timeline();
+        tl.from(".hero-title", { y: 60, opacity: 0, duration: 1, ease: "power4.out" })
+          .from(".hero-text", { y: 30, opacity: 0, duration: 0.8 }, "-=0.6")
+          .from(".hero-actions", { y: 20, opacity: 0, duration: 0.8 }, "-=0.6")
+          .from(".lottie-container", { scale: 0.8, opacity: 0, duration: 1 }, "-=0.8");
+
+        // Service Cards Stagger
+        gsap.from(".service-card", {
+            scrollTrigger: { trigger: "#services", start: "top 80%" },
+            y: 50, opacity: 0, duration: 0.8, stagger: 0.15, ease: "power2.out"
+        });
+        
+        // Form Reveal
+        gsap.from("#contact-form", {
+            scrollTrigger: { trigger: "#contact", start: "top 75%" },
+            y: 40, opacity: 0, duration: 0.8, ease: "power2.out"
+        });
+
+        // Nav Glass Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if(window.scrollY > 50) nav.classList.add('shadow-md', 'bg-white/95');
+            else nav.classList.remove('shadow-md', 'bg-white/95');
+        });
     }
-    setupMobileMenu() {
+
+    setupMenu() {
         const btn = document.getElementById('mobile-menu-btn');
         const menu = document.getElementById('mobile-menu');
-        if (btn && menu) btn.addEventListener('click', () => menu.classList.toggle('hidden'));
-    }
-    setupContactForm() {
-        const form = document.getElementById('contact-form');
-        if (form) {
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const btn = form.querySelector('button[type="submit"]');
-                const originalText = btn.innerHTML;
-                const name = document.getElementById('input-name').value;
-                const service = document.getElementById('input-service').value;
-                
-                btn.innerHTML = '<span class="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></span> Processing...';
-                btn.disabled = true;
-                
-                setTimeout(() => {
-                    Swal.fire({
-                        title: 'Request Received!',
-                        text: `Thank you, ${name}. We have received your inquiry regarding "${service}". Our team will contact you shortly.`,
-                        icon: 'success',
-                        confirmButtonColor: '#0f172a',
-                        confirmButtonText: 'Close'
-                    });
-                    btn.innerHTML = originalText;
-                    btn.disabled = false;
-                    form.reset();
-                }, 1500);
-            });
-        }
+        if(btn && menu) btn.addEventListener('click', () => menu.classList.toggle('hidden'));
     }
 }
-document.addEventListener('DOMContentLoaded', () => { new LogicDrivenApp(); });
+document.addEventListener('DOMContentLoaded', () => new LogicDrivenApp());
