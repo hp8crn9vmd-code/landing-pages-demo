@@ -1,123 +1,148 @@
 
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap');
 
 :root {
-    --bg: #000000;
-    --text: #e0e0e0;
-    --neon: #39ff14; /* Hacker Green */
-    --grid: #1a1a1a;
+    --bg: #0a0a0a;          /* Premium Dark Grey (Not Pitch Black) */
+    --surface: #171717;     /* Slightly Lighter Surface */
+    --border: #333333;      /* Subtle Borders */
+    --text-primary: #ffffff;
+    --text-secondary: #a1a1aa;
+    --accent: #3b82f6;      /* Trustworthy Blue */
+    --hover-bg: #262626;
 }
 
 * { box-sizing: border-box; }
 
 body {
     margin: 0; padding: 0;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Inter', sans-serif;
     background-color: var(--bg);
-    color: var(--text);
-    overflow-x: hidden;
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
 }
 
-/* 1. Brutal Grid */
-.brutal-grid {
-    position: fixed; inset: 0; z-index: -1;
-    background-image: 
-        linear-gradient(var(--grid) 2px, transparent 2px),
-        linear-gradient(90deg, var(--grid) 2px, transparent 2px);
-    background-size: 40px 40px;
-    opacity: 0.5;
-}
-
-/* 2. Navbar */
+/* 1. Navbar - The Foundation of Professionalism */
 nav {
-    position: fixed; top: 0; left: 0; width: 100%; height: 90px;
+    position: fixed; top: 0; left: 0; width: 100%; height: 72px;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 0 20px;
-    background: rgba(0,0,0,0.9);
-    border-bottom: 4px solid var(--neon);
+    padding: 0 40px; /* Generous spacing */
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
     z-index: 1000;
 }
 
-/* 3. LOGO COMPLEX */
-.logo-box {
-    display: flex; align-items: center; gap: 15px;
+/* 2. THE LOGO - Architecture & Stability */
+.brand-link {
+    display: flex; align-items: center; gap: 12px;
     text-decoration: none;
-    cursor: pointer;
+    group: hover; /* Prepare for hover state */
+    padding: 8px 0;
 }
 
-/* SVG Container */
-.hex-container {
-    width: 48px; height: 48px;
-    position: relative;
-    /* فلتر توهج عام للشعار */
-    filter: drop-shadow(0 0 5px var(--neon));
+/* The Symbol Container */
+.symbol-box {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(180deg, #262626 0%, #171717 100%);
+    border: 1px solid var(--border);
+    border-radius: 8px; /* Smooth corners */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
 }
 
+/* Hover Effect: Subtle Lift & Glow */
+.brand-link:hover .symbol-box {
+    border-color: #555;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15); /* Very subtle blue glow */
+    transform: translateY(-1px);
+}
+
+/* SVG Styles */
 svg {
-    width: 100%; height: 100%;
-    overflow: visible;
-}
-
-/* Outer Hexagon (The Cage) */
-.hex-frame {
+    width: 20px; height: 20px;
+    stroke: var(--text-primary);
+    stroke-width: 1.5; /* Fine lines = Precision */
     fill: none;
-    stroke: var(--neon);
-    stroke-width: 2;
-    vector-effect: non-scaling-stroke;
+    transition: stroke 0.3s ease;
 }
 
-/* Inner Living Core */
-.living-core {
-    fill: var(--neon);
-    /* سيتم تحريكه بواسطة JS */
-    transform-origin: center; 
+/* Hover: Icon turns blue */
+.brand-link:hover svg {
+    stroke: var(--accent);
 }
 
-/* Text Styles */
+/* Typography */
 .brand-text {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: white;
-    letter-spacing: -1px;
-    text-transform: uppercase;
+    font-size: 1rem; /* 16px Standard */
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
 }
 
 .exe-badge {
-    background: var(--neon);
-    color: black;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem; /* 12px */
+    color: var(--text-secondary);
+    background: var(--surface);
+    border: 1px solid var(--border);
     padding: 2px 6px;
-    margin-left: 5px;
-    font-weight: 800;
+    border-radius: 4px;
+    margin-left: 8px;
+    transition: all 0.3s ease;
 }
 
-/* Main Content */
+.brand-link:hover .exe-badge {
+    color: var(--accent);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+/* 3. Hero Section - Clean & Direct */
 main {
-    height: 100vh;
-    display: flex; flex-direction: column; 
-    justify-content: center; align-items: center;
-    text-align: center;
-    padding: 20px;
+    padding-top: 140px;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    background-image: 
+        radial-gradient(circle at 50% 0%, #1a1a1a 0%, transparent 40%),
+        linear-gradient(180deg, rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 100% 100%, 40px 40px, 40px 40px;
 }
 
 h1 {
-    font-size: clamp(2rem, 6vw, 5rem);
-    line-height: 1;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    border: 2px solid white;
-    padding: 20px;
-    background: black;
-    box-shadow: 8px 8px 0px var(--neon);
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.03em;
+    background: linear-gradient(180deg, #fff, #888);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 p {
-    font-size: 1.1rem; color: #888; max-w: 600px; margin-bottom: 40px;
-    border-left: 4px solid var(--neon); padding-left: 20px; text-align: left;
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    max-w: 540px;
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
 }
 
-.brutal-btn {
-    background: var(--neon); color: black; font-weight: 800; padding: 15px 40px;
-    border: none; text-transform: uppercase; font-size: 1.2rem; cursor: pointer;
-    transition: transform 0.1s;
+.primary-btn {
+    background: #fff; color: #000;
+    font-size: 0.95rem; font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s ease;
 }
-.brutal-btn:hover { transform: translate(-4px, -4px); box-shadow: 4px 4px 0px white; }
+.primary-btn:hover {
+    background: #e5e5e5;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    nav { padding: 0 20px; height: 64px; }
+    h1 { font-size: 2.5rem; padding: 0 20px; }
+    p { padding: 0 20px; font-size: 1rem; }
+}
