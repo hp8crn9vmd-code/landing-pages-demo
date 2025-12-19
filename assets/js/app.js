@@ -1,76 +1,44 @@
 
 document.addEventListener('DOMContentLoaded', () => {
-    const creature = document.getElementById('living-creature');
-    if (!creature) return;
-
-    console.log("Organism: ALIVE");
-
-    // --- Organism State Variables ---
-    let posX = 0, posY = 0; // Current Position
-    let velX = 0, velY = 0; // Velocity
-    let targetX = 0, targetY = 0; // Where it wants to go
+    const logo = document.getElementById('living-logo');
     
-    let breatheTimer = 0;
-    let jitterTimer = 0;
-
-    // --- Behavior Parameters ---
-    const wanderSpeed = 0.05;  // How fast it accelerates towards target
-    const damping = 0.95;      // Friction (prevents it from flying off forever)
-    const wanderRange = 60;    // How far it can roam from center (pixels)
-    const breatheSpeed = 0.03; // Speed of inhaling/exhaling
-    const jitterIntensity = 2; // How violently it shakes
-
-    // Pick a new random target to wander towards
-    function pickNewTarget() {
-        targetX = (Math.random() - 0.5) * wanderRange * 2;
-        targetY = (Math.random() - 0.5) * wanderRange * 2;
-        // Pick a new target randomly between 1 and 3 seconds
-        setTimeout(pickNewTarget, 1000 + Math.random() * 2000);
+    if (!logo) {
+        console.error("LOGO NOT FOUND!");
+        return;
     }
-    pickNewTarget(); // Start wandering
 
-    // THE MAIN LIFE LOOP (Runs 60fps)
-    function animateOrganism() {
-        // 1. Physics: Calculate Movement toward target
-        const forceX = (targetX - posX) * wanderSpeed;
-        const forceY = (targetY - posY) * wanderSpeed;
-        
-        velX += forceX;
-        velY += forceY;
-        
-        // Apply damping (friction)
-        velX *= damping;
-        velY *= damping;
+    console.log("Logo Engine: STARTED");
 
-        posX += velX;
-        posY += velY;
+    // Animation Variables
+    let time = 0;
 
-        // 2. Organic Breathing (Jelly Effect) using sine waves
-        breatheTimer += breatheSpeed;
-        // Scale X and Y inversely to create squashing stretch
-        const scaleX = 1 + Math.sin(breatheTimer) * 0.05;
-        const scaleY = 1 + Math.cos(breatheTimer) * 0.05;
+    function animate() {
+        time += 0.02; // Speed of time flow
 
-        // 3. Nervous Jitter (High frequency noise)
-        jitterTimer += 0.5; // Fast timer
-        // Perlin-like noise simulation using multiple sines
-        const jitterRot = (Math.sin(jitterTimer) + Math.cos(jitterTimer * 1.3)) * jitterIntensity;
-        const jitterScale = 1 + (Math.sin(jitterTimer * 2) * 0.01);
+        // 1. WANDERING (Movement X/Y)
+        // Combining multiple Sine waves creates a path that never perfectly repeats
+        const x = Math.sin(time) * 15 + Math.cos(time * 2.3) * 10;
+        const y = Math.cos(time * 1.5) * 15 + Math.sin(time * 0.7) * 10;
 
-        // 4. Combine all forces into final transform
-        const finalTransform = `
-            translate3d(${posX.toFixed(2)}px, ${posY.toFixed(2)}px, 0)
-            rotate(${jitterRot.toFixed(2)}deg)
-            scale(${scaleX * jitterScale}, ${scaleY * jitterScale})
+        // 2. BREATHING (Scale)
+        // Squashing and stretching like a lung
+        const scaleX = 1 + Math.sin(time * 3) * 0.05;
+        const scaleY = 1 + Math.cos(time * 3) * 0.05;
+
+        // 3. JITTER (Rotation/Shake)
+        // Fast, random noise for the "nervous" look
+        const jitter = (Math.random() - 0.5) * 2; // Shake by 2 degrees
+
+        // Apply Logic
+        logo.style.transform = `
+            translate(${x}px, ${y}px) 
+            rotate(${jitter}deg) 
+            scale(${scaleX}, ${scaleY})
         `;
 
-        creature.style.transform = finalTransform;
-
-        requestAnimationFrame(animateOrganism);
+        requestAnimationFrame(animate);
     }
 
-    // Start the life engine
-    animateOrganism();
-    
-    if(typeof feather !== 'undefined') feather.replace();
+    // Start the loop
+    animate();
 });
