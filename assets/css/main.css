@@ -1,71 +1,62 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
 
 :root {
-    --primary: #0f172a; 
+    --primary: #0f172a;
     --gold: #fbbf24;
-    --glass-bg: rgba(255, 255, 255, 0.03);
-    --glass-border: rgba(255, 255, 255, 0.05);
-    --glass-blur: 16px;
 }
 
-body { 
-    font-family: 'Inter', sans-serif; 
-    background-color: #050505; /* Fallback color */
-    color: #e2e8f0;
+body {
     margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #0f172a; /* Fallback */
+    color: white;
     overflow-x: hidden;
+    height: 100vh;
+    width: 100vw;
 }
 
-/* The Canvas Container */
-#vanta-bg {
+/* 1. The Physics Canvas */
+#physics-world {
     position: fixed;
-    z-index: -1;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none; /* Allows clicking through the background */
+    width: 100%;
+    height: 100%;
+    z-index: 0; /* Behind text, but clickable for interaction */
+    background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
 }
 
-/* Glassmorphism Cards */
-.glass-panel {
-    background: var(--glass-bg);
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+/* 2. UI Overlay (Floating above physics) */
+.ui-layer {
+    position: relative;
+    z-index: 10; /* Above physics */
+    pointer-events: none; /* Let clicks pass through to physics engine where possible */
 }
 
-.glass-nav {
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+.interactive-btn {
+    pointer-events: auto; /* Re-enable clicks for buttons */
+    cursor: pointer;
 }
 
-/* Typography & Effects */
-.text-gradient {
-    background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-.text-gold-gradient {
-    background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+/* 3. The Living Logo Animation */
+.living-logo {
+    animation: heartbeat 3s infinite ease-in-out;
+    filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.5));
 }
 
-.hover-glow:hover {
-    box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
-    border-color: rgba(251, 191, 36, 0.3);
+@keyframes heartbeat {
+    0% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.5)); }
+    50% { transform: scale(1.05); filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.8)); }
+    100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.5)); }
 }
 
-.fade-in {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-.fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
+/* Glass Cards */
+.glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    pointer-events: auto;
 }
