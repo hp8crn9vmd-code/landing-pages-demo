@@ -1,13 +1,15 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
 
 :root {
-    --bg: #e0e7ff;       /* Very light raw blue/grey */
+    --bg: #e0e7ff;
     --surface: #ffffff;
-    --border: #000000;   /* Pure Black Borders */
-    --shadow: #000000;   /* Pure Black Shadows */
-    --accent: #FF5D01;   /* Neon Orange (Safety Orange) */
-    --primary: #4F46E5;  /* Brutal Indigo */
+    --border: #000000;
+    --shadow: #000000;
+    --accent: #FF5D01; /* Neon Orange */
+    --primary: #4F46E5; /* Brutal Indigo */
+    --neon-green: #00ff00;
+    --neon-pink: #ff00ff;
 }
 
 * { box-sizing: border-box; }
@@ -18,34 +20,79 @@ body {
     font-family: 'Space Grotesk', sans-serif;
     margin: 0;
     overflow-x: hidden;
-    /* The Grid Background */
     background-image: 
         linear-gradient(var(--border) 1px, transparent 1px),
         linear-gradient(90deg, var(--border) 1px, transparent 1px);
     background-size: 50px 50px;
-    background-position: center top;
-    /* Make grid subtle */
     background-blend-mode: overlay;
     backdrop-filter: opacity(0.05); 
 }
 
-/* 1. Brutalist Components */
+/* --- NEW: Living & Unselectable Classes --- */
+
+/* 1. Utility to prevent copying */
+.unselectable {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+    cursor: default; /* Change cursor so it doesn't look like text */
+}
+
+/* 2. The "Dazzling Internal Movement" Effect */
+@keyframes dazzling-flow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.dazzling-text {
+    /* A harsh, super-saturated gradient for brutalism */
+    background: linear-gradient(
+        90deg, 
+        var(--border), 
+        var(--primary), 
+        var(--accent), 
+        var(--neon-pink), 
+        var(--neon-green), 
+        var(--border)
+    );
+    background-size: 400% 400%; /* Make it huge so movement is obvious */
+    
+    /* Clip background to text shape */
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    
+    /* Animate it forever */
+    animation: dazzling-flow 3s linear infinite;
+    
+    /* Ensure it's bold and raw */
+    font-weight: 900;
+    filter: drop-shadow(2px 2px 0px var(--border)); /* Hard shadow to make it pop */
+}
+
+/* 3. The "Pulsating Life" Effect (Heartbeat) */
+@keyframes brutal-pulse {
+    0% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.03); filter: brightness(1.1) contrast(1.1); } /* Slight grow and intensify */
+    100% { transform: scale(1); filter: brightness(1); }
+}
+
+.pulsing-element {
+    display: inline-block;
+    animation: brutal-pulse 2s ease-in-out infinite;
+}
+
+/* --- Existing Brutalist Styles --- */
 .brutal-box {
     background: var(--surface);
     border: 4px solid var(--border);
-    box-shadow: 8px 8px 0px 0px var(--shadow); /* Hard Shadow */
+    box-shadow: 8px 8px 0px 0px var(--shadow);
     transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-
-.brutal-box:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 12px 12px 0px 0px var(--shadow);
-}
-
-.brutal-box:active {
-    transform: translate(2px, 2px);
-    box-shadow: 4px 4px 0px 0px var(--shadow);
-}
+.brutal-box:hover { transform: translate(-4px, -4px); box-shadow: 12px 12px 0px 0px var(--shadow); }
+.brutal-box:active { transform: translate(2px, 2px); box-shadow: 4px 4px 0px 0px var(--shadow); }
 
 .brutal-btn {
     background: var(--accent);
@@ -60,23 +107,10 @@ body {
     font-family: 'JetBrains Mono', monospace;
     transition: all 0.1s;
 }
+.brutal-btn:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0px 0px var(--shadow); }
+.brutal-btn:active { transform: translate(0px, 0px); box-shadow: 0px 0px 0px 0px var(--shadow); }
 
-.brutal-btn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 7px 7px 0px 0px var(--shadow);
-}
-
-.brutal-btn:active {
-    transform: translate(0px, 0px);
-    box-shadow: 0px 0px 0px 0px var(--shadow);
-}
-
-/* 2. Typography */
-h1, h2, h3 {
-    text-transform: uppercase;
-    line-height: 0.9;
-    letter-spacing: -2px;
-}
+h1, h2, h3 { text-transform: uppercase; line-height: 0.9; letter-spacing: -2px; }
 
 .mono-tag {
     font-family: 'JetBrains Mono', monospace;
@@ -87,38 +121,6 @@ h1, h2, h3 {
     display: inline-block;
 }
 
-/* 3. Marquee (Moving Tape) */
-.marquee-container {
-    background: var(--primary);
-    color: white;
-    border-top: 4px solid var(--border);
-    border-bottom: 4px solid var(--border);
-    overflow: hidden;
-    white-space: nowrap;
-    padding: 1rem 0;
-}
-.marquee-content {
-    display: inline-block;
-    animation: scroll 20s linear infinite;
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: bold;
-    font-size: 1.5rem;
-}
-@keyframes scroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-}
-
-/* Custom Cursor */
 .cursor-dot {
-    width: 20px;
-    height: 20px;
-    background: var(--accent);
-    position: fixed;
-    top: 0; left: 0;
-    pointer-events: none;
-    z-index: 9999;
-    border: 2px solid black;
-    transform: translate(-50%, -50%);
-    transition: width 0.2s, height 0.2s;
+    width: 20px; height: 20px; background: var(--accent); position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; border: 2px solid black; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s;
 }
