@@ -4,15 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOGIC DRIVEN | Kinetic Slash</title>
+    <title>LOGIC DRIVEN | Brand Identity</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700;900&family=JetBrains+Mono:wght@800&display=swap');
+        /* Loading Inter for the Logotype & JetBrains Mono for the Tech Badge */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600;700&family=JetBrains+Mono:wght@500&display=swap');
 
         :root {
-            --bg: #030305;
-            --text-main: #ffffff;
-            --accent: #22d3ee; /* Electric Cyan - High Energy */
-            --accent-dark: #0891b2;
+            --bg: #0A0A0A;        /* Premium Dark (Not pure black) */
+            --surface: #171717;   /* Neutral 900 */
+            --text-main: #FFFFFF;
+            --text-muted: #737373;
+            --accent: #06b6d4;    /* Cyan 500 - The Developer Blue */
+            --accent-dim: rgba(6, 182, 212, 0.1);
+            --border: rgba(255, 255, 255, 0.08);
         }
 
         body, html {
@@ -20,130 +24,118 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--bg);
             color: var(--text-main);
-            height: 100%; overflow-x: hidden;
+            height: 100%;
+            display: flex; flex-direction: column;
+            overflow: hidden;
         }
 
-        /* Dynamic Background Pattern */
-        .kinetic-bg {
+        /* Background Grid - Very Subtle (Engineering Paper Vibe) */
+        .engineering-grid {
             position: fixed; inset: 0; z-index: -1;
-            background-image: repeating-linear-gradient(
-                -45deg,
-                rgba(255,255,255,0.02) 0px,
-                rgba(255,255,255,0.02) 1px,
-                transparent 1px,
-                transparent 10px
-            );
-            mask-image: radial-gradient(circle at center, black 30%, transparent 100%);
+            background-image: 
+                linear-gradient(to right, #262626 1px, transparent 1px),
+                linear-gradient(to bottom, #262626 1px, transparent 1px);
+            background-size: 64px 64px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            opacity: 0.2;
         }
 
-        nav {
-            position: fixed; top: 0; left: 0; width: 100%; height: 72px;
-            display: flex; align-items: center; padding: 0 32px;
-            background: rgba(3, 3, 5, 0.9);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            z-index: 1000;
-        }
-
-        /* --- THE TYPOGRAPHIC LOGO --- */
-        .brand-logo {
-            display: flex; align-items: baseline;
-            font-size: 1.75rem; /* حجم كبير ومؤثر */
-            letter-spacing: -0.04em; /* تباعد ضيق جداً */
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        /* الجزء العادي من النص */
-        .brand-text {
-            font-weight: 800; /* وزن ثقيل جداً */
-            color: var(--text-main);
-        }
-
-        /* حاوية الحرف E المدمج */
-        .kinetic-e-container {
-            position: relative;
-            display: inline-block;
-            margin: 0 1px; /* مسافات دقيقة */
-        }
-        
-        /* الحرف E الأساسي */
-        .base-e {
-            font-weight: 900; /* أثقل وزن ممكن */
-            color: var(--text-main);
-            position: relative;
-            z-index: 1;
-        }
-
-        /* --- شريط الدمج المائل (.EXE Slash) --- */
-        .exe-slash {
+        /* --- THE LOGO CONTAINER --- */
+        /* Designed to be exported as a header or standalone mark */
+        .logo-wrapper {
             position: absolute;
-            z-index: 2; /* يظهر فوق الحرف E */
-            
-            /* التموضع الدقيق ليقطع الحرف */
-            top: 15%;
-            left: -10%;
-            
-            /* أسلوب النص */
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.25em; /* صغير جداً */
-            font-weight: 800;
-            color: #000; /* نص أسود للتباين */
-            background: var(--accent); /* خلفية زرقاء مشعة */
-            
-            padding: 2px 8px;
-            
-            /* --- السحر هنا: الميلان الديناميكي --- */
-            /* SkewX يعطي الميلان، Rotate يضبط الزاوية للقطع */
-            transform: skewX(-20deg) rotate(-5deg);
-            
-            /* تفاصيل احترافية */
-            border-radius: 1px; /* حواف حادة تقريباً */
-            box-shadow: 2px 2px 10px rgba(34, 211, 238, 0.2); /* توهج حركة */
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        
-        /* تفاعل عند التحويم: زيادة الميلان والسرعة */
-        .brand-logo:hover .exe-slash {
-            transform: skewX(-30deg) rotate(-5deg) scale(1.1);
-            background: var(--accent);
-            color: white;
-            box-shadow: 4px 4px 15px rgba(34, 211, 238, 0.4);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex; flex-direction: column; align-items: center; gap: 40px;
         }
 
-        /* Main Content */
-        main {
-            height: 100vh; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; text-align: center;
-            padding: 0 20px;
+        .logo-mark {
+            display: flex;
+            align-items: center; /* Center Vertically */
+            gap: 12px; /* Precision spacing between name and badge */
+            padding: 20px 40px;
+            border: 1px solid transparent; /* Placeholder for optical check */
         }
-        h1 { font-size: 3.5rem; font-weight: 900; margin-bottom: 20px; letter-spacing: -0.03em; }
-        h1 span { color: var(--accent); }
-        p { color: #999; max-w: 550px; font-size: 1.15rem; line-height: 1.5; }
+
+        /* 1. The Name: LOGIC DRIVEN */
+        .logotype {
+            font-family: 'Inter', sans-serif;
+            font-size: 3.5rem; /* Scalable Size */
+            font-weight: 700;  /* Bold but not heavy */
+            color: var(--text-main);
+            letter-spacing: -0.04em; /* Tight tracking for modern look */
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        /* 2. The Tech Badge: .EXE */
+        .tech-badge {
+            display: flex; align-items: center; justify-content: center;
+            height: 28px; /* Fixed height for consistency */
+            padding: 0 10px;
+            background: var(--accent-dim);
+            border: 1px solid rgba(6, 182, 212, 0.25);
+            border-radius: 6px; /* Modern UI Radius */
+            margin-top: 6px; /* Optical adjustment to align with baseline */
+            
+            /* Type Styling */
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 0.02em;
+        }
+
+        /* The "Active" Dot inside the badge */
+        .status-dot {
+            width: 6px; height: 6px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            margin-right: 8px;
+            box-shadow: 0 0 8px rgba(6, 182, 212, 0.6);
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* --- Presentation UI --- */
+        .mockup-label {
+            margin-top: 60px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 0.1em;
+            display: flex; gap: 20px;
+        }
+        .label-item { display: flex; align-items: center; gap: 6px; }
+        .check { color: var(--accent); }
 
     </style>
 </head>
 <body>
 
-    <div class="kinetic-bg"></div>
+    <div class="engineering-grid"></div>
 
-    <nav>
-        <a href="#" class="brand-logo">
-            <span class="brand-text">LOGIC DRIV</span>
+    <div class="logo-wrapper">
+        
+        <div class="logo-mark">
+            <div class="logotype">LOGIC DRIVEN</div>
             
-            <span class="kinetic-e-container">
-                <span class="base-e">E</span>
-                <span class="exe-slash">.EXE</span>
-            </span>
-            
-            <span class="brand-text">N</span>
-        </a>
-    </nav>
+            <div class="tech-badge">
+                <div class="status-dot"></div>
+                .EXE
+            </div>
+        </div>
 
-    <main>
-        <h1>High-Velocity <span>Execution</span>.</h1>
-        <p>The hexagonal mark is gone. The .EXE identifier now acts as a dynamic data slash, cutting diagonally across the letter 'E' in DRIVEN.</p>
-    </main>
+        <div class="mockup-label">
+            <div class="label-item"><span class="check">✔</span> Inter Tight (-4%)</div>
+            <div class="label-item"><span class="check">✔</span> JetBrains Mono</div>
+            <div class="label-item"><span class="check">✔</span> Cyan-500</div>
+        </div>
+
+    </div>
 
 </body>
 </html>
