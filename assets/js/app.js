@@ -1,1 +1,1 @@
-console.log("Responsive Core Loaded");
+console.log("Glass Core Active");
