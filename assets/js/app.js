@@ -1,1 +1,1 @@
-console.log("Kinetic Engine Active");
+console.log("Vector Graphics Loaded.");
