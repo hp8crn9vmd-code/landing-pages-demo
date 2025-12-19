@@ -2,13 +2,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap');
 
 :root {
-    --bg: #050507;        /* Deepest Blue-Black */
-    --glass: rgba(255, 255, 255, 0.05);
-    --border: rgba(255, 255, 255, 0.1);
+    --bg: #030304;        /* Rich Black */
+    --surface: #0a0a0c;
+    --border: #1f1f23;
     --text-main: #ffffff;
-    --text-muted: #94a3b8;
-    --accent: #6366f1;    /* Indigo - The color of modern tech */
-    --accent-glow: rgba(99, 102, 241, 0.3);
+    --text-muted: #888888;
+    --accent: #6366f1;    /* Indigo - Professional Tech */
+    --particle-color: #a5b4fc; /* Lighter Indigo for particles */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -17,58 +17,61 @@ body {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg);
     color: var(--text-main);
-    overflow-x: hidden; /* Prevent horizontal scroll */
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
     min-height: 100vh;
     display: flex; flex-direction: column;
 }
 
-/* 1. Background Ambience (Subtle & Pro) */
+/* Subtle Background Ambience */
 .ambient-light {
-    position: fixed; top: -20%; left: 50%; transform: translateX(-50%);
-    width: 100%; max-width: 600px; height: 500px;
-    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-    filter: blur(80px);
+    position: fixed; top: -30%; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 800px; height: 600px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+    filter: blur(100px);
     z-index: -1;
-    opacity: 0.6;
+    opacity: 0.7;
 }
 
-/* 2. Navbar - FIXED & COMPACT */
+/* Navbar - Clean & Fixed */
 nav {
     position: fixed; top: 0; left: 0; width: 100%; height: 64px;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 0 20px; /* Safe padding for mobile */
-    background: rgba(5, 5, 7, 0.85);
-    backdrop-filter: blur(12px);
+    padding: 0 24px;
+    background: rgba(3, 3, 4, 0.85);
+    backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
-    z-index: 9999; /* Always on top */
+    z-index: 9999;
 }
 
-/* Brand Container */
+/* LOGO CONTAINER */
 .brand-link {
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; gap: 12px;
     text-decoration: none;
 }
 
-/* THE LOGO - Strictly Sized */
+/* The Icon Area - Strictly Sized */
 .logo-icon {
-    width: 28px; height: 28px; /* Fixed size, never grows */
+    width: 32px; height: 32px;
     position: relative;
-    flex-shrink: 0; /* Prevents squishing on small phones */
+    flex-shrink: 0;
 }
 
-.hex-svg {
-    width: 100%; height: 100%;
-    overflow: visible;
+/* SVG Styles */
+.hex-svg { width: 100%; height: 100%; overflow: visible; }
+
+/* The Single Hexagon Frame (Static) */
+.hex-frame {
+    fill: none;
+    stroke: #555; /* Subtle grey frame */
+    stroke-width: 1.5;
 }
 
-/* Logo Animation: Elegant Rotation */
-.hex-inner {
-    transform-origin: center;
-    animation: rotate 10s linear infinite;
-    stroke: var(--accent);
+/* The Particles inside */
+.particle {
+    fill: var(--particle-color);
+    filter: drop-shadow(0 0 2px var(--accent));
 }
-
-@keyframes rotate { 100% { transform: rotate(360deg); } }
 
 /* Text Styling */
 .brand-text {
@@ -76,67 +79,57 @@ nav {
     letter-spacing: -0.01em;
 }
 
-/* .EXE Badge - The Pill Style */
+/* .EXE Badge */
 .exe-badge {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.7rem;
-    color: #a5b4fc;
-    background: rgba(99, 102, 241, 0.15);
-    border: 1px solid rgba(99, 102, 241, 0.3);
+    color: var(--particle-color);
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.25);
     padding: 2px 6px;
     border-radius: 4px;
     margin-left: 6px;
-    vertical-align: middle;
 }
 
-/* 3. Main Content - Spaced Correctly */
+/* Main Content Layout */
 main {
     flex-grow: 1;
     display: flex; flex-direction: column;
     justify-content: center; align-items: center;
     text-align: center;
-    padding: 100px 20px 40px; /* Top padding clears the navbar */
+    padding: 100px 20px 40px;
 }
 
-/* Hero Badge */
+/* Hero Elements */
 .hero-badge {
     display: inline-flex; align-items: center; gap: 6px;
-    background: var(--glass); border: 1px solid var(--border);
+    background: rgba(255,255,255,0.03); border: 1px solid var(--border);
     padding: 6px 12px; border-radius: 100px;
     font-size: 0.8rem; color: var(--text-muted);
     margin-bottom: 24px;
 }
-.pulse-dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 5px #10b981; }
+.status-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 6px var(--accent); }
 
-/* Responsive Headline */
 h1 {
-    font-size: clamp(2.5rem, 8vw, 4.5rem); /* Auto-scales between phone and desktop */
-    font-weight: 700;
-    line-height: 1.1;
-    margin-bottom: 20px;
-    background: linear-gradient(180deg, #fff 0%, #94a3b8 100%);
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    font-weight: 700; line-height: 1.1; margin-bottom: 20px;
+    background: linear-gradient(180deg, #fff 0%, #a1a1aa 100%);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     max-width: 800px;
 }
 
 p {
     font-size: 1.1rem; color: var(--text-muted); line-height: 1.6;
-    max-width: 500px; margin-bottom: 32px;
+    max-width: 540px; margin-bottom: 32px;
 }
 
 /* Buttons */
 .btn-group { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
-
-.btn {
-    padding: 12px 24px; border-radius: 8px; font-weight: 500; font-size: 0.95rem;
-    text-decoration: none; transition: transform 0.2s;
-}
+.btn { padding: 12px 24px; border-radius: 8px; font-weight: 500; font-size: 0.95rem; text-decoration: none; transition: transform 0.2s; }
 .btn-primary { background: #fff; color: #000; }
-.btn-secondary { background: var(--glass); color: #fff; border: 1px solid var(--border); }
-
+.btn-secondary { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--border); }
 .btn:hover { transform: translateY(-2px); }
 
-/* Mobile Menu Hamburger (Visual Only) */
-.menu-icon { display: flex; flex-direction: column; gap: 5px; }
-.bar { width: 22px; height: 2px; background: #fff; border-radius: 2px; }
-
+/* Mobile Menu Visual */
+.menu-icon { display: flex; flex-direction: column; gap: 5px; opacity: 0.7; }
+.bar { width: 20px; height: 2px; background: #fff; }
