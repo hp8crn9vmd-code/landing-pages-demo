@@ -1,46 +1,39 @@
 
-class LogicDrivenApp {
-    constructor() { this.init(); }
-    init() {
-        console.log("🚀 LogicDriven: GSAP Mode");
-        gsap.registerPlugin(ScrollTrigger);
-        this.runAnimations();
-        this.setupMenu();
-        if (typeof feather !== 'undefined') feather.replace();
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Initialize Vanta.js (The 3D Background)
+    // @ts-ignore
+    VANTA.NET({
+        el: "#vanta-bg",
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.00,
+        minWidth: 200.00,
+        scale: 1.00,
+        scaleMobile: 1.00,
+        color: 0xfbbf24,       // Gold connection lines
+        backgroundColor: 0x050505, // Deep Black/Navy background
+        points: 10.00,         // Amount of dots
+        maxDistance: 22.00,    // Connection distance
+        spacing: 18.00         // Space between dots
+    });
+
+    // 2. Scroll Observer for Fade Effects
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting) entry.target.classList.add('visible');
+        });
+    }, { threshold: 0.1 });
     
-    runAnimations() {
-        // Hero Sequence
-        const tl = gsap.timeline();
-        tl.from(".hero-title", { y: 60, opacity: 0, duration: 1, ease: "power4.out" })
-          .from(".hero-text", { y: 30, opacity: 0, duration: 0.8 }, "-=0.6")
-          .from(".hero-actions", { y: 20, opacity: 0, duration: 0.8 }, "-=0.6")
-          .from(".lottie-container", { scale: 0.8, opacity: 0, duration: 1 }, "-=0.8");
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-        // Service Cards Stagger
-        gsap.from(".service-card", {
-            scrollTrigger: { trigger: "#services", start: "top 80%" },
-            y: 50, opacity: 0, duration: 0.8, stagger: 0.15, ease: "power2.out"
-        });
-        
-        // Form Reveal
-        gsap.from("#contact-form", {
-            scrollTrigger: { trigger: "#contact", start: "top 75%" },
-            y: 40, opacity: 0, duration: 0.8, ease: "power2.out"
-        });
-
-        // Nav Glass Effect
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('nav');
-            if(window.scrollY > 50) nav.classList.add('shadow-md', 'bg-white/95');
-            else nav.classList.remove('shadow-md', 'bg-white/95');
-        });
+    // 3. Mobile Menu
+    const btn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    if(btn && menu) {
+        btn.addEventListener('click', () => menu.classList.toggle('hidden'));
     }
 
-    setupMenu() {
-        const btn = document.getElementById('mobile-menu-btn');
-        const menu = document.getElementById('mobile-menu');
-        if(btn && menu) btn.addEventListener('click', () => menu.classList.toggle('hidden'));
-    }
-}
-document.addEventListener('DOMContentLoaded', () => new LogicDrivenApp());
+    // 4. Icons
+    if(typeof feather !== 'undefined') feather.replace();
+});
