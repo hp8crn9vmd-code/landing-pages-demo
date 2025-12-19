@@ -3,187 +3,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LOGIC DRIVEN | 3D Core</title>
-    <style>
-        body { margin: 0; overflow: hidden; background-color: #050505; }
-        
-        #loader {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            font-family: monospace; color: #06b6d4; letter-spacing: 2px;
-            transition: opacity 0.5s; pointer-events: none;
-        }
-
-        /* واجهة مستخدم بسيطة فوق الـ 3D */
-        #ui {
-            position: absolute; bottom: 40px; left: 0; width: 100%;
-            text-align: center; pointer-events: none;
-        }
-        .tag {
-            font-family: monospace; color: rgba(255,255,255,0.4); 
-            font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.1);
-            padding: 8px 12px; border-radius: 20px;
-            background: rgba(0,0,0,0.5);
-        }
-    </style>
-    
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-            }
-        }
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> <title>LOGICDRIVEN</title>
+    <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
 
-    <div id="loader">LOADING SYSTEM...</div>
-    
-    <div id="ui">
-        <span class="tag">INTERACTIVE 3D RENDER</span>
-    </div>
+    <div class="ambient-light"></div>
 
-    <script type="module">
-        import * as THREE from 'three';
-        import { FontLoader } from 'three/addons/loaders/FontLoader.js';
-        import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
-
-        // 1. إعداد المشهد (خفيف وسريع)
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x050505);
-        scene.fog = new THREE.Fog(0x050505, 10, 50); // ضباب خفيف للعمق
-
-        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-        
-        // ضبط الكاميرا حسب الجهاز (مهم جداً للموبايل)
-        const isMobile = window.innerWidth < 768;
-        camera.position.z = isMobile ? 35 : 20; // إبعاد الكاميرا في الموبايل
-        camera.position.y = 0;
-
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        document.body.appendChild(renderer.domElement);
-
-        // 2. الإضاءة (بسيطة وفعالة)
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
-        scene.add(ambientLight);
-
-        // ضوء أزرق قوي من اليمين
-        const dirLight = new THREE.DirectionalLight(0x06b6d4, 2);
-        dirLight.position.set(10, 10, 10);
-        scene.add(dirLight);
-
-        // ضوء ملء من اليسار
-        const fillLight = new THREE.PointLight(0xffffff, 0.5);
-        fillLight.position.set(-10, -5, 5);
-        scene.add(fillLight);
-
-        // 3. بناء الشعار الـ 3D
-        const group = new THREE.Group();
-        scene.add(group);
-
-        const loader = new FontLoader();
-        loader.load('https://unpkg.com/three@0.160.0/examples/fonts/droid/droid_sans_bold.typeface.json', function (font) {
+    <nav>
+        <a href="#" class="brand-link">
+            <div class="logo-icon">
+                <svg class="hex-svg" viewBox="0 0 100 100" fill="none" stroke-width="6" stroke-linecap="round">
+                    <polygon points="50 5, 95 27.5, 95 72.5, 50 95, 5 72.5, 5 27.5" stroke="#333" />
+                    <polygon class="hex-inner" points="50 20, 80 35, 80 65, 50 80, 20 65, 20 35" stroke="#6366f1" />
+                    <circle cx="50" cy="50" r="8" fill="white" stroke="none" />
+                </svg>
+            </div>
             
-            // خامة احترافية: معدن داكن + توهج ذاتي للحواف
-            const textMat = new THREE.MeshStandardMaterial({
-                color: 0x111111,
-                roughness: 0.2,
-                metalness: 0.8,
-                emissive: 0x06b6d4, // توهج أزرق خفيف
-                emissiveIntensity: 0.2
-            });
+            <div class="brand-text">
+                LogicDriven<span class="exe-badge">.EXE</span>
+            </div>
+        </a>
 
-            // خامة الـ .EXE (مضيئة جداً)
-            const exeMat = new THREE.MeshStandardMaterial({
-                color: 0x000000,
-                emissive: 0x22d3ee, // أزرق سماوي مشع
-                emissiveIntensity: 2
-            });
+        <div class="menu-icon">
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
 
-            // إنشاء كلمة LOGIC
-            const textGeo1 = new TextGeometry('LOGIC', {
-                font: font, size: 3, height: 0.5, curveSegments: 6,
-                bevelEnabled: true, bevelThickness: 0.1, bevelSize: 0.05, bevelSegments: 3
-            });
-            textGeo1.center(); // توسيط
-            const mesh1 = new THREE.Mesh(textGeo1, textMat);
-            mesh1.position.y = 2; // للأعلى
-            group.add(mesh1);
+    <main>
+        <div class="hero-badge">
+            <div class="pulse-dot"></div>
+            System v5.0 Operational
+        </div>
 
-            // إنشاء كلمة DRIVEN
-            const textGeo2 = new TextGeometry('DRIVEN', {
-                font: font, size: 3, height: 0.5, curveSegments: 6,
-                bevelEnabled: true, bevelThickness: 0.1, bevelSize: 0.05, bevelSegments: 3
-            });
-            textGeo2.center();
-            const mesh2 = new THREE.Mesh(textGeo2, textMat);
-            mesh2.position.y = -2; // للأسفل
-            group.add(mesh2);
-
-            // إنشاء .EXE (صغير بجانب DRIVEN)
-            const exeGeo = new TextGeometry('.EXE', {
-                font: font, size: 1, height: 0.2, curveSegments: 4,
-                bevelEnabled: false
-            });
-            const mesh3 = new THREE.Mesh(exeGeo, exeMat);
-            
-            // حساب موضع .EXE بناء على عرض DRIVEN
-            textGeo2.computeBoundingBox();
-            const widthDriven = textGeo2.boundingBox.max.x;
-            mesh3.position.set(widthDriven - 1.5, -2, 0.5); // تموضع دقيق
-            group.add(mesh3);
-
-            // إخفاء التحميل
-            document.getElementById('loader').style.opacity = 0;
-        });
-
-        // 4. الحركة والتفاعل
-        let mouseX = 0;
-        let mouseY = 0;
+        <h1>
+            Logic Beyond<br>
+            Limits.
+        </h1>
         
-        // دعم اللمس للموبايل
-        document.addEventListener('mousemove', onMove);
-        document.addEventListener('touchmove', onTouch, { passive: false });
+        <p>
+            The foundation for modern digital infrastructure. 
+            Precision engineering for those who demand absolute control.
+        </p>
 
-        function onMove(e) {
-            mouseX = (e.clientX - window.innerWidth / 2) * 0.001;
-            mouseY = (e.clientY - window.innerHeight / 2) * 0.001;
-        }
+        <div class="btn-group">
+            <a href="#" class="btn btn-primary">Initialize</a>
+            <a href="#" class="btn btn-secondary">Documentation</a>
+        </div>
+    </main>
 
-        function onTouch(e) {
-            mouseX = (e.touches[0].clientX - window.innerWidth / 2) * 0.002;
-            mouseY = (e.touches[0].clientY - window.innerHeight / 2) * 0.002;
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-
-            // دوران ناعم للكاميرا بدلاً من النص
-            camera.position.x += (mouseX * 10 - camera.position.x) * 0.05;
-            camera.position.y += (-mouseY * 10 - camera.position.y) * 0.05;
-            camera.lookAt(scene.position);
-
-            // دوران بسيط جداً للشعار نفسه ليظهر الجوانب
-            group.rotation.y = Math.sin(Date.now() * 0.001) * 0.1;
-
-            renderer.render(scene, camera);
-        }
-
-        animate();
-
-        // تجاوب عند تغيير حجم الشاشة
-        window.addEventListener('resize', () => {
-            const width = window.innerWidth;
-            const height = window.innerHeight;
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
-            // تحديث بعد الكاميرا عند تغيير الحجم
-            camera.position.z = width < 768 ? 35 : 20;
-            renderer.setSize(width, height);
-        });
-    </script>
+    <script src="assets/js/app.js"></script>
 </body>
 </html>
