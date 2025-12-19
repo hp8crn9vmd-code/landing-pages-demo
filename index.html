@@ -3,31 +3,139 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LOGICDRIVEN</title>
-    <link rel="stylesheet" href="assets/css/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogicDriven .EXE</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap');
+
+        :root {
+            --bg: #050505;
+            --nav-bg: rgba(10, 10, 10, 0.85);
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #ffffff;
+            --accent: #3b82f6; /* Professional Blue */
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        /* شبكة خلفية خفيفة */
+        .grid-bg {
+            position: fixed; inset: 0; z-index: -1;
+            background-image: linear-gradient(var(--border) 1px, transparent 1px),
+            linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.2;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        /* --- شريط التنقل الاحترافي --- */
+        nav {
+            position: fixed; top: 0; left: 0; width: 100%; height: 64px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 24px;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+        }
+
+        .brand-container {
+            display: flex; align-items: center; gap: 12px;
+            text-decoration: none; color: white;
+            transition: opacity 0.2s;
+        }
+        .brand-container:hover { opacity: 0.9; }
+
+        /* الشعار السداسي الصغير */
+        .logo-hex {
+            width: 32px; height: 32px;
+            position: relative;
+            display: flex; align-items: center; justify-content: center;
+        }
+        
+        .hex-svg { width: 100%; height: 100%; overflow: visible; }
+        .hex-path { fill: none; stroke: #ccc; stroke-width: 1.5; }
+        .hex-active { 
+            fill: none; stroke: var(--accent); stroke-width: 1.5; 
+            stroke-dasharray: 20 60; animation: trace 3s linear infinite;
+        }
+        @keyframes trace { to { stroke-dashoffset: -80; } }
+
+        /* النصوص */
+        .brand-name {
+            font-size: 1.1rem; font-weight: 700; letter-spacing: -0.01em;
+        }
+
+        /* كبسولة .EXE الزجاجية */
+        .exe-capsule {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: #bfdbfe;
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 3px 8px;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.1);
+        }
+
+        /* --- المحتوى الرئيسي --- */
+        main {
+            height: 100vh;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center;
+            padding-top: 64px;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700; margin-bottom: 20px;
+            background: linear-gradient(180deg, #fff, #888);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        p { color: #888; max-w: 500px; line-height: 1.6; font-size: 1.1rem; }
+
+        .btn {
+            margin-top: 40px;
+            padding: 12px 24px; background: white; color: black;
+            text-decoration: none; border-radius: 6px; font-weight: 600;
+            transition: transform 0.2s;
+        }
+        .btn:hover { transform: translateY(-2px); }
+
+    </style>
 </head>
 <body>
 
-    <div class="center-stage">
-        <div class="logo-icon">
-            <svg class="hex-svg" viewBox="0 0 100 100">
-                <path class="hex-track" d="M50 5 L95 27.5 L95 72.5 L50 95 L5 72.5 L5 27.5 Z" />
-                <path class="hex-beam" d="M50 5 L95 27.5 L95 72.5 L50 95 L5 72.5 L5 27.5 Z" />
-            </svg>
-        </div>
+    <div class="grid-bg"></div>
 
-        <div class="brand-text">
-            LogicDriven
-            <div class="glass-exe">
-                <span class="exe-content">.EXE</span>
-                <div class="glass-shine"></div>
+    <nav>
+        <a href="#" class="brand-container">
+            <div class="logo-hex">
+                <svg class="hex-svg" viewBox="0 0 100 100">
+                    <polygon class="hex-path" points="50 5, 95 27.5, 95 72.5, 50 95, 5 72.5, 5 27.5" />
+                    <polygon class="hex-active" points="50 5, 95 27.5, 95 72.5, 50 95, 5 72.5, 5 27.5" />
+                </svg>
             </div>
-        </div>
+            
+            <span class="brand-name">LogicDriven</span>
+            <span class="exe-capsule">.EXE</span>
+        </a>
+    </nav>
 
-        <div class="loader-line"></div>
-    </div>
+    <main>
+        <h1>System Integrated.</h1>
+        <p>The logo is now properly embedded in the navigation bar using a clean, professional layout.</p>
+        <a href="#" class="btn">Initialize</a>
+    </main>
 
-    <script src="assets/js/app.js"></script>
 </body>
 </html>
