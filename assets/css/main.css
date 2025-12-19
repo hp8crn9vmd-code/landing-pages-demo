@@ -1,62 +1,124 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
 
 :root {
-    --primary: #0f172a;
-    --gold: #fbbf24;
+    --bg: #e0e7ff;       /* Very light raw blue/grey */
+    --surface: #ffffff;
+    --border: #000000;   /* Pure Black Borders */
+    --shadow: #000000;   /* Pure Black Shadows */
+    --accent: #FF5D01;   /* Neon Orange (Safety Orange) */
+    --primary: #4F46E5;  /* Brutal Indigo */
 }
+
+* { box-sizing: border-box; }
 
 body {
+    background-color: var(--bg);
+    color: var(--border);
+    font-family: 'Space Grotesk', sans-serif;
     margin: 0;
-    padding: 0;
-    font-family: 'Inter', sans-serif;
-    background-color: #0f172a; /* Fallback */
-    color: white;
     overflow-x: hidden;
-    height: 100vh;
-    width: 100vw;
+    /* The Grid Background */
+    background-image: 
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-position: center top;
+    /* Make grid subtle */
+    background-blend-mode: overlay;
+    backdrop-filter: opacity(0.05); 
 }
 
-/* 1. The Physics Canvas */
-#physics-world {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0; /* Behind text, but clickable for interaction */
-    background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
+/* 1. Brutalist Components */
+.brutal-box {
+    background: var(--surface);
+    border: 4px solid var(--border);
+    box-shadow: 8px 8px 0px 0px var(--shadow); /* Hard Shadow */
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* 2. UI Overlay (Floating above physics) */
-.ui-layer {
-    position: relative;
-    z-index: 10; /* Above physics */
-    pointer-events: none; /* Let clicks pass through to physics engine where possible */
+.brutal-box:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0px 0px var(--shadow);
 }
 
-.interactive-btn {
-    pointer-events: auto; /* Re-enable clicks for buttons */
+.brutal-box:active {
+    transform: translate(2px, 2px);
+    box-shadow: 4px 4px 0px 0px var(--shadow);
+}
+
+.brutal-btn {
+    background: var(--accent);
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 1rem 2rem;
+    border: 3px solid var(--border);
+    box-shadow: 5px 5px 0px 0px var(--shadow);
+    display: inline-block;
     cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    transition: all 0.1s;
 }
 
-/* 3. The Living Logo Animation */
-.living-logo {
-    animation: heartbeat 3s infinite ease-in-out;
-    filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.5));
+.brutal-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0px 0px var(--shadow);
 }
 
-@keyframes heartbeat {
-    0% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.5)); }
-    50% { transform: scale(1.05); filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.8)); }
-    100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.5)); }
+.brutal-btn:active {
+    transform: translate(0px, 0px);
+    box-shadow: 0px 0px 0px 0px var(--shadow);
 }
 
-/* Glass Cards */
-.glass-card {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    pointer-events: auto;
+/* 2. Typography */
+h1, h2, h3 {
+    text-transform: uppercase;
+    line-height: 0.9;
+    letter-spacing: -2px;
+}
+
+.mono-tag {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--border);
+    color: var(--surface);
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    display: inline-block;
+}
+
+/* 3. Marquee (Moving Tape) */
+.marquee-container {
+    background: var(--primary);
+    color: white;
+    border-top: 4px solid var(--border);
+    border-bottom: 4px solid var(--border);
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 1rem 0;
+}
+.marquee-content {
+    display: inline-block;
+    animation: scroll 20s linear infinite;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+@keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* Custom Cursor */
+.cursor-dot {
+    width: 20px;
+    height: 20px;
+    background: var(--accent);
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    border: 2px solid black;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s;
 }
