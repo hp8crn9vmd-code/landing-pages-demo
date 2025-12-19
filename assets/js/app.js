@@ -1,14 +1,10 @@
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Preloader Logic
     setTimeout(() => {
         const loader = document.getElementById('preloader');
-        if(loader) {
-            loader.style.transform = 'translateY(-100%)';
-        }
+        if(loader) loader.style.transform = 'translateY(-100%)';
     }, 1800);
 
-    // 2. Glitch Effect on Hover (Keeping it professional but alive)
     const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     document.querySelectorAll('[data-glitch]').forEach(el => {
         el.onmouseenter = event => {
@@ -25,6 +21,5 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 30);
         }
     });
-
     if(typeof feather !== 'undefined') feather.replace();
 });
