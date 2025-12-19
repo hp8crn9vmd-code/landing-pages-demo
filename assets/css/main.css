@@ -4,7 +4,7 @@
 :root {
     --bg: #050505;
     --text: #ffffff;
-    --accent: #3b82f6; /* لون أزرق احترافي */
+    --accent: #00f0ff; /* Cyber Cyan */
     --border: rgba(255, 255, 255, 0.1);
 }
 
@@ -18,94 +18,105 @@ body {
     overflow-x: hidden;
 }
 
-/* 1. Navbar - Fixed Height & Border */
+/* Navbar */
 nav {
     position: fixed; top: 0; left: 0; width: 100%;
-    height: 80px; /* ارتفاع ثابت لمنع التضخم */
+    height: 80px;
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 24px;
-    background: rgba(5, 5, 5, 0.8);
+    background: rgba(5, 5, 5, 0.9);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
     z-index: 1000;
 }
 
-/* 2. LOGO CONTAINER - Strict Sizing */
+/* --- THE KINETIC LOGO --- */
 .brand-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    display: flex; align-items: center; gap: 16px;
     text-decoration: none;
+    cursor: pointer;
 }
 
-/* The Icon - Fixed Size 40x40px */
-.logo-icon {
-    width: 40px; 
-    height: 40px;
+/* Container for the icon - keeps it safe */
+.icon-stage {
+    width: 44px; height: 44px;
+    position: relative;
     display: flex; align-items: center; justify-content: center;
-    border: 1px solid white;
-    background: black;
-    /* حركة تنفس بسيطة جداً */
-    animation: breathe 4s infinite ease-in-out;
 }
 
-@keyframes breathe {
-    0%, 100% { box-shadow: 0 0 0px rgba(255,255,255,0); border-color: rgba(255,255,255,0.5); }
-    50% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); border-color: #fff; }
+/* The spinning/morphing parts */
+.kinetic-layer {
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--accent);
+    border-radius: 4px;
+    box-shadow: 0 0 10px var(--accent);
 }
 
-/* The Text - Responsive Font Size */
+/* Layer 1: Rotates slowly */
+.layer-1 {
+    animation: spin-slow 4s linear infinite;
+    border-color: #fff;
+    opacity: 0.5;
+}
+
+/* Layer 2: Rotates fast and pulses */
+.layer-2 {
+    width: 70%; height: 70%;
+    margin: 15%; /* Center it */
+    animation: spin-fast 2s linear infinite reverse, pulse-glow 1s ease-in-out infinite alternate;
+    background: rgba(0, 240, 255, 0.2);
+}
+
+/* Layer 3: The Glitch Core */
+.layer-3 {
+    width: 30%; height: 30%;
+    margin: 35%;
+    background: white;
+    animation: jitter 0.2s infinite;
+}
+
+/* Animations */
+@keyframes spin-slow { 100% { transform: rotate(360deg); } }
+@keyframes spin-fast { 100% { transform: rotate(360deg); } }
+@keyframes pulse-glow { 
+    from { box-shadow: 0 0 5px var(--accent); opacity: 0.8; }
+    to { box-shadow: 0 0 20px var(--accent); opacity: 1; }
+}
+@keyframes jitter {
+    0% { transform: translate(0,0); }
+    25% { transform: translate(2px, 2px); }
+    50% { transform: translate(-2px, -1px); }
+    75% { transform: translate(1px, -2px); }
+    100% { transform: translate(0,0); }
+}
+
+/* Text Styling */
 .brand-name {
     font-family: 'Inter', sans-serif;
     font-weight: 800;
-    font-size: 1.25rem; /* 20px */
+    font-size: 1.25rem;
     letter-spacing: -0.02em;
     color: white;
     text-transform: uppercase;
 }
 
-/* The .EXE Tag */
 .exe-tag {
     font-family: 'JetBrains Mono', monospace;
     font-weight: 700;
     color: var(--accent);
     font-size: 1.25rem;
+    animation: blink 1s step-end infinite;
 }
 
-/* 3. Hero Section */
+@keyframes blink { 50% { opacity: 0; } }
+
+/* Hero */
 main {
-    padding-top: 120px; /* مساحة للنافبار */
-    min-height: 100vh;
-    display: flex; flex-direction: column; align-items: center; text-align: center;
-    padding-left: 20px; padding-right: 20px;
-    background-image: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
+    height: 100vh; display: flex; flex-direction: column; 
+    align-items: center; justify-content: center; text-align: center;
+    padding: 20px;
+    background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
 }
 
-h1 {
-    font-size: clamp(2.5rem, 5vw, 5rem); /* خط يتجاوب مع حجم الشاشة */
-    font-weight: 800;
-    line-height: 1.1;
-    margin-bottom: 1.5rem;
-    max-width: 900px;
-}
-
-p {
-    color: #888;
-    font-size: 1.1rem;
-    max-width: 600px;
-    line-height: 1.6;
-    margin-bottom: 3rem;
-}
-
-.primary-btn {
-    background: white; color: black;
-    padding: 16px 32px;
-    font-weight: 700;
-    border-radius: 4px;
-    text-decoration: none;
-    transition: transform 0.2s;
-}
-.primary-btn:hover { transform: translateY(-2px); }
-
-/* SVG Icon Style */
-.hex-svg { width: 24px; height: 24px; stroke: white; stroke-width: 2; fill: none; }
+h1 { font-size: 4rem; margin-bottom: 1rem; }
