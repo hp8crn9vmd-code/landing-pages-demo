@@ -4,195 +4,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOGIC DRIVEN | 3D Architect</title>
+    <title>LOGIC DRIVEN | Cinematic Core</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;800&family=JetBrains+Mono:wght@700&display=swap');
 
-        body { margin: 0; overflow: hidden; background-color: #050505; }
+        body { margin: 0; overflow: hidden; background-color: #020203; }
         
-        /* واجهة المستخدم فوق الـ 3D */
+        /* طبقة الواجهة (UI) تطفو فوق الـ 3D */
         #ui-layer {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; /* يسمح للماوس بالمرور للـ 3D */
+            pointer-events: none;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 2;
+            z-index: 10;
         }
 
-        /* الطباعة (Typography) */
-        h1 {
-            font-family: 'Inter', sans-serif; color: white;
-            font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 800;
-            letter-spacing: -0.04em; margin: 0;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            mix-blend-mode: exclusion; /* دمج النص مع الخلفية باحترافية */
+        /* الطباعة السينمائية */
+        .brand-title {
+            font-family: 'Inter', sans-serif;
+            font-weight: 800; font-size: clamp(3rem, 8vw, 6rem);
+            color: #ffffff; letter-spacing: -0.04em;
+            text-transform: uppercase;
+            line-height: 0.9;
+            text-align: center;
+            /* مزج النص مع الخلفية ليعطي تأثير تداخل */
+            mix-blend-mode: overlay;
+            opacity: 0.8;
         }
 
-        .subtitle {
-            font-family: 'JetBrains Mono', monospace; color: #06b6d4;
-            margin-top: 20px; font-size: 1rem; letter-spacing: 0.1em;
-            background: rgba(6, 182, 212, 0.1); padding: 8px 16px; border-radius: 4px;
-            backdrop-filter: blur(5px); border: 1px solid rgba(6, 182, 212, 0.2);
+        .exe-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem; color: #22d3ee;
+            background: rgba(34, 211, 238, 0.1);
+            padding: 8px 16px; border: 1px solid rgba(34, 211, 238, 0.3);
+            margin-top: 30px; border-radius: 4px;
+            backdrop-filter: blur(10px);
+            letter-spacing: 0.2em;
         }
 
-        /* شريط التنقل */
+        /* شريط علوي بسيط */
         nav {
             position: absolute; top: 0; left: 0; width: 100%; padding: 40px;
-            display: flex; justify-content: space-between; align-items: center;
-            pointer-events: auto; z-index: 3; box-sizing: border-box;
+            box-sizing: border-box; display: flex; justify-content: space-between;
+            z-index: 20; pointer-events: auto;
         }
-        .brand { font-family: 'Inter', sans-serif; font-weight: 700; color: white; font-size: 1.2rem; }
-        .menu { font-family: 'JetBrains Mono', monospace; color: #888; font-size: 0.9rem; }
+        .logo-text { font-family: 'Inter', sans-serif; font-weight: 700; color: white; letter-spacing: -0.02em; }
+        .menu-btn { width: 30px; height: 2px; background: white; }
 
     </style>
+    
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
 </head>
 <body>
 
-    <canvas id="webgl"></canvas>
-
     <nav>
-        <div class="brand">LOGIC DRIVEN</div>
-        <div class="menu">SYSTEM_V1.0</div>
+        <div class="logo-text">LOGIC DRIVEN</div>
+        <div class="menu-btn"></div>
     </nav>
 
     <div id="ui-layer">
-        <h1>ARCHITECTING<br>REALITY</h1>
-        <div class="subtitle">.EXE INITIALIZED</div>
+        <div class="brand-title">Logic<br>Driven</div>
+        <div class="exe-tag">SYSTEM .EXE ONLINE</div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
-    <script>
-        // --- إعداد المشهد الاحترافي ---
-        const canvas = document.querySelector('#webgl');
+        // 1. إعداد المشهد
         const scene = new THREE.Scene();
-        
-        // الضباب لإعطاء عمق (Depth) وإخفاء الحواف
-        scene.fog = new THREE.FogExp2(0x050505, 0.002);
+        scene.fog = new THREE.FogExp2(0x020203, 0.035); // ضباب كثيف لإخفاء العمق
 
-        // الكاميرا
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 5;
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 12;
 
-        // المصير (Renderer) - إعدادات الجودة العالية
-        const renderer = new THREE.WebGLRenderer({
-            canvas: canvas,
-            antialias: true, // تنعيم الحواف (مهم جداً للاحترافية)
-            alpha: true // خلفية شفافة
-        });
+        const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance" });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // وضوح عالي للشاشات الحديثة
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.toneMapping = THREE.ReinhardToneMapping;
+        document.body.appendChild(renderer.domElement);
 
-        // --- الإضاءة (Cinematic Lighting) ---
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-        scene.add(ambientLight);
-
-        const pointLight = new THREE.PointLight(0x06b6d4, 1); // ضوء أزرق سماوي
-        pointLight.position.set(2, 3, 4);
-        scene.add(pointLight);
-
-        const pointLight2 = new THREE.PointLight(0xffffff, 0.5); // ضوء تعبئة أبيض
-        pointLight2.position.set(-2, -2, -2);
-        scene.add(pointLight2);
-
-        // --- العناصر (The Objects) ---
+        // 2. العناصر (The Geometry)
         
-        // 1. النواة الأساسية (The Core)
-        const geometry = new THREE.IcosahedronGeometry(1.5, 1); // شكل هندسي معقد
-        
-        // خامة "Wireframe" متقدمة
-        const material = new THREE.MeshStandardMaterial({
-            color: 0x111111,
-            wireframe: true,
-            roughness: 0.4,
-            metalness: 0.8
+        // النواة المركزية (Icosahedron)
+        const coreGeo = new THREE.IcosahedronGeometry(1.5, 0);
+        const coreMat = new THREE.MeshStandardMaterial({
+            color: 0x000000,
+            roughness: 0.1,
+            metalness: 0.9,
+            emissive: 0x22d3ee, // توهج ذاتي
+            emissiveIntensity: 0.5,
+            wireframe: true
         });
-        
-        const core = new THREE.Mesh(geometry, material);
+        const core = new THREE.Mesh(coreGeo, coreMat);
         scene.add(core);
 
-        // 2. الهالة الداخلية (Inner Glow Mesh)
-        const innerGeo = new THREE.IcosahedronGeometry(1.4, 2);
-        const innerMat = new THREE.MeshBasicMaterial({
-            color: 0x06b6d4,
-            wireframe: true,
+        // الغلاف الخارجي (Crystal Shell)
+        const shellGeo = new THREE.IcosahedronGeometry(2.5, 2);
+        const shellMat = new THREE.MeshPhysicalMaterial({
+            color: 0x111111,
+            metalness: 0.1,
+            roughness: 0.1,
+            transmission: 0.5, // زجاجي
             transparent: true,
-            opacity: 0.1
+            opacity: 0.3,
+            wireframe: true
         });
-        const glow = new THREE.Mesh(innerGeo, innerMat);
-        scene.add(glow);
+        const shell = new THREE.Mesh(shellGeo, shellMat);
+        scene.add(shell);
 
-        // 3. حقل الجسيمات (Data Particles)
-        const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCount = 700;
-        const posArray = new Float32Array(particlesCount * 3);
+        // حلقة الجسيمات (Data Ring)
+        const ringGeo = new THREE.TorusGeometry(4.5, 0.05, 16, 100);
+        const ringMat = new THREE.MeshBasicMaterial({ color: 0x22d3ee });
+        const ring = new THREE.Mesh(ringGeo, ringMat);
+        ring.rotation.x = Math.PI / 2;
+        scene.add(ring);
 
-        for(let i = 0; i < particlesCount * 3; i++) {
-            // توزيع عشوائي واسع
-            posArray[i] = (Math.random() - 0.5) * 15;
-        }
+        // 3. الإضاءة السينمائية
+        const ambientLight = new THREE.AmbientLight(0x000000);
+        scene.add(ambientLight);
 
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        const particlesMaterial = new THREE.PointsMaterial({
-            size: 0.02,
-            color: 0x06b6d4,
-            transparent: true,
-            opacity: 0.8,
-            blending: THREE.AdditiveBlending // يجعل الجسيمات تضيء
-        });
+        // ضوء أزرق رئيسي
+        const light1 = new THREE.PointLight(0x22d3ee, 100);
+        light1.position.set(2, 2, 2);
+        scene.add(light1);
 
-        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-        scene.add(particlesMesh);
+        // ضوء أرجواني للخلفية (تباين)
+        const light2 = new THREE.PointLight(0x8b5cf6, 50);
+        light2.position.set(-5, -5, -5);
+        scene.add(light2);
 
-        // --- التفاعل مع الماوس (Smooth Parallax) ---
+        // 4. المعالجة اللاحقة (The Secret Sauce: Bloom)
+        const renderScene = new RenderPass(scene, camera);
+
+        // إعدادات Bloom القوية
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+        bloomPass.threshold = 0; // يبدأ التوهج فوراً
+        bloomPass.strength = 1.2; // قوة التوهج
+        bloomPass.radius = 0.5;
+
+        const composer = new EffectComposer(renderer);
+        composer.addPass(renderScene);
+        composer.addPass(bloomPass);
+
+        // 5. التحريك والتفاعل
         let mouseX = 0;
         let mouseY = 0;
         let targetX = 0;
         let targetY = 0;
-
+        
         const windowHalfX = window.innerWidth / 2;
         const windowHalfY = window.innerHeight / 2;
 
         document.addEventListener('mousemove', (event) => {
-            mouseX = (event.clientX - windowHalfX);
-            mouseY = (event.clientY - windowHalfY);
+            mouseX = (event.clientX - windowHalfX) * 0.001;
+            mouseY = (event.clientY - windowHalfY) * 0.001;
         });
 
-        // --- حلقة التحريك (Animation Loop) ---
         const clock = new THREE.Clock();
 
         function animate() {
-            targetX = mouseX * 0.001;
-            targetY = mouseY * 0.001;
+            const delta = clock.getDelta();
+            const time = clock.getElapsedTime();
 
-            const elapsedTime = clock.getElapsedTime();
+            targetX = mouseX * 2;
+            targetY = mouseY * 2;
 
-            // تحريك النواة
-            core.rotation.y += 0.005;
-            core.rotation.x += 0.002;
+            // دوران معقد للنواة
+            core.rotation.x += 0.005;
+            core.rotation.y += 0.01;
             
-            // تحريك التوهج (عكسي)
-            glow.rotation.y -= 0.005;
-            glow.rotation.x -= 0.002;
+            // نبض النواة (Scaling Pulse)
+            const scale = 1 + Math.sin(time * 2) * 0.05;
+            core.scale.set(scale, scale, scale);
 
-            // تحريك الجسيمات (تموج)
-            particlesMesh.rotation.y = -elapsedTime * 0.05;
-            particlesMesh.rotation.x = mouseY * 0.0001;
+            // دوران الغلاف (عكسي)
+            shell.rotation.x -= 0.002;
+            shell.rotation.y -= 0.002;
 
-            // استجابة ناعمة للماوس
-            core.rotation.y += 0.05 * (targetX - core.rotation.y);
-            core.rotation.x += 0.05 * (targetY - core.rotation.x);
+            // حركة الحلقة (تموج)
+            ring.rotation.x = (Math.PI / 2) + Math.sin(time) * 0.1;
+            ring.rotation.y = Math.cos(time * 0.5) * 0.1;
 
-            renderer.render(scene, camera);
-            window.requestAnimationFrame(animate);
+            // استجابة الكاميرا للماوس
+            camera.position.x += (mouseX * 5 - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY * 5 - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+
+            composer.render(); // نستخدم composer بدلاً من renderer العادي
+            requestAnimationFrame(animate);
         }
 
         animate();
 
-        // تجاوب مع تغيير حجم الشاشة
+        // تجاوب الشاشة
         window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            camera.aspect = width / height;
             camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setSize(width, height);
+            composer.setSize(width, height);
         });
     </script>
 </body>
