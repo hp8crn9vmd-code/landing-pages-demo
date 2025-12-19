@@ -1,135 +1,137 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Space+Mono:wght@700&display=swap');
 
 :root {
-    --bg: #030304;        /* Rich Black */
-    --surface: #0a0a0c;
-    --border: #1f1f23;
-    --text-main: #ffffff;
-    --text-muted: #888888;
-    --accent: #6366f1;    /* Indigo - Professional Tech */
-    --particle-color: #a5b4fc; /* Lighter Indigo for particles */
+    --bg: #0b0b0f;
+    --text: #ffffff;
+    --accent-1: #6366f1; /* Indigo */
+    --accent-2: #d946ef; /* Fuchsia */
+    --accent-3: #06b6d4; /* Cyan */
+    --glass: rgba(255, 255, 255, 0.05);
+    --border: rgba(255, 255, 255, 0.1);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Outfit', sans-serif; /* خط عصري جداً يناسب الـ Web3 */
     background-color: var(--bg);
-    color: var(--text-main);
-    -webkit-font-smoothing: antialiased;
+    color: var(--text);
     overflow-x: hidden;
     min-height: 100vh;
     display: flex; flex-direction: column;
 }
 
-/* Subtle Background Ambience */
-.ambient-light {
-    position: fixed; top: -30%; left: 50%; transform: translateX(-50%);
-    width: 100%; max-width: 800px; height: 600px;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
-    filter: blur(100px);
-    z-index: -1;
-    opacity: 0.7;
+/* Background: Abstract blurry orbs (NFT vibe) */
+.nft-glow {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+    background: 
+        radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.15), transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(217, 70, 239, 0.1), transparent 40%);
+    filter: blur(80px);
 }
 
-/* Navbar - Clean & Fixed */
+/* Navbar */
 nav {
-    position: fixed; top: 0; left: 0; width: 100%; height: 64px;
+    position: fixed; top: 0; left: 0; width: 100%; height: 70px;
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 24px;
-    background: rgba(3, 3, 4, 0.85);
-    backdrop-filter: blur(16px);
+    background: rgba(11, 11, 15, 0.7);
+    backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
-    z-index: 9999;
+    z-index: 1000;
 }
 
-/* LOGO CONTAINER */
+/* --- THE NFT LOGO --- */
 .brand-link {
-    display: flex; align-items: center; gap: 12px;
+    display: flex; align-items: center; gap: 14px;
     text-decoration: none;
+    perspective: 800px; /* Important for 3D effect */
 }
 
-/* The Icon Area - Strictly Sized */
-.logo-icon {
-    width: 32px; height: 32px;
+.logo-container {
+    width: 36px; height: 36px;
     position: relative;
-    flex-shrink: 0;
+    /* 3D Floating Animation */
+    animation: float-token 6s ease-in-out infinite;
+    transform-style: preserve-3d;
 }
 
-/* SVG Styles */
-.hex-svg { width: 100%; height: 100%; overflow: visible; }
-
-/* The Single Hexagon Frame (Static) */
-.hex-frame {
-    fill: none;
-    stroke: #555; /* Subtle grey frame */
-    stroke-width: 1.5;
+/* The Holographic Hexagon */
+.hex-svg {
+    width: 100%; height: 100%;
+    filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.5));
 }
 
-/* The Particles inside */
-.particle {
-    fill: var(--particle-color);
-    filter: drop-shadow(0 0 2px var(--accent));
+/* Gradient Definitions for SVG are in HTML */
+
+@keyframes float-token {
+    0%, 100% { transform: translateY(0) rotateY(0deg); }
+    50% { transform: translateY(-4px) rotateY(15deg); } /* يطفو ويميل كعملة */
 }
 
-/* Text Styling */
+/* Particles inside the logo (Data Sparkles) */
+.sparkle {
+    transform-origin: center;
+    animation: sparkle-flash 3s infinite;
+}
+@keyframes sparkle-flash {
+    0%, 100% { opacity: 0.3; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Typography */
 .brand-text {
-    font-size: 1rem; font-weight: 600; color: white;
-    letter-spacing: -0.01em;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.02em;
 }
 
-/* .EXE Badge */
-.exe-badge {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--particle-color);
-    background: rgba(99, 102, 241, 0.1);
-    border: 1px solid rgba(99, 102, 241, 0.25);
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-left: 6px;
+/* The .EXE Badge - Holographic Sticker Style */
+.exe-nft {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin-left: 8px;
+    color: #e2e8f0;
+    text-shadow: 0 0 10px rgba(99, 102, 241, 0.8);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
-/* Main Content Layout */
+/* Main Content */
 main {
-    flex-grow: 1;
-    display: flex; flex-direction: column;
-    justify-content: center; align-items: center;
-    text-align: center;
+    flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
     padding: 100px 20px 40px;
 }
 
-/* Hero Elements */
-.hero-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-    padding: 6px 12px; border-radius: 100px;
-    font-size: 0.8rem; color: var(--text-muted);
-    margin-bottom: 24px;
-}
-.status-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 6px var(--accent); }
-
+/* Gradient Text Headline */
 h1 {
-    font-size: clamp(2.5rem, 7vw, 4.5rem);
-    font-weight: 700; line-height: 1.1; margin-bottom: 20px;
-    background: linear-gradient(180deg, #fff 0%, #a1a1aa 100%);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     max-width: 800px;
 }
 
 p {
-    font-size: 1.1rem; color: var(--text-muted); line-height: 1.6;
-    max-width: 540px; margin-bottom: 32px;
+    font-size: 1.1rem; color: #94a3b8; max-width: 500px; line-height: 1.6; margin-bottom: 40px;
 }
 
-/* Buttons */
-.btn-group { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
-.btn { padding: 12px 24px; border-radius: 8px; font-weight: 500; font-size: 0.95rem; text-decoration: none; transition: transform 0.2s; }
-.btn-primary { background: #fff; color: #000; }
-.btn-secondary { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--border); }
-.btn:hover { transform: translateY(-2px); }
+/* Glassmorphism Button */
+.mint-btn {
+    background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+    color: white; padding: 14px 32px; border-radius: 12px; font-weight: 600; text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+}
+.mint-btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(217, 70, 239, 0.6); }
 
-/* Mobile Menu Visual */
-.menu-icon { display: flex; flex-direction: column; gap: 5px; opacity: 0.7; }
-.bar { width: 20px; height: 2px; background: #fff; }
+/* Mobile Menu */
+.menu-lines { display: flex; flex-direction: column; gap: 6px; opacity: 0.8; }
+.line { width: 24px; height: 2px; background: white; border-radius: 2px; }
