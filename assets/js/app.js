@@ -1,45 +1,76 @@
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Hide Preloader
-    setTimeout(() => { document.getElementById('preloader').style.transform = 'translateY(-100%)'; }, 1200);
+    const creature = document.getElementById('living-creature');
+    if (!creature) return;
 
-    // 2. THE INTELLIGENT ENGINE
-    const target = document.getElementById('smart-logo-target');
-    const dataDisplay = document.getElementById('logo-coords');
+    console.log("Organism: ALIVE");
+
+    // --- Organism State Variables ---
+    let posX = 0, posY = 0; // Current Position
+    let velX = 0, velY = 0; // Velocity
+    let targetX = 0, targetY = 0; // Where it wants to go
     
-    // متغيرات الحركة (الزمن)
-    let t = 0; 
-    
-    // دالة لتوليد حركة انسيابية معقدة (Lissajous figures inspired)
-    // نستخدم ترددات مختلفة (أرقام أولية) لضمان عدم تكرار النمط بسرعة
-    function updateFrame() {
-        t += 0.005; // سرعة الزمن (بطيء ودقيق)
+    let breatheTimer = 0;
+    let jitterTimer = 0;
 
-        // معادلات الحركة (Math-Driven Logic)
-        // دمج موجات الجيب وجيب التمام بترددات مختلفة يخلق مساراً "عضويًا" وغير مكرر
-        const x = Math.sin(t * 1.7) * 4 + Math.cos(t * 2.3) * 2; 
-        const y = Math.cos(t * 1.3) * 3 + Math.sin(t * 2.9) * 2;
-        const rotate = Math.sin(t * 0.5) * 2; // دوران خفيف جداً (درجتين فقط)
-        const scale = 1 + (Math.sin(t * 4) * 0.02); // "تنفس" خفيف جداً
+    // --- Behavior Parameters ---
+    const wanderSpeed = 0.05;  // How fast it accelerates towards target
+    const damping = 0.95;      // Friction (prevents it from flying off forever)
+    const wanderRange = 60;    // How far it can roam from center (pixels)
+    const breatheSpeed = 0.03; // Speed of inhaling/exhaling
+    const jitterIntensity = 2; // How violently it shakes
 
-        // تطبيق التحويل بدقة عالية
-        if (target) {
-            target.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0) rotate(${rotate.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
-        }
+    // Pick a new random target to wander towards
+    function pickNewTarget() {
+        targetX = (Math.random() - 0.5) * wanderRange * 2;
+        targetY = (Math.random() - 0.5) * wanderRange * 2;
+        // Pick a new target randomly between 1 and 3 seconds
+        setTimeout(pickNewTarget, 1000 + Math.random() * 2000);
+    }
+    pickNewTarget(); // Start wandering
 
-        // تحديث إحداثيات البيانات (للمظهر الاحترافي)
-        if (dataDisplay) {
-            dataDisplay.innerText = `X:${x.toFixed(1)} Y:${y.toFixed(1)}`;
-        }
+    // THE MAIN LIFE LOOP (Runs 60fps)
+    function animateOrganism() {
+        // 1. Physics: Calculate Movement toward target
+        const forceX = (targetX - posX) * wanderSpeed;
+        const forceY = (targetY - posY) * wanderSpeed;
+        
+        velX += forceX;
+        velY += forceY;
+        
+        // Apply damping (friction)
+        velX *= damping;
+        velY *= damping;
 
-        // طلب الإطار التالي (60fps) - حركة ناعمة جداً
-        requestAnimationFrame(updateFrame);
+        posX += velX;
+        posY += velY;
+
+        // 2. Organic Breathing (Jelly Effect) using sine waves
+        breatheTimer += breatheSpeed;
+        // Scale X and Y inversely to create squashing stretch
+        const scaleX = 1 + Math.sin(breatheTimer) * 0.05;
+        const scaleY = 1 + Math.cos(breatheTimer) * 0.05;
+
+        // 3. Nervous Jitter (High frequency noise)
+        jitterTimer += 0.5; // Fast timer
+        // Perlin-like noise simulation using multiple sines
+        const jitterRot = (Math.sin(jitterTimer) + Math.cos(jitterTimer * 1.3)) * jitterIntensity;
+        const jitterScale = 1 + (Math.sin(jitterTimer * 2) * 0.01);
+
+        // 4. Combine all forces into final transform
+        const finalTransform = `
+            translate3d(${posX.toFixed(2)}px, ${posY.toFixed(2)}px, 0)
+            rotate(${jitterRot.toFixed(2)}deg)
+            scale(${scaleX * jitterScale}, ${scaleY * jitterScale})
+        `;
+
+        creature.style.transform = finalTransform;
+
+        requestAnimationFrame(animateOrganism);
     }
 
-    // بدء المحرك
-    console.log("Smart Engine: Initialized");
-    requestAnimationFrame(updateFrame);
+    // Start the life engine
+    animateOrganism();
     
-    // Feather Icons
     if(typeof feather !== 'undefined') feather.replace();
 });
