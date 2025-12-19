@@ -1,10 +1,10 @@
 
 <!DOCTYPE html>
-<html lang="en" class="antialiased">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOGIC DRIVEN | Pro Stack</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LOGIC DRIVEN | Elite Native</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -12,10 +12,9 @@
             theme: {
                 extend: {
                     colors: {
-                        background: '#030305',
-                        primary: '#ffffff',
-                        accent: '#38bdf8', /* Sky 400 */
-                        glass: 'rgba(255, 255, 255, 0.05)',
+                        bg: '#030305',
+                        accent: '#38bdf8',
+                        glass: 'rgba(255, 255, 255, 0.03)',
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -27,231 +26,212 @@
     </script>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
-    
-    <script src="https://unpkg.com/@studio-freight/lenis@1.0.29/dist/lenis.min.js"></script>
+
+    <style>
+        body { background-color: #030305; margin: 0; overflow: hidden; }
+        #canvas-container { position: fixed; inset: 0; z-index: 0; }
+        #ui-layer { position: relative; z-index: 10; pointer-events: none; }
+        .pointer-events-auto { pointer-events: auto; }
+        
+        /* Loading Overlay */
+        #loader {
+            position: fixed; inset: 0; background: #030305; z-index: 50;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.8s ease-out;
+        }
+        .spinner { width: 40px; height: 40px; border: 2px solid #333; border-top-color: #38bdf8; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
 
     <script type="importmap">
         {
             "imports": {
-                "react": "https://esm.sh/react@18.2.0",
-                "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
-                "three": "https://esm.sh/three@0.160.0",
-                "@react-three/fiber": "https://esm.sh/@react-three/fiber@8.15.14?external=react,react-dom,three",
-                "@react-three/drei": "https://esm.sh/@react-three/drei@9.99.0?external=react,react-dom,three,@react-three/fiber",
-                "@react-three/postprocessing": "https://esm.sh/@react-three/postprocessing@2.16.0?external=react,react-dom,three,@react-three/fiber",
-                "uuid": "https://esm.sh/uuid@9.0.1",
-                "gsap": "https://esm.sh/gsap@3.12.5"
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
             }
         }
     </script>
-    
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-    <style>
-        body { background-color: #030305; color: white; overflow-x: hidden; }
-        #canvas-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: 1; }
-        #ui-layer { position: relative; z-index: 10; pointer-events: none; }
-        .pointer-events-auto { pointer-events: auto; }
-        
-        /* Loader Animation */
-        .loader { width: 48px; height: 48px; border: 3px solid #FFF; border-bottom-color: transparent; border-radius: 50%; display: inline-block; box-sizing: border-box; animation: rotation 1s linear infinite; }
-        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
 </head>
 <body>
 
-    <div id="root"></div>
+    <div id="loader"><div class="spinner"></div></div>
 
-    <script type="text/babel" data-type="module">
-        import React, { useState, useRef, useEffect, Suspense } from 'react';
-        import { createRoot } from 'react-dom/client';
+    <div id="ui-layer" class="w-full h-screen flex flex-col justify-between p-6 md:p-12">
+        <nav class="flex justify-between items-center opacity-0 animate-fade-in" style="animation-delay: 0.5s; animation-fill-mode: forwards;">
+            <div class="flex items-center gap-3">
+                <div class="w-2 h-2 rounded-full bg-accent shadow-[0_0_10px_#38bdf8]"></div>
+                <span class="font-mono text-xs text-slate-400 tracking-widest">SYSTEM ONLINE</span>
+            </div>
+            <button class="pointer-events-auto px-4 py-1.5 text-xs font-medium text-white/80 border border-white/10 rounded-full hover:bg-white/5 transition-colors backdrop-blur-md">
+                MENU
+            </button>
+        </nav>
+
+        <footer class="opacity-0 animate-fade-in" style="animation-delay: 0.8s; animation-fill-mode: forwards;">
+            <h1 class="text-4xl md:text-7xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40 mb-4">
+                Logic<br>Driven.
+            </h1>
+            <div class="flex flex-col md:flex-row gap-6 md:items-end justify-between">
+                <p class="text-slate-400 text-sm max-w-sm leading-relaxed">
+                    High-performance native WebGL rendering. 
+                    Zero dependencies. Maximum frame rate.
+                </p>
+                <button class="pointer-events-auto w-fit px-8 py-3 bg-white text-black font-semibold rounded hover:scale-105 transition-transform">
+                    Initialize Project
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <div id="canvas-container"></div>
+
+    <script type="module">
         import * as THREE from 'three';
-        import { Canvas, useFrame } from '@react-three/fiber';
-        import { Float, Text, MeshTransmissionMaterial, Environment, PerspectiveCamera, OrbitControls } from '@react-three/drei';
-        import { EffectComposer, Bloom } from '@react-three/postprocessing';
-        import gsap from 'gsap';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+        import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+        import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
-        // --- 1. The Logic Core Component (Geometry) ---
-        const LogicCore = () => {
-            const meshRef = useRef();
-            const glowRef = useRef();
-            
-            useFrame((state) => {
-                const t = state.clock.getElapsedTime();
-                // Complex rotation
-                meshRef.current.rotation.x = Math.cos(t / 4) / 2;
-                meshRef.current.rotation.y = Math.sin(t / 4) / 2;
-                meshRef.current.rotation.z = Math.sin(t / 1.5) / 2;
-                meshRef.current.position.y = Math.sin(t / 1.5) / 10;
-                
-                // Pulse effect
-                const scale = 1 + Math.sin(t * 2) * 0.05;
-                glowRef.current.scale.set(scale, scale, scale);
+        // --- 1. Scene Setup ---
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x030305, 0.02);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        
+        // Responsive Camera Position
+        const isMobile = window.innerWidth < 768;
+        camera.position.set(0, 0, isMobile ? 18 : 12);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance" });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.toneMapping = THREE.ReinhardToneMapping;
+        container.appendChild(renderer.domElement);
+
+        // --- 2. Post Processing (The "Pro" Glow) ---
+        const renderScene = new RenderPass(scene, camera);
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+        bloomPass.threshold = 0.2;
+        bloomPass.strength = 1.2; // Intense Glow
+        bloomPass.radius = 0.5;
+
+        const composer = new EffectComposer(renderer);
+        composer.addPass(renderScene);
+        composer.addPass(bloomPass);
+
+        // --- 3. Objects (Glass Core) ---
+        
+        // A. The Glass Octahedron
+        const geometry = new THREE.OctahedronGeometry(1.5, 0);
+        const material = new THREE.MeshPhysicalMaterial({
+            color: 0xffffff,
+            metalness: 0.1,
+            roughness: 0.05,
+            transmission: 1,  // Glass effect
+            thickness: 2,
+            envMapIntensity: 1.5,
+            clearcoat: 1,
+            clearcoatRoughness: 0.1
+        });
+        const glassCore = new THREE.Mesh(geometry, material);
+        scene.add(glassCore);
+
+        // B. The Inner Energy (.EXE)
+        const innerGeo = new THREE.IcosahedronGeometry(0.7, 0);
+        const innerMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 }); // Pure Cyan
+        const energyCore = new THREE.Mesh(innerGeo, innerMat);
+        scene.add(energyCore);
+
+        // C. Badge Text (.EXE)
+        const loader = new FontLoader();
+        loader.load('https://unpkg.com/three@0.160.0/examples/fonts/droid/droid_sans_bold.typeface.json', function (font) {
+            const textGeo = new TextGeometry('.EXE', {
+                font: font, size: 0.25, height: 0.05,
             });
+            const textMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+            const textMesh = new THREE.Mesh(textGeo, textMat);
+            
+            // Calculate position relative to core
+            textMesh.position.set(1.8, 0.5, 0);
+            scene.add(textMesh);
 
-            return (
-                <group>
-                    <Float speed={2} rotationIntensity={1} floatIntensity={1}>
-                        {/* The Glass Octahedron (Logic) */}
-                        <mesh ref={meshRef}>
-                            <octahedronGeometry args={[1.5, 0]} />
-                            {/* Pro Material: MeshTransmission (Glassy) */}
-                            <MeshTransmissionMaterial 
-                                backside
-                                samples={16}
-                                thickness={2}
-                                roughness={0.2}
-                                anisotropy={1}
-                                chromaticAberration={0.1} // Premium look
-                                color="#ffffff"
-                                resolution={1024}
-                            />
-                        </mesh>
-                        
-                        {/* The Inner Energy (.EXE) */}
-                        <mesh ref={glowRef}>
-                            <icosahedronGeometry args={[0.8, 0]} />
-                            <meshStandardMaterial 
-                                color="#38bdf8" 
-                                emissive="#38bdf8"
-                                emissiveIntensity={3}
-                                toneMapped={false}
-                            />
-                        </mesh>
-                    </Float>
-                </group>
-            );
-        };
+            // Hide Loader
+            document.getElementById('loader').style.opacity = 0;
+            setTimeout(() => document.getElementById('loader').remove(), 800);
+        });
 
-        // --- 2. Typography Component (3D Text) ---
-        const BrandText = () => {
-            return (
-                <group position={[0, -2.5, 0]}>
-                    <Text
-                        position={[0, 0, 0]}
-                        fontSize={1}
-                        font="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hjp-Ek-_EeA.woff"
-                        letterSpacing={-0.05}
-                        color="white"
-                        anchorX="center"
-                        anchorY="middle"
-                    >
-                        LOGIC DRIVEN
-                        <meshStandardMaterial color="white" toneMapped={false} />
-                    </Text>
-                    
-                    <Text
-                        position={[3.8, 0.4, 0]} // Positioned as a badge
-                        fontSize={0.25}
-                        font="https://fonts.gstatic.com/s/jetbrainsmono/v13/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0Pn5qRS8.woff"
-                        color="#38bdf8"
-                        anchorX="left"
-                        anchorY="middle"
-                    >
-                        .EXE
-                        <meshStandardMaterial color="#38bdf8" emissive="#38bdf8" emissiveIntensity={2} toneMapped={false} />
-                    </Text>
-                </group>
-            );
-        };
+        // --- 4. Lighting & Environment ---
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+        scene.add(ambientLight);
 
-        // --- 3. The Scene Manager ---
-        const Scene = () => {
-            return (
-                <>
-                    <PerspectiveCamera makeDefault position={[0, 0, 10]} />
-                    <OrbitControls enableZoom={false} enablePan={false} maxPolarAngle={Math.PI / 1.5} minPolarAngle={Math.PI / 3} />
-                    
-                    {/* Lighting */}
-                    <ambientLight intensity={0.5} />
-                    <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} />
-                    <pointLight position={[-10, -10, -10]} intensity={1} color="#38bdf8" />
-                    
-                    {/* Environment Reflection */}
-                    <Environment preset="city" />
+        const spotLight = new THREE.SpotLight(0x38bdf8, 50);
+        spotLight.position.set(5, 10, 5);
+        scene.add(spotLight);
 
-                    {/* Objects */}
-                    <LogicCore />
-                    <BrandText />
+        const pointLight = new THREE.PointLight(0xffffff, 10);
+        pointLight.position.set(-5, -5, 5);
+        scene.add(pointLight);
 
-                    {/* Post Processing (The "Pro" Glow) */}
-                    <EffectComposer disableNormalPass>
-                        <Bloom luminanceThreshold={1} mipmapBlur intensity={1.5} radius={0.6} />
-                    </EffectComposer>
-                </>
-            );
-        };
+        // --- 5. Animation Loop ---
+        const clock = new THREE.Clock();
+        
+        // Mouse Interaction
+        let mouseX = 0; 
+        let mouseY = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX - window.innerWidth / 2) * 0.001;
+            mouseY = (e.clientY - window.innerHeight / 2) * 0.001;
+        });
 
-        // --- 4. UI Overlay (Tailwind + Shadcn Style) ---
-        const UI = () => {
-            return (
-                <div id="ui-layer" className="w-full min-h-screen flex flex-col justify-between p-8">
-                    {/* Header */}
-                    <nav className="flex justify-between items-center">
-                        <div className="font-mono text-xs text-slate-500 tracking-widest border border-white/10 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md">
-                            SYSTEM ONLINE
-                        </div>
-                        <div className="pointer-events-auto">
-                            <button className="text-sm font-medium text-white/70 hover:text-white transition-colors">
-                                MENU
-                            </button>
-                        </div>
-                    </nav>
+        function animate() {
+            requestAnimationFrame(animate);
+            const t = clock.getElapsedTime();
 
-                    {/* Footer */}
-                    <footer className="flex justify-between items-end">
-                        <div className="text-left">
-                            <h1 className="text-4xl md:text-6xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-white/50">
-                                Architecting<br/>Reality.
-                            </h1>
-                            <p className="mt-4 text-slate-400 max-w-md text-sm md:text-base leading-relaxed">
-                                A programmed visual identity using React Three Fiber, Drei, and high-performance rendering.
-                            </p>
-                            
-                            <div className="mt-8 pointer-events-auto">
-                                <a href="#" className="inline-flex items-center justify-center h-10 px-6 font-medium tracking-wide text-black transition-colors bg-white rounded-md hover:bg-slate-200 focus:outline-none ring-offset-2 focus:ring-2">
-                                    Initialize
-                                </a>
-                            </div>
-                        </div>
-                        
-                        <div className="hidden md:block text-right font-mono text-xs text-slate-600">
-                            COORD: 34.0522° N, 118.2437° W<br/>
-                            RENDER: WEBGL 2.0
-                        </div>
-                    </footer>
-                </div>
-            );
-        };
+            // Floating Animation
+            glassCore.position.y = Math.sin(t) * 0.1;
+            energyCore.position.y = Math.sin(t) * 0.1;
 
-        // --- 5. Main App ---
-        const App = () => {
-            // Smooth Scroll Setup (Lenis)
-            useEffect(() => {
-                const lenis = new Lenis();
-                function raf(time) {
-                    lenis.raf(time);
-                    requestAnimationFrame(raf);
-                }
-                requestAnimationFrame(raf);
-            }, []);
+            // Rotation
+            glassCore.rotation.x = Math.sin(t * 0.5) * 0.2;
+            glassCore.rotation.y += 0.005;
+            
+            energyCore.rotation.x -= 0.01;
+            energyCore.rotation.y -= 0.01;
 
-            return (
-                <>
-                    <div id="canvas-container">
-                        <Canvas dpr={[1, 2]} gl={{ antialias: false, toneMapping: THREE.ReinhardToneMapping, toneMappingExposure: 1.5 }}>
-                            <Suspense fallback={null}>
-                                <Scene />
-                            </Suspense>
-                        </Canvas>
-                    </div>
-                    <UI />
-                </>
-            );
-        };
+            // Mouse Parallax
+            camera.position.x += (mouseX * 5 - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY * 5 - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
 
-        const root = createRoot(document.getElementById('root'));
-        root.render(<App />);
+            composer.render();
+        }
+
+        animate();
+
+        // --- 6. Resize Handler ---
+        window.addEventListener('resize', () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            
+            // Update camera dist for mobile
+            camera.position.z = width < 768 ? 18 : 12;
+
+            renderer.setSize(width, height);
+            composer.setSize(width, height);
+        });
+
+        // Add fade-in CSS
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+            .animate-fade-in { animation: fade-in 1s ease-out forwards; }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
