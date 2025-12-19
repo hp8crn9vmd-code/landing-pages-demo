@@ -1,24 +1,11 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap');
-:root {
-    --color-primary: #0f172a;
-    --color-secondary: #fbbf24;
-    --color-bg: #f8fafc;
-}
-body { font-family: 'Tajawal', sans-serif; background-color: var(--color-bg); scroll-behavior: smooth; }
-
-/* Custom Scrollbar */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: #f1f1f1; }
-::-webkit-scrollbar-thumb { background: var(--color-primary); border-radius: 4px; }
-
-/* Animations */
+body { font-family: 'Tajawal', sans-serif; background-color: #f8fafc; scroll-behavior: smooth; }
 .fade-up { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
 .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-.hover-lift { transition: transform 0.3s ease, box-shadow 0.3s ease; }
-.hover-lift:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
-
-/* Functional Components */
-.nav-glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.05); }
-.hero-pattern { background-color: var(--color-primary); background-image: radial-gradient(#fbbf24 1px, transparent 1px); background-size: 40px 40px; opacity: 1; }
+.nav-glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+.hero-gradient { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
+.text-gold { color: #fbbf24; }
+.bg-gold { background-color: #fbbf24; }
+.btn-primary { background-color: #0f172a; color: white; transition: 0.3s; }
+.btn-primary:hover { background-color: #334155; transform: translateY(-2px); }
