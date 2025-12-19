@@ -4,177 +4,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LOGIC DRIVEN | Micro-Particles</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>LOGIC DRIVEN</title>
     <style>
-        body, html { background-color: #000; margin: 0; overflow: hidden; height: 100%; cursor: crosshair; }
-        #canvas-container { position: fixed; inset: 0; z-index: 1; }
+        /* تحميل خط Sora الفاخر */
+        @import url('https://fonts.googleapis.com/css2?family=Sora:wght@800&display=swap');
         
-        #loader {
-            position: fixed; inset: 0; background: #000; z-index: 100;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 1s ease-in-out;
+        body, html { 
+            background-color: #000; 
+            margin: 0; 
+            padding: 0;
+            overflow: hidden; 
+            height: 100%; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        .loading-text { font-family: monospace; color: #0ea5e9; font-size: 10px; letter-spacing: 0.3em; margin-top: 20px; }
         
-        /* طبقة حبيبات سينمائية خفيفة جداً */
-        .film-grain {
-            position: fixed; inset: 0; z-index: 20; opacity: 0.02; pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        #canvas-container { 
+            position: fixed; 
+            inset: 0; 
+            z-index: 1; 
+        }
+
+        /* واجهة مستخدم بسيطة جداً وفخمة */
+        .overlay {
+            position: relative;
+            z-index: 10;
+            pointer-events: none;
+            text-align: center;
+        }
+
+        .tagline {
+            font-family: 'Sora', sans-serif;
+            color: rgba(255, 255, 255, 0.1);
+            font-size: 10px;
+            letter-spacing: 0.8em;
+            text-transform: uppercase;
+            margin-top: 200px;
         }
     </style>
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-            }
-        }
-    </script>
 </head>
 <body>
-    <div id="loader">
-        <div class="loading-text">REFINING QUANTUM PARTICLES...</div>
-    </div>
-    <div class="film-grain"></div>
     <div id="canvas-container"></div>
+    <div class="overlay">
+        <div class="tagline">Engineered Intelligence</div>
+    </div>
 
     <script type="module">
-        import * as THREE from 'three';
-        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-        import { FontLoader } from 'three/addons/loaders/FontLoader.js';
-        import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+        import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 
-        // --- تهيئة المشهد ---
+        // إعداد المشهد
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = window.innerWidth < 768 ? 90 : 60;
+        camera.position.z = 60;
 
-        const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance" });
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-        // --- تأثير Bloom (التوهج السينمائي) ---
-        const composer = new EffectComposer(renderer);
-        composer.addPass(new RenderPass(scene, camera));
-        const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.8, 0.5, 0.9);
-        composer.addPass(bloom);
+        // إنشاء الشعار باستخدام نظام النقاط المجهرية (Micro-Particles)
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 2400; 
+        canvas.height = 800;
+        
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.font = '800 280px Sora, sans-serif';
+        ctx.fillStyle = 'white';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        
+        // رسم المقاطع الثلاثة بدقة
+        ctx.fillText('LOGIC DRIVEN .EXE', canvas.width / 2, canvas.height / 2);
 
-        // --- إنشاء ملمس النقطة الدقيقة ---
-        function createMicroTexture() {
-            const canvas = document.createElement('canvas'); canvas.width = 32; canvas.height = 32;
-            const ctx = canvas.getContext('2d');
-            const grad = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
-            grad.addColorStop(0, 'rgba(255,255,255,1)'); 
-            grad.addColorStop(0.2, 'rgba(14,165,233,0.6)'); 
-            grad.addColorStop(1, 'rgba(0,0,0,0)');
-            ctx.fillStyle = grad; ctx.fillRect(0,0,32,32);
-            return new THREE.CanvasTexture(canvas);
-        }
-        const pointTexture = createMicroTexture();
+        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const particles = [];
+        const gap = 5; // كثافة عالية جداً ودقيقة
 
-        // --- نظام التفاعل ---
-        const mouse = new THREE.Vector3(9999, 9999, 0);
-        const raycaster = new THREE.Raycaster();
-        const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
-
-        // --- بناء النقاط المجهرية ---
-        function createMicroParticles(text, font, size, color, density) {
-            const geometry = new TextGeometry(text, { font, size, height: 0, curveSegments: 4 });
-            geometry.center();
-            const posAttr = geometry.attributes.position;
-            const positions = [];
-            const initialPos = [];
-            const randomPhases = [];
-
-            for(let i=0; i<posAttr.count; i+=3) {
-                const x = posAttr.getX(i); const y = posAttr.getY(i);
-                for(let j=0; j<density; j++) {
-                    const px = x + (Math.random()-0.5) * 0.3;
-                    const py = y + (Math.random()-0.5) * 0.3;
-                    const pz = (Math.random()-0.5) * 1.0;
-                    positions.push(px, py, pz);
-                    initialPos.push(px, py, pz);
-                    randomPhases.push(Math.random() * Math.PI * 2);
+        for (let y = 0; y < canvas.height; y += gap) {
+            for (let x = 0; x < canvas.width; x += gap) {
+                const index = (y * canvas.width + x) * 4;
+                if (imgData.data[index] > 128) {
+                    particles.push({
+                        x: (x - canvas.width / 2) * 0.04,
+                        y: -(y - canvas.height / 2) * 0.04,
+                        baseX: (x - canvas.width / 2) * 0.04,
+                        baseY: -(y - canvas.height / 2) * 0.04,
+                        size: 0.08 + Math.random() * 0.05
+                    });
                 }
             }
-
-            const geo = new THREE.BufferGeometry();
-            geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-            geo.userData.initial = new Float32Array(initialPos);
-            geo.userData.phases = new Float32Array(randomPhases);
-
-            const mat = new THREE.PointsMaterial({
-                color: color, size: 0.08, map: pointTexture, // حجم مجهري
-                transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false
-            });
-
-            return new THREE.Points(geo, mat);
         }
 
-        const logoGroup = new THREE.Group();
-        scene.add(logoGroup);
+        const geometry = new THREE.BufferGeometry();
+        const posArray = new Float32Array(particles.length * 3);
+        const colArray = new Float32Array(particles.length * 3);
 
-        const loader = new FontLoader();
-        loader.load('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/fonts/helvetiker_bold.typeface.json', (font) => {
-            const p1 = createMicroParticles('LOGIC', font, 6, 0x0ea5e9, 12);
-            p1.position.y = 4.5;
-            const p2 = createMicroParticles('DRIVEN', font, 6, 0x0ea5e9, 12);
-            p2.position.y = -4.5;
-            const p3 = createMicroParticles('.EXE', font, 2.5, 0xffffff, 15);
-            p3.position.set(13.5, -4.5, 0);
+        for (let i = 0; i < particles.length; i++) {
+            posArray[i * 3] = particles[i].x;
+            posArray[i * 3 + 1] = particles[i].y;
+            posArray[i * 3 + 2] = 0;
+            
+            colArray[i * 3] = 0.05;     // Red
+            colArray[i * 3 + 1] = 0.5;   // Green
+            colArray[i * 3 + 2] = 0.7;   // Blue (Cyan Muted)
+        }
 
-            logoGroup.add(p1, p2, p3);
-            document.getElementById('loader').style.opacity = 0;
-            setTimeout(() => document.getElementById('loader').remove(), 1000);
+        geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colArray, 3));
+
+        const material = new THREE.PointsMaterial({
+            size: 0.1,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.6,
+            blending: THREE.AdditiveBlending
         });
 
-        // --- التفاعلية والتحريك ---
+        const points = new THREE.Points(geometry, material);
+        scene.add(points);
+
+        // التفاعل الهادئ مع الماوس
+        let mouse = { x: 9999, y: 9999 };
         window.addEventListener('mousemove', (e) => {
-            const v = new THREE.Vector3((e.clientX/window.innerWidth)*2-1, -(e.clientY/window.innerHeight)*2+1, 0.5);
-            v.unproject(camera);
-            const dir = v.sub(camera.position).normalize();
-            const distance = -camera.position.z / dir.z;
-            mouse.copy(camera.position).add(dir.multiplyScalar(distance));
+            mouse.x = (e.clientX - window.innerWidth / 2) * 0.05;
+            mouse.y = -(e.clientY - window.innerHeight / 2) * 0.05;
         });
 
-        const clock = new THREE.Clock();
         function animate() {
             requestAnimationFrame(animate);
-            const t = clock.getElapsedTime();
-            
-            logoGroup.children.forEach(points => {
-                const pos = points.geometry.attributes.position;
-                const init = points.geometry.userData.initial;
-                const phase = points.geometry.userData.phases;
+            const time = Date.now() * 0.001;
+            const positions = geometry.attributes.position.array;
+            const colors = geometry.attributes.color.array;
 
-                for(let i=0; i<pos.count; i++) {
-                    const i3 = i*3;
-                    const dx = pos.array[i3] - mouse.x;
-                    const dy = pos.array[i3+1] - mouse.y;
-                    const d = Math.sqrt(dx*dx + dy*dy);
+            for (let i = 0; i < particles.length; i++) {
+                const i3 = i * 3;
+                const dx = mouse.x - positions[i3];
+                const dy = mouse.y - positions[i3 + 1];
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                
+                // تموج هادئ يشبه النبض
+                const wave = Math.sin(time + particles[i].baseX * 0.2) * 0.05;
+
+                if (dist < 4) {
+                    const angle = Math.atan2(dy, dx);
+                    const force = (4 - dist) / 4;
+                    positions[i3] -= Math.cos(angle) * force * 0.2;
+                    positions[i3 + 1] -= Math.sin(angle) * force * 0.2;
                     
-                    // حركة الاهتزاز المجهري
-                    const jitter = Math.sin(t * 5 + phase[i]) * 0.02;
-
-                    if(d < 5) {
-                        const force = (5 - d) / 5;
-                        pos.array[i3] += dx/d * force * 0.4;
-                        pos.array[i3+1] += dy/d * force * 0.4;
-                    } else {
-                        pos.array[i3] += (init[i3] - pos.array[i3]) * 0.08 + jitter;
-                        pos.array[i3+1] += (init[i3+1] - pos.array[i3+1]) * 0.08 + jitter;
-                        pos.array[i3+2] += (init[i3+2] - pos.array[i3+2]) * 0.08;
-                    }
+                    colors[i3] = 1; colors[i3+1] = 1; colors[i3+2] = 1; // توهج أبيض
+                } else {
+                    positions[i3] += (particles[i].baseX - positions[i3]) * 0.1 + wave;
+                    positions[i3 + 1] += (particles[i].baseY - positions[i3 + 1]) * 0.1 + wave;
+                    
+                    // العودة للون الأصلي
+                    colors[i3] += (0.05 - colors[i3]) * 0.1;
+                    colors[i3+1] += (0.5 - colors[i3+1]) * 0.1;
+                    colors[i3+2] += (0.7 - colors[i3+2]) * 0.1;
                 }
-                pos.needsUpdate = true;
-            });
-            composer.render();
+            }
+            
+            geometry.attributes.position.needsUpdate = true;
+            geometry.attributes.color.needsUpdate = true;
+            
+            renderer.render(scene, camera);
         }
         animate();
+
+        // التجاوب مع حجم الشاشة
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
     </script>
 </body>
 </html>
