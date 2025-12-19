@@ -3,42 +3,50 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>LOGICDRIVEN | Pro</title>
+    <title>LOGICDRIVEN | Enterprise</title>
     <link rel="stylesheet" href="assets/css/main.css">
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles-engine@2/tsparticles.engine.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles-slim@2/tsparticles.slim.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+
     <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body>
-    <div class="pro-grid"></div>
+    
+    <div id="tsparticles"></div>
 
     <nav>
-        <div class="logo-magnetic-area">
-            <div id="pro-logo">
-                <div class="hex-wrapper">
-                    <svg class="hex-svg" viewBox="0 0 100 100">
-                        <polygon points="50 5, 95 27.5, 95 72.5, 50 95, 5 72.5, 5 27.5" />
-                        <polygon points="50 25, 75 37.5, 75 62.5, 50 75, 25 62.5, 25 37.5" style="opacity: 0.5" />
-                    </svg>
-                </div>
-
-                <div class="brand-text">
-                    LOGIC_DRIVEN<span class="extension">.EXE</span>
-                </div>
+        <div class="logo-container">
+            <div class="hex-icon">
+                <i data-feather="hexagon" style="width: 18px; height: 18px; color: white;"></i>
+            </div>
+            <div class="brand-text">
+                LOGIC_DRIVEN<span class="extension">.EXE</span>
             </div>
         </div>
-
-        <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #555;">
-            SYSTEM: FLUID
+        
+        <div style="font-size: 0.9rem; font-weight: 500; color: #fff;">
+            Enterprise Solutions
         </div>
     </nav>
 
     <main>
-        <h1>FLUID INTELLIGENCE</h1>
+        <div class="hero-badge">
+            <div class="dot"></div>
+            System Operational v4.2
+        </div>
+        
+        <h1>
+            Logic is the<br>ultimate driver.
+        </h1>
+        
         <p>
-            Move your mouse. Notice the weight, inertia, and precision.<br>
-            That is the feeling of professional software.
+            We build digital infrastructure that scales with certainty.
+            No chaos. Just pure, executed logic.
         </p>
+
+        <div class="cta-btn">Initialize Project</div>
     </main>
 
     <script src="assets/js/app.js"></script>
