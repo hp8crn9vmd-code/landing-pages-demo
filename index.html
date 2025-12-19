@@ -4,17 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LogicDriven | Precision Type</title>
+    <title>LogicDriven | Pivot Point</title>
     <style>
-        /* استيراد خطوط عالية الجودة */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&family=JetBrains+Mono:wght@500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600;700&family=JetBrains+Mono:wght@700&display=swap');
 
         :root {
-            --bg: #050505;
-            --nav-bg: rgba(5, 5, 5, 0.95);
+            --bg: #09090b; /* Zinc 950 - Premium Dark */
+            --nav-bg: rgba(9, 9, 11, 0.9);
             --text-main: #ffffff;
-            --text-muted: #888888;
-            --accent: #3b82f6; /* أزرق احترافي */
+            --accent: #38bdf8; /* Sky 400 - Vivid but professional */
             --border: rgba(255, 255, 255, 0.08);
         }
 
@@ -26,73 +24,68 @@
             height: 100%; overflow-x: hidden;
         }
 
-        /* خلفية ناعمة */
-        .ambient-bg {
+        /* خلفية بسيطة جداً للتركيز على الشعار */
+        .clean-bg {
             position: fixed; inset: 0; z-index: -1;
-            background: radial-gradient(circle at 50% 0%, #111 0%, #050505 60%);
+            background: radial-gradient(circle at top center, #1a1a1e 0%, #09090b 70%);
         }
 
+        /* شريط التنقل */
         nav {
-            position: fixed; top: 0; left: 0; width: 100%; height: 60px;
-            display: flex; align-items: center; padding: 0 24px;
+            position: fixed; top: 0; left: 0; width: 100%; height: 64px;
+            display: flex; align-items: center; padding: 0 32px;
             background: var(--nav-bg);
+            backdrop-filter: blur(8px);
             border-bottom: 1px solid var(--border);
             z-index: 1000;
         }
 
-        .brand-wrapper {
-            display: flex; align-items: center;
-            text-decoration: none; cursor: pointer;
-            gap: 2px; /* مسافة شبه معدومة للدمج */
+        /* حاوية الشعار */
+        .brand-link {
+            display: flex;
+            align-items: baseline; /* محاذاة على السطر */
+            text-decoration: none;
+            gap: 4px; /* مسافة صغيرة جداً */
+            cursor: pointer;
+            transition: opacity 0.2s;
         }
+        .brand-link:hover { opacity: 0.9; }
 
-        /* تحسين شكل الكتابة: LogicDriven */
-        .brand-name {
+        /* الجزء الأول: LogicDriven */
+        .brand-text {
             font-family: 'Inter', sans-serif;
-            font-size: 1.1rem; 
-            font-weight: 700; /* خط عريض */
-            color: white;
-            letter-spacing: -0.03em; /* تباعد ضيق للمظهر العصري */
-            margin-right: 6px; /* مسافة قبل السداسي */
+            font-size: 1.25rem; /* 20px */
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.02em;
         }
 
-        /* الحاوية المدمجة (السداسي + EXE) */
-        .fusion-pill {
-            display: flex; align-items: center;
-            gap: 4px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 2px 6px 2px 4px; /* حشوة دقيقة */
-            border-radius: 4px;
-            transition: all 0.2s ease;
-        }
-
-        .brand-wrapper:hover .fusion-pill {
-            border-color: rgba(59, 130, 246, 0.4);
-            background: rgba(59, 130, 246, 0.1);
-        }
-
-        /* الشكل السداسي المتناهي الصغر (12px) */
-        .micro-hex {
-            width: 12px; height: 12px;
+        /* الجزء الثاني: السداسي (نقطة الارتكاز) */
+        .pivot-hex {
+            width: 8px; height: 8px; /* حجم صغير جداً كنقطة */
             display: flex; align-items: center; justify-content: center;
+            position: relative;
+            top: -1px; /* رفع بسيط لضبط المحاذاة البصرية مع النص */
         }
         .hex-svg { width: 100%; height: 100%; overflow: visible; }
         .hex-shape {
-            fill: var(--accent);
-        }
-
-        /* تحسين شكل الكتابة: EXE */
-        .exe-text {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem; /* صغير جداً */
-            font-weight: 500;
-            color: #ccc; /* رمادي فاتح لتقليل الحدة */
-            letter-spacing: 0.05em; /* تباعد خفيف للقراءة */
-            line-height: 1;
+            fill: var(--accent); /* لون موحد مع EXE */
+            animation: breathe 3s ease-in-out infinite; /* حركة تنفس هادئة */
         }
         
-        .brand-wrapper:hover .exe-text { color: var(--accent); }
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(0.85); opacity: 0.7; }
+        }
+
+        /* الجزء الثالث: EXE */
+        .extension-text {
+            font-family: 'JetBrains Mono', monospace; /* خط تقني */
+            font-size: 1.25rem; /* نفس حجم الاسم للتوازن */
+            font-weight: 700;
+            color: var(--accent); /* أزرق */
+            letter-spacing: -0.02em;
+        }
 
         /* المحتوى */
         main {
@@ -100,33 +93,47 @@
             justify-content: center; align-items: center; text-align: center;
             padding: 0 20px;
         }
-        h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 20px; }
-        p { color: var(--text-muted); max-w: 500px; line-height: 1.6; }
+        h1 { 
+            font-size: 3rem; font-weight: 700; margin-bottom: 24px; letter-spacing: -0.03em;
+            background: linear-gradient(180deg, #fff, #999); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        p { color: #888; max-w: 500px; line-height: 1.6; font-size: 1.1rem; }
+        
+        .code-snippet {
+            margin-top: 40px;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;
+            background: #111; padding: 15px 25px; border-radius: 8px;
+            border: 1px solid #222; color: #888;
+        }
+        .cmd { color: var(--accent); }
 
     </style>
 </head>
 <body>
 
-    <div class="ambient-bg"></div>
+    <div class="clean-bg"></div>
 
     <nav>
-        <a href="#" class="brand-wrapper">
-            <span class="brand-name">LogicDriven</span>
-
-            <div class="fusion-pill">
-                <div class="micro-hex">
-                    <svg class="hex-svg" viewBox="0 0 100 100">
-                        <polygon class="hex-shape" points="50 0, 95 25, 95 75, 50 100, 5 75, 5 25" />
-                    </svg>
-                </div>
-                <span class="exe-text">EXE</span>
+        <a href="#" class="brand-link">
+            <span class="brand-text">LogicDriven</span>
+            
+            <div class="pivot-hex">
+                <svg class="hex-svg" viewBox="0 0 100 100">
+                    <polygon class="hex-shape" points="50 0, 95 25, 95 75, 50 100, 5 75, 5 25" />
+                </svg>
             </div>
+            
+            <span class="extension-text">EXE</span>
         </a>
     </nav>
 
     <main>
-        <h1>Micro-Type Integration.</h1>
-        <p>Hexagon reduced to 12px. Typography refined with tighter tracking for the brand name and monospace precision for the extension.</p>
+        <h1>The Pivot Point.</h1>
+        <p>Replacing the punctuation with geometry. A solid hexagonal core acts as the bridge between logic and execution.</p>
+        
+        <div class="code-snippet">
+            <span class="cmd">></span> system_status: <span style="color:white">connected</span>
+        </div>
     </main>
 
 </body>
