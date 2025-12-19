@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LOGIC DRIVEN | Obsidian</title>
+    <title>LOGIC DRIVEN | Particle Genesis</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -12,18 +12,12 @@
             theme: {
                 extend: {
                     colors: {
-                        bg: '#020203', /* Darker than black */
-                        accent: '#38bdf8', /* Sky 400 for subtle glow */
-                        metal: '#1a1a1c',
+                        bg: '#020203',
+                        accent: '#38bdf8',
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         mono: ['JetBrains Mono', 'monospace'],
-                    },
-                    letterSpacing: {
-                        tighter: '-0.04em',
-                        tight: '-0.02em',
-                        widest: '0.2em',
                     }
                 }
             }
@@ -36,22 +30,20 @@
         body { background-color: var(--bg); margin: 0; overflow: hidden; color: white; }
         #canvas-container { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
         
-        /* Subtle film grain */
+        /* Noise texture for cinematic feel */
         .noise {
-            position: fixed; inset: 0; z-index: 20; opacity: 0.03; pointer-events: none;
+            position: fixed; inset: 0; z-index: 20; opacity: 0.04; pointer-events: none;
             background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
         #ui-layer { position: relative; z-index: 10; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; }
         
-        /* Professional Link Hover Effect */
-        .pro-link { position: relative; color: #9ca3af; transition: color 0.3s; }
-        .pro-link:hover { color: white; }
-        .pro-link::after {
-            content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px;
-            background: var(--accent); transition: width 0.3s ease-out;
+        #loader {
+            position: fixed; inset: 0; background: var(--bg); z-index: 50;
+            display: flex; justify-content: center; align-items: center;
+            font-family: 'JetBrains Mono', monospace; color: var(--accent);
+            transition: opacity 0.8s ease-out;
         }
-        .pro-link:hover::after { width: 100%; }
     </style>
 
     <script type="importmap">
@@ -65,45 +57,27 @@
 </head>
 <body>
 
+    <div id="loader">GENERATING PARTICLE SYSTEM...</div>
     <div class="noise"></div>
 
     <div id="ui-layer" class="p-8 md:p-16">
-        
         <nav class="flex justify-between items-center opacity-0 animate-[fadeIn_1s_ease-out_forwards]">
             <div class="flex items-center gap-3">
-                 <div class="relative flex h-2 w-2">
+                <div class="relative flex h-2 w-2">
                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
                   <span class="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
                 </div>
                 <div class="font-bold tracking-tight text-sm">LogicDriven</div>
             </div>
-            <div class="hidden md:flex gap-8 font-medium text-sm tracking-tight">
-                <a href="#" class="pro-link">Intelligence</a>
-                <a href="#" class="pro-link">Platform</a>
-                <a href="#" class="pro-link">Research</a>
-            </div>
-            <button class="md:hidden text-sm font-medium text-gray-300">MENU</button>
         </nav>
-
-        <div class="max-w-2xl mt-20 md:mt-0 opacity-0 animate-[fadeIn_1s_ease-out_0.3s_forwards]">
-            <div class="font-mono text-xs text-accent tracking-widest mb-4 uppercase">System Architecture v3.0</div>
+        
+        <div class="max-w-2xl opacity-0 animate-[fadeIn_1s_ease-out_0.3s_forwards]">
+            <div class="font-mono text-xs text-accent tracking-widest mb-4 uppercase">Quantum Point Cloud v4.1</div>
             <h1 class="text-5xl md:text-7xl font-bold tracking-tighter leading-none mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-                The Obsidian<br>Standard.
+                Particle<br>Genesis.
             </h1>
-            <p class="text-lg text-gray-400 leading-relaxed max-w-md">
-                Where deterministic logic meets abstract intelligence. 
-                Building the infrastructure for the next generation of computing.
-            </p>
-            <div class="mt-10 flex gap-4">
-                 <button class="px-6 py-3 bg-white text-black font-semibold text-sm rounded-md hover:bg-gray-200 transition-colors">
-                    Explore Platform
-                </button>
-                <button class="px-6 py-3 border border-white/20 text-white font-semibold text-sm rounded-md hover:bg-white/10 transition-colors">
-                    Documentation
-                </button>
-            </div>
         </div>
-
+        
         <div></div>
     </div>
 
@@ -114,116 +88,120 @@
         import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
         import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
         import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+        import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+        import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
         // --- Scene Setup ---
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x020203, 0.02); // Deep dark fog
+        scene.fog = new THREE.FogExp2(0x020203, 0.02);
 
-        const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
-        camera.position.set(0, 2, 25); // Slightly elevated view
+        const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 200);
+        camera.position.set(0, 0, 60); // Further back to see the whole logo
 
         const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance", alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.0;
         document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-        // --- Post Processing (Subtle, Expensive Bloom) ---
+        // --- Post Processing (Intense Bloom) ---
         const composer = new EffectComposer(renderer);
         const renderPass = new RenderPass(scene, camera);
-        // Very specific bloom settings for a "premium" look
         const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-        bloomPass.threshold = 0.15; // Only brightest parts glow
-        bloomPass.strength = 0.6;   // Subtle strength
-        bloomPass.radius = 1.0;     // Wide, soft glow
+        bloomPass.threshold = 0.1;
+        bloomPass.strength = 1.8; // Stronger bloom for particles
+        bloomPass.radius = 0.8;
         
         composer.addPass(renderPass);
         composer.addPass(bloomPass);
 
-        // --- The "Obsidian Core" Artifact ---
-        const artifact = new THREE.Group();
-        // Move it to the right to balance the left-aligned text
-        artifact.position.set(8, 0, 0); 
-        scene.add(artifact);
+        // --- The Particle Logo ---
+        const logoGroup = new THREE.Group();
+        scene.add(logoGroup);
 
-        // 1. The Central Obsidian Sphere (Dark, highly reflective metal)
-        const coreGeo = new THREE.IcosahedronGeometry(2, 4); // High detail
-        const coreMat = new THREE.MeshPhysicalMaterial({
-            color: 0x050505,       // Almost black
-            metalness: 1.0,        // Pure metal
-            roughness: 0.15,       // Very polished but slightly blurry reflections
-            envMapIntensity: 2.0,  // Strong environment reflection
-            clearcoat: 1.0,        // Extra shiny layer
-            clearcoatRoughness: 0.1
+        const fontLoader = new FontLoader();
+        fontLoader.load('https://unpkg.com/three@0.160.0/examples/fonts/droid/droid_sans_bold.typeface.json', function (font) {
+            
+            // Function to convert geometry to particles
+            function createParticleSystem(geometry, color, size, countMultiplier = 1) {
+                // Create a dense point cloud from the mesh surface
+                const sampler = new THREE.MeshSurfaceSampler(new THREE.Mesh(geometry));
+                const count = Math.floor(15000 * countMultiplier); // High particle count
+                const vertices = [];
+                const tempPosition = new THREE.Vector3();
+
+                for (let i = 0; i < count; i++) {
+                    sampler.sample(tempPosition);
+                    vertices.push(tempPosition.x, tempPosition.y, tempPosition.z);
+                }
+
+                const pointsGeo = new THREE.BufferGeometry();
+                pointsGeo.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+
+                const pointsMat = new THREE.PointsMaterial({
+                    color: color,
+                    size: size,
+                    transparent: true,
+                    opacity: 0.8,
+                    blending: THREE.AdditiveBlending, // Glowing effect
+                    sizeAttenuation: true
+                });
+
+                return new THREE.Points(pointsGeo, pointsMat);
+            }
+
+            // --- 1. LOGIC DRIVEN (Main Text) ---
+            const textGeo1 = new TextGeometry('LOGIC
+DRIVEN', {
+                font: font, size: 5, height: 1, curveSegments: 12,
+                bevelEnabled: true, bevelThickness: 0.2, bevelSize: 0.1, bevelSegments: 5
+            });
+            textGeo1.center();
+            
+            // Import Surface Sampler helper
+            import('https://unpkg.com/three@0.160.0/examples/jsm/math/MeshSurfaceSampler.js').then(({ MeshSurfaceSampler }) => {
+                THREE.MeshSurfaceSampler = MeshSurfaceSampler;
+
+                // Create particles for LOGIC DRIVEN (Cyan/Blue)
+                const textParticles1 = createParticleSystem(textGeo1, 0x38bdf8, 0.15);
+                textParticles1.position.set(-10, 2, 0);
+                logoGroup.add(textParticles1);
+
+                // --- 2. .EXE (Accent Text) ---
+                const textGeo2 = new TextGeometry('.EXE', {
+                    font: font, size: 2.5, height: 0.5, curveSegments: 12,
+                    bevelEnabled: true, bevelThickness: 0.1, bevelSize: 0.05
+                });
+                textGeo2.center();
+
+                // Create particles for .EXE (Brighter, denser)
+                const textParticles2 = createParticleSystem(textGeo2, 0x22d3ee, 0.15, 1.5);
+                textParticles2.position.set(12, -2, 0);
+                logoGroup.add(textParticles2);
+                
+                // Store initial positions for animation
+                logoGroup.children.forEach(points => {
+                    points.geometry.userData.initialPositions = points.geometry.attributes.position.clone();
+                });
+
+                // Hide loader
+                document.getElementById('loader').style.opacity = 0;
+                setTimeout(() => document.getElementById('loader').remove(), 800);
+            });
         });
-        const core = new THREE.Mesh(coreGeo, coreMat);
-        artifact.add(core);
 
-        // 2. The Inner Energy Veins (Glowing wireframe underneath)
-        const veinGeo = new THREE.IcosahedronGeometry(2.01, 2);
-        const veinMat = new THREE.MeshBasicMaterial({
-            color: 0x38bdf8,
-            wireframe: true,
-            transparent: true,
-            opacity: 0.15
-        });
-        const veins = new THREE.Mesh(veinGeo, veinMat);
-        artifact.add(veins);
-
-        // 3. Outer Glass Shield
-        const glassGeo = new THREE.SphereGeometry(3, 64, 64);
-        const glassMat = new THREE.MeshPhysicalMaterial({
-            color: 0xffffff,
-            metalness: 0,
-            roughness: 0,
-            transmission: 1, // Perfect glass
-            thickness: 0.5,
-            transparent: true,
-            opacity: 0.3
-        });
-        const glass = new THREE.Mesh(glassGeo, glassMat);
-        artifact.add(glass);
-
-        // 4. Orbital Data Points
-        const pointsGeo = new THREE.BufferGeometry();
-        const pointsPos = [];
-        for(let i=0; i<200; i++) {
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos(2 * Math.random() - 1);
-            const r = 4 + Math.random() * 0.5;
-            pointsPos.push(r * Math.sin(phi) * Math.cos(theta));
-            pointsPos.push(r * Math.sin(phi) * Math.sin(theta));
-            pointsPos.push(r * Math.cos(phi));
+        // --- Ambient Particles (Background) ---
+        const ambientGeo = new THREE.BufferGeometry();
+        const ambientPos = [];
+        for(let i=0; i<1000; i++) {
+            ambientPos.push((Math.random() - 0.5) * 200);
+            ambientPos.push((Math.random() - 0.5) * 200);
+            ambientPos.push((Math.random() - 0.5) * 200);
         }
-        pointsGeo.setAttribute('position', new THREE.Float32BufferAttribute(pointsPos, 3));
-        const pointsMat = new THREE.PointsMaterial({ color: 0x38bdf8, size: 0.03 });
-        const points = new THREE.Points(pointsGeo, pointsMat);
-        artifact.add(points);
-
-
-        // --- Cinematic Lighting ---
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
-        scene.add(ambientLight);
-
-        // Strong Rim Light from behind-right to define edges
-        const rimLight = new THREE.SpotLight(0x38bdf8, 100);
-        rimLight.position.set(20, 20, -20);
-        rimLight.angle = 0.2;
-        rimLight.penumbra = 1;
-        scene.add(rimLight);
-
-        // Fill light from bottom-left (cool tone)
-        const fillLight = new THREE.PointLight(0x4c1d95, 20); // Deep purple fill
-        fillLight.position.set(-15, -10, 10);
-        scene.add(fillLight);
-        
-        // Environment Map for reflections (Crucial for metal/glass look)
-        const pmremGenerator = new THREE.PMREMGenerator(renderer);
-        pmremGenerator.compileEquirectangularShader();
-        // Using a generated environment for controlled reflections
-        scene.environment = pmremGenerator.fromScene(new THREE.Scene()).texture;
-
+        ambientGeo.setAttribute('position', new THREE.Float32BufferAttribute(ambientPos, 3));
+        const ambientMat = new THREE.PointsMaterial({ color: 0x38bdf8, size: 0.1, transparent: true, opacity: 0.4 });
+        const ambientParticles = new THREE.Points(ambientGeo, ambientMat);
+        scene.add(ambientParticles);
 
         // --- Animation Loop ---
         const clock = new THREE.Clock();
@@ -237,24 +215,37 @@
             requestAnimationFrame(animate);
             const t = clock.getElapsedTime();
 
-            // Ultra-slow, heavy rotation
-            core.rotation.y = t * 0.05;
-            core.rotation.z = t * 0.02;
-            
-            veins.rotation.y = -t * 0.05;
-            
-            glass.rotation.x = t * 0.03;
-            glass.rotation.z = -t * 0.03;
-            
-            points.rotation.y = t * 0.1;
-
-            // Subtle breathing of light
-            rimLight.intensity = 100 + Math.sin(t * 2) * 20;
-
-            // Smooth camera parallax
-            camera.position.x += (mouseX * 5 - camera.position.x) * 0.05;
-            camera.position.y += (-mouseY * 5 + 2 - camera.position.y) * 0.05;
+            // Subtle camera movement
+            camera.position.x += (mouseX * 10 - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY * 10 - camera.position.y) * 0.05;
             camera.lookAt(scene.position);
+
+            // Background particles slow rotation
+            ambientParticles.rotation.y = t * 0.02;
+
+            // --- Particle Breathing Animation ---
+            if (logoGroup.children.length > 0) {
+                logoGroup.children.forEach(points => {
+                    const positions = points.geometry.attributes.position;
+                    const initialPositions = points.geometry.userData.initialPositions;
+                    
+                    for (let i = 0; i < positions.count; i++) {
+                        const ix = i * 3;
+                        const iy = i * 3 + 1;
+                        const iz = i * 3 + 2;
+
+                        // Add noise/wave movement to each particle based on its initial position and time
+                        const noiseX = Math.sin(initialPositions.array[ix] * 0.1 + t * 2) * 0.1;
+                        const noiseY = Math.cos(initialPositions.array[iy] * 0.1 + t * 2) * 0.1;
+                        const noiseZ = Math.sin(initialPositions.array[iz] * 0.1 + t * 2) * 0.1;
+
+                        positions.array[ix] = initialPositions.array[ix] + noiseX;
+                        positions.array[iy] = initialPositions.array[iy] + noiseY;
+                        positions.array[iz] = initialPositions.array[iz] + noiseZ;
+                    }
+                    positions.needsUpdate = true;
+                });
+            }
 
             composer.render();
         }
@@ -270,20 +261,14 @@
             renderer.setSize(width, height);
             composer.setSize(width, height);
             
-            // Responsive Layout Adjustment
             if(width < 768) {
-                artifact.position.set(0, 4, 0); // Move up on mobile
-                artifact.scale.set(0.7, 0.7, 0.7);
-                camera.position.set(0, 2, 30);
+                logoGroup.scale.set(0.6, 0.6, 0.6);
+                camera.position.z = 80;
             } else {
-                artifact.position.set(8, 0, 0); // Move right on desktop
-                artifact.scale.set(1, 1, 1);
-                camera.position.set(0, 2, 25);
+                logoGroup.scale.set(1, 1, 1);
+                camera.position.z = 60;
             }
         });
-        
-        // Trigger initial resize to set correct positions
-        window.dispatchEvent(new Event('resize'));
 
     </script>
 </body>
