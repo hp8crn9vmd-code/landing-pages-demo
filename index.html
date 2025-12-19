@@ -4,17 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LogicDriven | Micro-Fusion</title>
+    <title>LogicDriven | Executable Core</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@700&display=swap');
 
         :root {
-            --bg: #030305;         /* أسود عميق */
-            --nav-bg: rgba(3, 3, 5, 0.9);
-            --border: #1a1a1a;     /* حدود خفيفة جداً */
+            --bg: #050507;
+            --nav-bg: rgba(5, 5, 7, 0.9);
             --text: #ffffff;
-            --accent: #3b82f6;     /* أزرق تقني */
-            --chip-bg: rgba(59, 130, 246, 0.08);
+            --accent: #0ea5e9; /* Sky Blue - Professional & Calm */
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         body, html {
@@ -26,128 +25,131 @@
             overflow-x: hidden;
         }
 
-        /* خلفية شبكية دقيقة */
-        .micro-grid {
+        /* خلفية احترافية هادئة */
+        .ambient-bg {
             position: fixed; inset: 0; z-index: -1;
-            background-image: linear-gradient(var(--border) 1px, transparent 1px),
-            linear-gradient(90deg, var(--border) 1px, transparent 1px);
-            background-size: 30px 30px;
-            opacity: 0.3;
-            mask-image: radial-gradient(circle at center, black 30%, transparent 100%);
+            background: 
+                radial-gradient(circle at 50% -20%, rgba(14, 165, 233, 0.15), transparent 50%),
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
         }
 
-        /* --- شريط التنقل --- */
+        /* شريط التنقل */
         nav {
-            position: fixed; top: 0; left: 0; width: 100%; height: 56px; /* ارتفاع مدمج */
-            display: flex; align-items: center; justify-content: flex-start; /* محاذاة لليسار */
-            padding: 0 20px;
+            position: fixed; top: 0; left: 0; width: 100%; height: 64px;
+            display: flex; align-items: center; padding: 0 24px;
             background: var(--nav-bg);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border);
             z-index: 1000;
         }
 
-        /* الرابط الرئيسي */
-        .brand-link {
-            display: flex; align-items: center; text-decoration: none;
+        /* الحاوية الرئيسية للشعار */
+        .brand-wrapper {
+            display: flex; align-items: center; gap: 10px;
+            text-decoration: none; cursor: pointer;
         }
 
-        /* --- وحدة الدمج الميكروية (The Micro-Fusion Chip) --- */
-        /* هذه هي الحاوية التي تدمج الشكل والنص */
-        .fusion-chip {
-            display: flex;
-            align-items: center;
-            gap: 6px; /* مسافة ضيقة جداً بين الشكل والنص */
-            background: var(--chip-bg);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            padding: 4px 8px; /* حشوة صغيرة */
-            border-radius: 6px; /* زوايا ناعمة */
-            transition: all 0.2s ease;
-        }
-        .brand-link:hover .fusion-chip {
-            background: rgba(59, 130, 246, 0.15);
-            border-color: rgba(59, 130, 246, 0.4);
-            box-shadow: 0 0 10px rgba(59, 130, 246, 0.1);
-        }
-
-        /* 1. الشكل السداسي المتناهي الصغر (Very Small Hex) */
-        .micro-hex {
-            width: 18px; height: 18px; /* حجم صغير جداً */
-            position: relative;
-            flex-shrink: 0;
-        }
-        .hex-svg { width: 100%; height: 100%; overflow: visible; }
-        /* إطار ثابت */
-        .hex-static { fill: none; stroke: #444; stroke-width: 1.5; }
-        /* إطار متحرك (شعاع بيانات) */
-        .hex-active { 
-            fill: none; stroke: var(--accent); stroke-width: 1.5;
-            stroke-linecap: round; stroke-dasharray: 15 45; /* شعاع قصير جداً */
-            animation: micro-trace 2s linear infinite;
-        }
-        @keyframes micro-trace { to { stroke-dashoffset: -60; } }
-
-        /* 2. نص .EXE المدمج (Integrated Text) */
-        .micro-exe {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem; /* خط صغير جداً (حوالي 10px) */
+        /* 1. النص: Logic_driven */
+        .brand-text {
+            font-size: 1.1rem;
             font-weight: 700;
-            color: var(--accent);
-            letter-spacing: 0.5px;
-        }
-
-        /* اسم العلامة التجارية الرئيسي (منفصل ليبقى واضحاً) */
-        .brand-name {
-            margin-left: 12px;
-            font-size: 1rem;
-            font-weight: 600;
             color: white;
             letter-spacing: -0.01em;
         }
 
-        /* --- المحتوى الرئيسي --- */
+        /* 2. الختم السداسي (الحاوية) */
+        .hex-seal {
+            width: 38px; height: 38px; /* حجم مناسب للقراءة */
+            position: relative;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* SVG السداسي */
+        .hex-svg {
+            width: 100%; height: 100%;
+            position: absolute; top: 0; left: 0;
+            overflow: visible;
+        }
+        
+        /* الإطار الخارجي */
+        .hex-path {
+            fill: rgba(14, 165, 233, 0.05); /* خلفية زرقاء خافتة جداً */
+            stroke: var(--accent);
+            stroke-width: 1.5;
+            transition: all 0.3s ease;
+        }
+
+        /* تأثير النبض (Breathing) للإطار */
+        .hex-active {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 2;
+            stroke-dasharray: 10 100;
+            stroke-linecap: round;
+            filter: drop-shadow(0 0 5px var(--accent));
+            animation: circuit-spin 4s linear infinite;
+            transform-origin: center;
+        }
+        @keyframes circuit-spin { to { transform: rotate(360deg); } }
+
+        /* 3. النص .EXE داخل السداسي */
+        .exe-inner {
+            position: relative; z-index: 2;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem; /* صغير لكن مقروء */
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 0px;
+            margin-top: 1px; /* تصحيح بصري للمنتصف */
+        }
+
+        /* Hover Effect */
+        .brand-wrapper:hover .hex-path {
+            fill: rgba(14, 165, 233, 0.15);
+            stroke: #fff;
+        }
+        .brand-wrapper:hover .exe-inner { color: #fff; }
+
+        /* المحتوى */
         main {
             height: 100vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
             padding: 0 20px;
         }
-        h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; margin-bottom: 15px;
-            background: linear-gradient(180deg, #fff, #777); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        p { color: #888; max-w: 450px; font-size: 1rem; line-height: 1.5; }
-        .status-pill {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--accent);
-            background: rgba(59, 130, 246, 0.05); border: 1px solid var(--border);
-            padding: 4px 10px; border-radius: 50px; margin-bottom: 25px;
+        h1 { font-size: 3rem; font-weight: 700; margin-bottom: 20px; }
+        p { color: #888; font-size: 1.1rem; max-width: 600px; }
+        .btn {
+            margin-top: 30px; padding: 12px 30px;
+            background: var(--accent); color: white;
+            text-decoration: none; border-radius: 4px; font-weight: 600;
         }
 
     </style>
 </head>
 <body>
 
-    <div class="micro-grid"></div>
+    <div class="ambient-bg"></div>
 
     <nav>
-        <a href="#" class="brand-link">
-            <div class="fusion-chip">
-                <div class="micro-hex">
-                    <svg class="hex-svg" viewBox="0 0 100 100">
-                        <polygon class="hex-static" points="50 5, 95 27.5, 95 72.5, 50 95, 5 72.5, 5 27.5" />
-                        <polygon class="hex-active" points="50 5, 95 27.5, 95 72.5, 50 95, 5 72.5, 5 27.5" />
-                    </svg>
-                </div>
-                <span class="micro-exe">.EXE</span>
+        <a href="#" class="brand-wrapper">
+            <span class="brand-text">Logic_driven</span>
+
+            <div class="hex-seal">
+                <svg class="hex-svg" viewBox="0 0 100 100">
+                    <polygon class="hex-path" points="50 5, 95 27.5, 95 72.5, 50 95, 5 72.5, 5 27.5" />
+                    <polygon class="hex-active" points="50 5, 95 27.5, 95 72.5, 50 95, 5 72.5, 5 27.5" />
+                </svg>
+                <span class="exe-inner">.EXE</span>
             </div>
-            
-            <span class="brand-name">LogicDriven</span>
         </a>
     </nav>
 
     <main>
-        <div class="status-pill">SYSTEM INTEGRITY: OPTIMAL</div>
-        <h1>Micro-Precision<br>Engineering.</h1>
-        <p>The .exe identifier is now fused with the hexagonal core into a single, ultra-compact system unit.</p>
+        <h1>Execution Core Online.</h1>
+        <p>The executable identifier is now fused within the logic geometry. Professional, compact, and system-ready.</p>
+        <a href="#" class="btn">Initialize</a>
     </main>
 
 </body>
