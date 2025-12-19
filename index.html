@@ -4,113 +4,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LogicDriven | Executable Core</title>
+    <title>LogicDriven | Integrated Circuit</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&family=JetBrains+Mono:wght@600&display=swap');
 
         :root {
-            --bg: #050507;
-            --nav-bg: rgba(5, 5, 7, 0.9);
-            --text: #ffffff;
-            --accent: #0ea5e9; /* Sky Blue - Professional & Calm */
-            --border: rgba(255, 255, 255, 0.1);
+            --bg: #0a0a0c; /* أسود تقني داكن */
+            --nav-bg: rgba(10, 10, 12, 0.95);
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            --accent: #38bdf8; /* أزرق سماوي فاتح */
+            --border: rgba(255, 255, 255, 0.08);
         }
 
         body, html {
             margin: 0; padding: 0;
             font-family: 'Inter', sans-serif;
             background-color: var(--bg);
-            color: var(--text);
-            height: 100%;
-            overflow-x: hidden;
+            color: var(--text-main);
+            height: 100%; overflow-x: hidden;
         }
 
-        /* خلفية احترافية هادئة */
-        .ambient-bg {
+        /* خلفية شبكية دقيقة */
+        .circuit-bg {
             position: fixed; inset: 0; z-index: -1;
-            background: 
-                radial-gradient(circle at 50% -20%, rgba(14, 165, 233, 0.15), transparent 50%),
-                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 100% 100%, 40px 40px, 40px 40px;
+            background-image: radial-gradient(var(--border) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.4;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
         }
 
-        /* شريط التنقل */
+        /* شريط التنقل المدمج */
         nav {
-            position: fixed; top: 0; left: 0; width: 100%; height: 64px;
+            position: fixed; top: 0; left: 0; width: 100%; height: 60px;
             display: flex; align-items: center; padding: 0 24px;
             background: var(--nav-bg);
-            backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border);
             z-index: 1000;
         }
 
-        /* الحاوية الرئيسية للشعار */
+        /* رابط العلامة التجارية */
         .brand-wrapper {
-            display: flex; align-items: center; gap: 10px;
+            display: flex; align-items: center;
             text-decoration: none; cursor: pointer;
         }
 
-        /* 1. النص: Logic_driven */
-        .brand-text {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: white;
-            letter-spacing: -0.01em;
+        /* الاسم الرئيسي */
+        .brand-name {
+            font-size: 1.05rem; font-weight: 700; color: var(--text-main);
+            letter-spacing: -0.02em; margin-right: 8px; /* مسافة بين الاسم ووحدة الدمج */
         }
 
-        /* 2. الختم السداسي (الحاوية) */
-        .hex-seal {
-            width: 38px; height: 38px; /* حجم مناسب للقراءة */
-            position: relative;
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        /* SVG السداسي */
-        .hex-svg {
-            width: 100%; height: 100%;
-            position: absolute; top: 0; left: 0;
-            overflow: visible;
-        }
-        
-        /* الإطار الخارجي */
-        .hex-path {
-            fill: rgba(14, 165, 233, 0.05); /* خلفية زرقاء خافتة جداً */
-            stroke: var(--accent);
-            stroke-width: 1.5;
-            transition: all 0.3s ease;
-        }
-
-        /* تأثير النبض (Breathing) للإطار */
-        .hex-active {
-            fill: none;
-            stroke: var(--accent);
-            stroke-width: 2;
-            stroke-dasharray: 10 100;
-            stroke-linecap: round;
-            filter: drop-shadow(0 0 5px var(--accent));
-            animation: circuit-spin 4s linear infinite;
-            transform-origin: center;
-        }
-        @keyframes circuit-spin { to { transform: rotate(360deg); } }
-
-        /* 3. النص .EXE داخل السداسي */
-        .exe-inner {
-            position: relative; z-index: 2;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.55rem; /* صغير لكن مقروء */
-            font-weight: 700;
+        /* --- وحدة الدمج (The Fusion Unit) --- */
+        /* هذه الكبسولة تحتوي على الشكل السداسي والنص كقطعة واحدة */
+        .fusion-unit {
+            display: inline-flex;
+            align-items: center; /* محاذاة عمودية مثالية */
+            gap: 3px; /* مسافة ضيقة جداً جداً بين السداسي و EXE */
+            
+            /* تنسيق الكبسولة الموحدة */
+            background: rgba(56, 189, 248, 0.1); /* خلفية زرقاء خافتة */
+            border: 1px solid rgba(56, 189, 248, 0.25); /* حدود موحدة */
+            padding: 3px 6px 3px 4px; /* حشوة ضيقة */
+            border-radius: 4px;
+            
+            /* لون موحد للعناصر داخلها */
             color: var(--accent);
-            letter-spacing: 0px;
-            margin-top: 1px; /* تصحيح بصري للمنتصف */
+            transition: all 0.2s ease;
         }
 
-        /* Hover Effect */
-        .brand-wrapper:hover .hex-path {
-            fill: rgba(14, 165, 233, 0.15);
-            stroke: #fff;
+        .brand-wrapper:hover .fusion-unit {
+            background: rgba(56, 189, 248, 0.15);
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.15);
         }
-        .brand-wrapper:hover .exe-inner { color: #fff; }
+
+        /* 1. الشكل السداسي الصغير جداً (بديل النقطة) */
+        .tiny-hex {
+            width: 14px; height: 14px; /* حجم صغير جداً ليناسب النص */
+            position: relative; flex-shrink: 0;
+            display: flex; align-items: center;
+        }
+        .hex-svg { width: 100%; height: 100%; overflow: visible; }
+        .hex-shape {
+            fill: currentColor; /* يأخذ لون النص (الأزرق) */
+            stroke: none;
+            /* نبض خفيف جداً */
+            animation: micro-pulse 3s ease-in-out infinite;
+        }
+        @keyframes micro-pulse { 0%, 100% { opacity: 0.7; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1); } }
+
+
+        /* 2. نص EXE (بدون نقطة قبله) */
+        .exe-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem; /* حجم متناسق مع السداسي */
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            line-height: 1; /* مهم للمحاذاة */
+        }
 
         /* المحتوى */
         main {
@@ -118,38 +110,38 @@
             justify-content: center; align-items: center; text-align: center;
             padding: 0 20px;
         }
-        h1 { font-size: 3rem; font-weight: 700; margin-bottom: 20px; }
-        p { color: #888; font-size: 1.1rem; max-width: 600px; }
-        .btn {
-            margin-top: 30px; padding: 12px 30px;
-            background: var(--accent); color: white;
-            text-decoration: none; border-radius: 4px; font-weight: 600;
+        h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 15px; color: white; }
+        p { color: var(--text-muted); max-w: 500px; line-height: 1.5; }
+        .sys-status {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--accent);
+            margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
         }
-
+        .status-light { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 6px var(--accent); }
     </style>
 </head>
 <body>
 
-    <div class="ambient-bg"></div>
+    <div class="circuit-bg"></div>
 
     <nav>
         <a href="#" class="brand-wrapper">
-            <span class="brand-text">Logic_driven</span>
+            <span class="brand-name">LogicDriven</span>
 
-            <div class="hex-seal">
-                <svg class="hex-svg" viewBox="0 0 100 100">
-                    <polygon class="hex-path" points="50 5, 95 27.5, 95 72.5, 50 95, 5 72.5, 5 27.5" />
-                    <polygon class="hex-active" points="50 5, 95 27.5, 95 72.5, 50 95, 5 72.5, 5 27.5" />
-                </svg>
-                <span class="exe-inner">.EXE</span>
-            </div>
+            <span class="fusion-unit">
+                <div class="tiny-hex">
+                    <svg class="hex-svg" viewBox="0 0 100 100">
+                        <polygon class="hex-shape" points="50 15, 85 35, 85 65, 50 85, 15 65, 15 35" />
+                    </svg>
+                </div>
+                <span class="exe-text">EXE</span>
+            </span>
         </a>
     </nav>
 
     <main>
-        <h1>Execution Core Online.</h1>
-        <p>The executable identifier is now fused within the logic geometry. Professional, compact, and system-ready.</p>
-        <a href="#" class="btn">Initialize</a>
+        <div class="sys-status"><div class="status-light"></div>Integrated System Online</div>
+        <h1>Seamless Fusion.</h1>
+        <p>The hexagonal logic core is now perfectly integrated as the executable identifier component.</p>
     </main>
 
 </body>
