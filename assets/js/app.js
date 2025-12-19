@@ -1,1 +1,1 @@
-console.log("Zenith System Loaded");
+console.log("Ethereal System Active");

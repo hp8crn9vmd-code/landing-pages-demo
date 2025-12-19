@@ -1,14 +1,14 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@500&display=swap');
 
 :root {
-    --bg: #030304;        /* Rich Black */
-    --surface: #0a0a0c;   /* Slightly lighter */
-    --border: #1f1f23;    /* Subtle borders */
+    --bg: #030304;
+    --glass: rgba(255, 255, 255, 0.03);
+    --border: rgba(255, 255, 255, 0.08);
     --text-main: #ffffff;
-    --text-muted: #888888;
-    --accent: #3b82f6;    /* Premium Blue */
-    --accent-glow: rgba(59, 130, 246, 0.15);
+    --text-muted: #94a3b8;
+    --accent: #6366f1; /* Indigo - Sophisticated & Tech */
+    --accent-glow: rgba(99, 102, 241, 0.4);
 }
 
 * { box-sizing: border-box; }
@@ -18,163 +18,162 @@ body {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg);
     color: var(--text-main);
-    -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
-    height: 100vh;
+    min-height: 100vh;
     display: flex; flex-direction: column;
 }
 
-/* Background: Very subtle mesh gradient */
-.ambient-glow {
-    position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
-    background: radial-gradient(circle at center, var(--accent-glow) 0%, transparent 40%);
-    opacity: 0.6;
-    z-index: -1;
-    pointer-events: none;
+/* 1. Cinematic Background (The Creative Part) */
+.aurora-bg {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+    background: 
+        radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.08), transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.05), transparent 25%);
+    filter: blur(60px);
+    opacity: 0.8;
+    animation: aurora-pulse 10s ease-in-out infinite alternate;
 }
 
-/* 1. Navbar - Clean & Precise */
+@keyframes aurora-pulse {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(1.1); opacity: 0.8; }
+}
+
+/* Grid Overlay for Precision Feel */
+.grid-overlay {
+    position: fixed; inset: 0; z-index: -1;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+}
+
+/* 2. Navbar - Floating Glass */
 nav {
-    position: fixed; top: 0; left: 0; width: 100%; height: 64px;
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+    width: 90%; max-width: 1200px; height: 64px;
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 24px;
-    background: rgba(3, 3, 4, 0.8);
+    background: rgba(10, 10, 10, 0.6);
     backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
-    z-index: 100;
+    border: 1px solid var(--border);
+    border-radius: 12px; /* Smooth, modern look */
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
 }
 
-/* 2. THE LOGO - Precision Instrument */
+/* 3. THE ETHEREAL LOGO */
 .brand-link {
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; gap: 12px;
     text-decoration: none;
-    padding: 4px 0;
+    cursor: default;
 }
 
-/* Icon Container */
-.logo-icon {
-    width: 28px; height: 28px;
+.logo-stage {
+    width: 32px; height: 32px;
     position: relative;
     display: flex; align-items: center; justify-content: center;
 }
 
-/* SVG Styling */
-.hex-svg {
-    width: 100%; height: 100%;
-    overflow: visible;
-}
-
-/* Outer Hex (Static Frame) */
-.hex-outer {
+/* SVG Animation */
+.hex-path {
     fill: none;
-    stroke: #444;
-    stroke-width: 1.5;
+    stroke: url(#gradient); /* Using SVG Gradient */
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
-/* Inner Hex (Rotating Element) */
-.hex-inner {
-    fill: none;
-    stroke: var(--accent);
-    stroke-width: 1.5;
+.orbit-dot {
+    fill: var(--accent);
+    filter: drop-shadow(0 0 4px var(--accent));
+    animation: orbit 4s linear infinite;
     transform-origin: center;
-    animation: precision-spin 12s linear infinite; /* Slow, smooth rotation */
 }
 
-/* Core Dot (Pulsing) */
-.hex-core {
-    fill: var(--text-main);
-    transform-origin: center;
-    animation: core-pulse 3s ease-in-out infinite;
-}
+@keyframes orbit { from { transform: rotate(0deg) translateX(12px) rotate(0deg); } to { transform: rotate(360deg) translateX(12px) rotate(-360deg); } }
 
-@keyframes precision-spin { 100% { transform: rotate(360deg); } }
-@keyframes core-pulse { 
-    0%, 100% { opacity: 0.5; transform: scale(0.8); } 
-    50% { opacity: 1; transform: scale(1.2); } 
-}
-
-/* Text Styling */
 .brand-text {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.95rem; /* 15px */
-    font-weight: 600;
-    color: white;
-    letter-spacing: -0.01em;
+    font-size: 1rem; font-weight: 700; color: white; letter-spacing: -0.01em;
 }
 
-/* Glassmorphism Badge for .EXE */
-.exe-badge {
+/* Creative .EXE Badge */
+.exe-pill {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem; /* Small & Elegant */
-    color: #a5b4fc; /* Light Indigo */
-    background: rgba(99, 102, 241, 0.1);
-    border: 1px solid rgba(99, 102, 241, 0.2);
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-left: 6px;
-    display: inline-block;
-    vertical-align: middle;
+    font-size: 0.7rem;
+    color: #c7d2fe;
+    background: linear-gradient(90deg, rgba(99, 102, 241, 0.2), rgba(99, 102, 241, 0.05));
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin-left: 8px;
+    position: relative;
+    overflow: hidden;
 }
 
-/* 3. Hero Section */
+/* Shimmer effect inside the badge */
+.exe-pill::before {
+    content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transform: skewX(-20deg);
+    animation: shimmer 3s infinite;
+}
+@keyframes shimmer { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+
+
+/* 4. Hero Content */
 main {
-    flex-grow: 1;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    text-align: center;
-    padding: 24px;
-    padding-top: 80px; /* Offset for navbar */
+    flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+    padding: 120px 24px 60px;
 }
 
-/* Status Pill */
-.status-pill {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 6px 12px;
-    border-radius: 100px;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-bottom: 24px;
-    font-family: 'Inter', sans-serif;
+/* "New" Badge */
+.hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 12px; border-radius: 100px;
+    background: var(--glass); border: 1px solid var(--border);
+    font-size: 0.85rem; color: var(--text-muted);
+    margin-bottom: 32px;
+    animation: fade-up 1s ease-out;
 }
-.status-dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 5px rgba(16, 185, 129, 0.4); }
+.tag-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 8px var(--accent); }
 
 h1 {
-    font-size: clamp(2.5rem, 5vw, 4.5rem); /* Responsive Text */
-    font-weight: 700;
-    line-height: 1.1;
-    margin-bottom: 1.5rem;
-    background: linear-gradient(180deg, #fff 0%, #a1a1aa 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    max-width: 800px;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 800; line-height: 1.05; letter-spacing: -0.03em;
+    margin-bottom: 24px;
+    background: linear-gradient(180deg, #fff 20%, #71717a 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    animation: fade-up 1s ease-out 0.2s backwards;
+    max-width: 900px;
 }
 
 p {
-    font-size: 1.05rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-    max-width: 500px;
-    margin-bottom: 32px;
+    font-size: 1.15rem; color: var(--text-muted); line-height: 1.6; max-width: 580px; margin-bottom: 40px;
+    animation: fade-up 1s ease-out 0.4s backwards;
 }
 
-/* Premium Buttons */
-.btn-group { display: flex; gap: 12px; }
+/* Creative Buttons */
+.cta-container { display: flex; gap: 16px; animation: fade-up 1s ease-out 0.6s backwards; }
 
-.btn-primary {
-    background: #fff; color: #000;
-    padding: 12px 24px; font-weight: 500; font-size: 0.95rem;
-    border-radius: 6px; text-decoration: none;
-    transition: transform 0.2s;
+.btn-glow {
+    position: relative;
+    background: var(--text-main); color: #000;
+    padding: 14px 32px; font-weight: 600; border-radius: 8px; text-decoration: none;
+    overflow: hidden; transition: transform 0.2s;
 }
-.btn-primary:hover { transform: translateY(-1px); background: #f0f0f0; }
+.btn-glow:hover { transform: translateY(-2px); box-shadow: 0 0 20px rgba(255,255,255,0.3); }
 
-.btn-secondary {
-    background: rgba(255,255,255,0.05); color: #fff;
-    padding: 12px 24px; font-weight: 500; font-size: 0.95rem;
-    border-radius: 6px; text-decoration: none;
-    border: 1px solid var(--border);
-    transition: background 0.2s;
+.btn-outline {
+    background: transparent; color: var(--text-main);
+    padding: 14px 32px; font-weight: 600; border-radius: 8px; text-decoration: none;
+    border: 1px solid var(--border); transition: background 0.2s;
 }
-.btn-secondary:hover { background: rgba(255,255,255,0.1); }
+.btn-outline:hover { background: var(--glass); border-color: #444; }
 
+@keyframes fade-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    nav { width: 100%; top: 0; border-radius: 0; border-left: none; border-right: none; border-top: none; }
+}
