@@ -1,179 +1,142 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap');
 
 :root {
-    --bg: #030304;
-    --glass: rgba(255, 255, 255, 0.03);
-    --border: rgba(255, 255, 255, 0.08);
+    --bg: #050507;        /* Deepest Blue-Black */
+    --glass: rgba(255, 255, 255, 0.05);
+    --border: rgba(255, 255, 255, 0.1);
     --text-main: #ffffff;
     --text-muted: #94a3b8;
-    --accent: #6366f1; /* Indigo - Sophisticated & Tech */
-    --accent-glow: rgba(99, 102, 241, 0.4);
+    --accent: #6366f1;    /* Indigo - The color of modern tech */
+    --accent-glow: rgba(99, 102, 241, 0.3);
 }
 
-* { box-sizing: border-box; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    margin: 0; padding: 0;
     font-family: 'Inter', sans-serif;
     background-color: var(--bg);
     color: var(--text-main);
-    overflow-x: hidden;
+    overflow-x: hidden; /* Prevent horizontal scroll */
     min-height: 100vh;
     display: flex; flex-direction: column;
 }
 
-/* 1. Cinematic Background (The Creative Part) */
-.aurora-bg {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-    background: 
-        radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.08), transparent 25%),
-        radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.05), transparent 25%);
-    filter: blur(60px);
-    opacity: 0.8;
-    animation: aurora-pulse 10s ease-in-out infinite alternate;
+/* 1. Background Ambience (Subtle & Pro) */
+.ambient-light {
+    position: fixed; top: -20%; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 600px; height: 500px;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    filter: blur(80px);
+    z-index: -1;
+    opacity: 0.6;
 }
 
-@keyframes aurora-pulse {
-    0% { transform: scale(1); opacity: 0.6; }
-    100% { transform: scale(1.1); opacity: 0.8; }
-}
-
-/* Grid Overlay for Precision Feel */
-.grid-overlay {
-    position: fixed; inset: 0; z-index: -1;
-    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-    mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
-}
-
-/* 2. Navbar - Floating Glass */
+/* 2. Navbar - FIXED & COMPACT */
 nav {
-    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-    width: 90%; max-width: 1200px; height: 64px;
+    position: fixed; top: 0; left: 0; width: 100%; height: 64px;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 0 24px;
-    background: rgba(10, 10, 10, 0.6);
-    backdrop-filter: blur(16px);
-    border: 1px solid var(--border);
-    border-radius: 12px; /* Smooth, modern look */
-    z-index: 1000;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    padding: 0 20px; /* Safe padding for mobile */
+    background: rgba(5, 5, 7, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 9999; /* Always on top */
 }
 
-/* 3. THE ETHEREAL LOGO */
+/* Brand Container */
 .brand-link {
-    display: flex; align-items: center; gap: 12px;
+    display: flex; align-items: center; gap: 10px;
     text-decoration: none;
-    cursor: default;
 }
 
-.logo-stage {
-    width: 32px; height: 32px;
+/* THE LOGO - Strictly Sized */
+.logo-icon {
+    width: 28px; height: 28px; /* Fixed size, never grows */
     position: relative;
-    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; /* Prevents squishing on small phones */
 }
 
-/* SVG Animation */
-.hex-path {
-    fill: none;
-    stroke: url(#gradient); /* Using SVG Gradient */
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+.hex-svg {
+    width: 100%; height: 100%;
+    overflow: visible;
 }
 
-.orbit-dot {
-    fill: var(--accent);
-    filter: drop-shadow(0 0 4px var(--accent));
-    animation: orbit 4s linear infinite;
+/* Logo Animation: Elegant Rotation */
+.hex-inner {
     transform-origin: center;
+    animation: rotate 10s linear infinite;
+    stroke: var(--accent);
 }
 
-@keyframes orbit { from { transform: rotate(0deg) translateX(12px) rotate(0deg); } to { transform: rotate(360deg) translateX(12px) rotate(-360deg); } }
+@keyframes rotate { 100% { transform: rotate(360deg); } }
 
+/* Text Styling */
 .brand-text {
-    font-size: 1rem; font-weight: 700; color: white; letter-spacing: -0.01em;
+    font-size: 1rem; font-weight: 600; color: white;
+    letter-spacing: -0.01em;
 }
 
-/* Creative .EXE Badge */
-.exe-pill {
+/* .EXE Badge - The Pill Style */
+.exe-badge {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.7rem;
-    color: #c7d2fe;
-    background: linear-gradient(90deg, rgba(99, 102, 241, 0.2), rgba(99, 102, 241, 0.05));
+    color: #a5b4fc;
+    background: rgba(99, 102, 241, 0.15);
     border: 1px solid rgba(99, 102, 241, 0.3);
-    padding: 3px 8px;
-    border-radius: 6px;
-    margin-left: 8px;
-    position: relative;
-    overflow: hidden;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 6px;
+    vertical-align: middle;
 }
 
-/* Shimmer effect inside the badge */
-.exe-pill::before {
-    content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-    transform: skewX(-20deg);
-    animation: shimmer 3s infinite;
-}
-@keyframes shimmer { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
-
-
-/* 4. Hero Content */
+/* 3. Main Content - Spaced Correctly */
 main {
-    flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
-    padding: 120px 24px 60px;
+    flex-grow: 1;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
+    padding: 100px 20px 40px; /* Top padding clears the navbar */
 }
 
-/* "New" Badge */
-.hero-tag {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 6px 12px; border-radius: 100px;
+/* Hero Badge */
+.hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
     background: var(--glass); border: 1px solid var(--border);
-    font-size: 0.85rem; color: var(--text-muted);
-    margin-bottom: 32px;
-    animation: fade-up 1s ease-out;
-}
-.tag-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 8px var(--accent); }
-
-h1 {
-    font-size: clamp(3rem, 6vw, 5.5rem);
-    font-weight: 800; line-height: 1.05; letter-spacing: -0.03em;
+    padding: 6px 12px; border-radius: 100px;
+    font-size: 0.8rem; color: var(--text-muted);
     margin-bottom: 24px;
-    background: linear-gradient(180deg, #fff 20%, #71717a 100%);
+}
+.pulse-dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 5px #10b981; }
+
+/* Responsive Headline */
+h1 {
+    font-size: clamp(2.5rem, 8vw, 4.5rem); /* Auto-scales between phone and desktop */
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    background: linear-gradient(180deg, #fff 0%, #94a3b8 100%);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    animation: fade-up 1s ease-out 0.2s backwards;
-    max-width: 900px;
+    max-width: 800px;
 }
 
 p {
-    font-size: 1.15rem; color: var(--text-muted); line-height: 1.6; max-width: 580px; margin-bottom: 40px;
-    animation: fade-up 1s ease-out 0.4s backwards;
+    font-size: 1.1rem; color: var(--text-muted); line-height: 1.6;
+    max-width: 500px; margin-bottom: 32px;
 }
 
-/* Creative Buttons */
-.cta-container { display: flex; gap: 16px; animation: fade-up 1s ease-out 0.6s backwards; }
+/* Buttons */
+.btn-group { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
 
-.btn-glow {
-    position: relative;
-    background: var(--text-main); color: #000;
-    padding: 14px 32px; font-weight: 600; border-radius: 8px; text-decoration: none;
-    overflow: hidden; transition: transform 0.2s;
+.btn {
+    padding: 12px 24px; border-radius: 8px; font-weight: 500; font-size: 0.95rem;
+    text-decoration: none; transition: transform 0.2s;
 }
-.btn-glow:hover { transform: translateY(-2px); box-shadow: 0 0 20px rgba(255,255,255,0.3); }
+.btn-primary { background: #fff; color: #000; }
+.btn-secondary { background: var(--glass); color: #fff; border: 1px solid var(--border); }
 
-.btn-outline {
-    background: transparent; color: var(--text-main);
-    padding: 14px 32px; font-weight: 600; border-radius: 8px; text-decoration: none;
-    border: 1px solid var(--border); transition: background 0.2s;
-}
-.btn-outline:hover { background: var(--glass); border-color: #444; }
+.btn:hover { transform: translateY(-2px); }
 
-@keyframes fade-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+/* Mobile Menu Hamburger (Visual Only) */
+.menu-icon { display: flex; flex-direction: column; gap: 5px; }
+.bar { width: 22px; height: 2px; background: #fff; border-radius: 2px; }
 
-/* Mobile Adjustments */
-@media (max-width: 768px) {
-    nav { width: 100%; top: 0; border-radius: 0; border-left: none; border-right: none; border-top: none; }
-}
