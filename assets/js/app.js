@@ -1,39 +1,40 @@
 
 document.addEventListener('DOMContentLoaded', () => {
-    const core = document.getElementById('living-core');
+    // Select the SVG elements
+    const core = document.querySelector('.living-core');
+    const frame = document.querySelector('.hex-frame');
     
     if (!core) return;
     
-    // متغيرات الحركة
     let time = 0;
     
     function live() {
-        time += 0.05; // سرعة الزمن
+        time += 0.05;
 
-        // 1. التجول (Wandering): يتحرك يمين/يسار وفوق/تحت بعشوائية منظمة
-        // نستخدم sin/cos بترددات مختلفة لكسر التكرار
-        const x = Math.sin(time) * 8 + Math.cos(time * 2.1) * 5;
-        const y = Math.cos(time * 1.3) * 8 + Math.sin(time * 0.7) * 5;
+        // --- 1. THE CORE (Living Organism) ---
+        // يتجول داخل الحدود
+        const x = Math.sin(time) * 5 + Math.cos(time * 2.5) * 3;
+        const y = Math.cos(time * 1.5) * 5 + Math.sin(time * 1.0) * 3;
+        
+        // يتنفس
+        const scale = 1 + Math.sin(time * 4) * 0.1;
+        
+        // يرتعش
+        const jitter = (Math.random() - 0.5) * 10;
 
-        // 2. التنفس (Breathing): ينفعص ويتمدد
-        // عندما يتمدد أفقياً يتقلص عمودياً (الحفاظ على الحجم)
-        const breathe = Math.sin(time * 3) * 0.2;
-        const scaleX = 1 + breathe;
-        const scaleY = 1 - breathe;
-
-        // 3. الارتعاش (Nervous Jitter): حركة سريعة جداً توحي بالطاقة
-        const jitter = (Math.random() - 0.5) * 5; // دوران عشوائي سريع
-
-        // تطبيق الحركة على الكائن
         core.style.transform = `
             translate(${x}px, ${y}px)
+            scale(${scale})
             rotate(${jitter}deg)
-            scale(${scaleX}, ${scaleY})
         `;
+
+        // --- 2. THE FRAME (Stability) ---
+        // يدور ببطء شديد ليعطي شعور الاحتواء
+        // نستخدم CSS transform في JS للتحكم الدقيق
+        // frame.style.transform = `rotate(${Math.sin(time * 0.1) * 10}deg)`;
 
         requestAnimationFrame(live);
     }
 
-    // بدء الحياة
     live();
 });
