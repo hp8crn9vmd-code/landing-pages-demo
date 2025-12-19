@@ -1,68 +1,109 @@
 
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap');
 
 :root {
-    --bg: #000000;
+    --bg: #030303;
+    --surface: #0a0a0a;
     --text: #ffffff;
-    --accent: #00ff41; /* Hacker Green for high visibility */
+    --accent: #3b82f6; /* Professional Royal Blue */
+    --hex-color: #ffffff;
 }
 
 body {
-    margin: 0;
-    font-family: 'JetBrains Mono', monospace;
+    margin: 0; padding: 0;
+    font-family: 'Inter', sans-serif;
     background-color: var(--bg);
     color: var(--text);
-    overflow: hidden;
     height: 100vh;
+    overflow: hidden;
+    display: flex; flex-direction: column;
 }
 
-/* Grid Background */
-.grid-bg {
+/* Background Grid - Subtle & Static */
+.pro-grid {
     position: fixed; inset: 0; z-index: -1;
     background-image: 
-        linear-gradient(rgba(0, 255, 65, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 255, 65, 0.1) 1px, transparent 1px);
-    background-size: 40px 40px;
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
 }
 
 nav {
-    position: fixed; top: 0; left: 0; width: 100%;
-    padding: 2rem;
+    padding: 2rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
     z-index: 100;
 }
 
-/* --- THE LIVING LOGO STYLES --- */
-#logo-container {
-    display: inline-block;
-    /* Important: Give it room to move */
-    padding: 20px; 
-}
-
-#living-logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 2rem;
-    font-weight: 800;
-    letter-spacing: -2px;
-    
-    /* Base appearance */
-    color: white;
-    text-shadow: 0 0 10px rgba(255,255,255,0.5);
-    
-    /* Hardware acceleration hint */
-    will-change: transform;
+/* --- THE LOGO CONTAINER --- */
+.logo-magnetic-area {
+    padding: 20px;
     cursor: pointer;
+    perspective: 1000px; /* For 3D Tilt Effect */
 }
 
-.exe-tag {
+#pro-logo {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+/* The Hexagon */
+.hex-wrapper {
+    width: 44px; height: 44px;
+    position: relative;
+    display: flex; justify-content: center; align-items: center;
+}
+
+.hex-svg {
+    width: 100%; height: 100%;
+    stroke: var(--text);
+    stroke-width: 2;
+    fill: none;
+    will-change: transform; /* Optimized for rotation */
+}
+
+/* The Text */
+.brand-text {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: white;
+}
+
+.extension {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    font-size: 0.9em;
     color: var(--accent);
-    text-shadow: 0 0 15px var(--accent);
+    opacity: 0.8;
+    position: relative;
 }
 
-/* Center Content */
-main {
-    height: 100%; display: flex; flex-direction: column; 
-    justify-content: center; align-items: center; text-align: center;
+/* Subtle Glow for .EXE */
+.extension::after {
+    content: '';
+    position: absolute; inset: -5px;
+    background: var(--accent);
+    filter: blur(10px);
+    opacity: 0;
+    animation: pro-pulse 4s infinite ease-in-out;
+    border-radius: 4px;
+    z-index: -1;
 }
-h1 { font-size: 4rem; margin-bottom: 1rem; }
+
+@keyframes pro-pulse {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 0.2; }
+}
+
+/* Main Layout */
+main {
+    flex-grow: 1;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center;
+}
+h1 { font-size: 4rem; margin-bottom: 1rem; letter-spacing: -2px; }
+p { color: #888; max-w: 500px; line-height: 1.6; }

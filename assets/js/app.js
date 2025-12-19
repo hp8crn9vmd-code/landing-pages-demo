@@ -1,44 +1,67 @@
 
 document.addEventListener('DOMContentLoaded', () => {
-    const logo = document.getElementById('living-logo');
+    // Register GSAP
+    // @ts-ignore
+    gsap.config({ nullTargetWarn: false });
+
+    const logoArea = document.querySelector('.logo-magnetic-area');
+    const logoGroup = document.getElementById('pro-logo');
+    const hexagon = document.querySelector('.hex-svg');
     
-    if (!logo) {
-        console.error("LOGO NOT FOUND!");
-        return;
-    }
+    // 1. CONSTANT MOTION: Smooth Rotation
+    // Hexagon rotates slowly and endlessly like a precision part
+    gsap.to(hexagon, {
+        rotation: 360,
+        duration: 20,
+        repeat: -1,
+        ease: "none" // Linear constant speed
+    });
 
-    console.log("Logo Engine: STARTED");
+    // 2. CONSTANT MOTION: Hover / Float
+    // The whole logo gently floats up and down (Breathing)
+    gsap.to(logoGroup, {
+        y: 10,
+        duration: 3,
+        yoyo: true,
+        repeat: -1,
+        ease: "sine.inOut" // Very smooth wave
+    });
 
-    // Animation Variables
-    let time = 0;
+    // 3. INTERACTIVE PHYSICS: Magnetic Mouse Follow
+    // This creates the "Professional" heavy feel
+    
+    // We create "quickSetters" for performance
+    const xTo = gsap.quickTo(logoGroup, "x", {duration: 1, ease: "power3.out"});
+    const yTo = gsap.quickTo(logoGroup, "y", {duration: 1, ease: "power3.out"});
+    
+    // Track mouse relative to center of screen
+    window.addEventListener("mousemove", (e) => {
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
 
-    function animate() {
-        time += 0.02; // Speed of time flow
+        // Calculate distance from center (LogicDriven focuses on YOU)
+        // We limit the movement so it doesn't fly off screen (max 30px)
+        const moveX = (mouseX - centerX) * 0.03; 
+        const moveY = (mouseY - centerY) * 0.03;
 
-        // 1. WANDERING (Movement X/Y)
-        // Combining multiple Sine waves creates a path that never perfectly repeats
-        const x = Math.sin(time) * 15 + Math.cos(time * 2.3) * 10;
-        const y = Math.cos(time * 1.5) * 15 + Math.sin(time * 0.7) * 10;
+        // Apply physics-based movement (Inertia)
+        xTo(moveX);
+        yTo(moveY);
 
-        // 2. BREATHING (Scale)
-        // Squashing and stretching like a lung
-        const scaleX = 1 + Math.sin(time * 3) * 0.05;
-        const scaleY = 1 + Math.cos(time * 3) * 0.05;
+        // 4. 3D TILT EFFECT (Subtle)
+        const rotX = (mouseY - centerY) * -0.01;
+        const rotY = (mouseX - centerX) * 0.01;
+        
+        gsap.to(logoGroup, {
+            rotationX: rotX,
+            rotationY: rotY,
+            duration: 1,
+            ease: "power2.out"
+        });
+    });
 
-        // 3. JITTER (Rotation/Shake)
-        // Fast, random noise for the "nervous" look
-        const jitter = (Math.random() - 0.5) * 2; // Shake by 2 degrees
-
-        // Apply Logic
-        logo.style.transform = `
-            translate(${x}px, ${y}px) 
-            rotate(${jitter}deg) 
-            scale(${scaleX}, ${scaleY})
-        `;
-
-        requestAnimationFrame(animate);
-    }
-
-    // Start the loop
-    animate();
+    // Icons
+    if(typeof feather !== 'undefined') feather.replace();
 });
