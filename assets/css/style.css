@@ -1,32 +1,61 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;800&family=Montserrat:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;600;700&display=swap');
 
 :root {
-    --brand-navy: #0f172a;
-    --brand-gold: #b88a44;
+    --bg-dark: #0B1120;
+    --text-gold: #D97706;
 }
 
-body { font-family: 'Tajawal', sans-serif; background-color: #f8fafc; }
-.font-brand { font-family: 'Montserrat', sans-serif; letter-spacing: 1px; }
-
-.text-navy { color: var(--brand-navy); }
-.text-gold { color: var(--brand-gold); }
-.bg-navy { background-color: var(--brand-navy); }
-.bg-gold { background-color: var(--brand-gold); }
-
-.btn-primary {
-    background-color: var(--brand-navy);
-    color: white;
-    transition: all 0.3s ease;
-}
-.btn-primary:hover {
-    background-color: #1e293b;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.3);
+body { 
+    font-family: 'IBM Plex Sans Arabic', sans-serif; 
+    background-color: #f8fafc;
+    overflow-x: hidden;
 }
 
-.service-card:hover .icon-box {
-    background-color: var(--brand-gold);
-    color: white;
-    transform: scale(1.1);
+/* تأثير الزجاج */
+.glass-nav {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+/* الشبكة الخلفية للقسم الداكن */
+.tech-grid-bg {
+    background-color: var(--bg-dark);
+    background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 30px 30px;
+}
+
+/* Cards Animation */
+.smart-card {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.smart-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.1);
+    border-color: var(--text-gold);
+}
+
+/* النص المتدرج */
+.text-gradient {
+    background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-gold {
+    background: linear-gradient(135deg, #D97706 0%, #fcd34d 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Scroll Animations */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
 }
